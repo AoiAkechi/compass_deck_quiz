@@ -6,112 +6,83 @@
 <title>コンパス デッキ当てクイズ</title>
 <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <style>
-/* ── 変数 ───────────────────────────── */
 :root{
-  --bg:#0d0f14;
-  --bg2:#161a23;
-  --bg3:#1e2330;
-  --border:#2a2f3e;
-  --text:#e8eaf0;
-  --text2:#8b91a6;
-  --text3:#555c72;
-  --accent:#4f8ef7;
-  --accent2:#2a5cc4;
-  --fire:#e05a3a;
-  --water:#3a8be0;
-  --wood:#3ac46a;
-  --none:#777;
-  --collab:#b06fd8;
-  --ur:#c8860a;
-  --sr:#7c6fcd;
-  --r:#3a8be0;
-  --ok:#3ac46a;
-  --ng:#e05a3a;
-  --warn:#e0a83a;
-  --radius:8px;
-  --radius-lg:12px;
+  --bg:#0d0f14; --bg2:#161a23; --bg3:#1e2330;
+  --border:#2a2f3e; --text:#e8eaf0; --text2:#8b91a6; --text3:#555c72;
+  --accent:#4f8ef7; --accent2:#2a5cc4;
+  --fire:#e05a3a; --water:#3a8be0; --wood:#3ac46a; --none:#777; --collab:#b06fd8;
+  --ur:#c8860a; --sr:#7c6fcd; --r:#3a8be0;
+  --ok:#3ac46a; --ng:#e05a3a; --warn:#e0a83a;
+  --radius:8px; --radius-lg:12px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:14px;min-height:100vh}
-a{color:var(--accent)}
-
-/* ── レイアウト ─────────────────────── */
 #app{max-width:520px;margin:0 auto;padding:16px}
 .screen{display:none}.screen.active{display:block}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:12px}
-
-/* ── タイポ ─────────────────────────── */
 h1{font-size:22px;font-weight:700;letter-spacing:.05em}
 h2{font-size:17px;font-weight:600;margin-bottom:4px}
 h3{font-size:14px;font-weight:600;margin-bottom:8px}
 .sub{font-size:12px;color:var(--text2);margin-bottom:14px}
-.label{font-size:10px;font-weight:600;letter-spacing:.08em;color:var(--text3);text-transform:uppercase;margin-bottom:6px}
-
-/* ── ボタン ─────────────────────────── */
-.btn{display:inline-block;padding:10px 20px;border-radius:var(--radius);border:none;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s,transform .1s;font-family:inherit}
-.btn:hover{opacity:.85}.btn:active{transform:scale(.97)}
-.btn-primary{background:var(--accent);color:#fff;width:100%;margin-top:8px}
-.btn-secondary{background:var(--bg3);color:var(--text);border:1px solid var(--border);width:100%;margin-top:8px}
+.lbl{font-size:10px;font-weight:600;letter-spacing:.08em;color:var(--text3);text-transform:uppercase;margin-bottom:6px}
+.btn{display:block;width:100%;padding:10px 20px;border-radius:var(--radius);border:none;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s,transform .1s;font-family:inherit;text-align:center;margin-top:8px}
+.btn:hover{opacity:.85}.btn:active{transform:scale(.97)}.btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.btn-p{background:var(--accent);color:#fff}
+.btn-s{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
 .btn-sm{padding:5px 12px;font-size:12px;font-weight:500;background:var(--bg3);color:var(--text2);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:inherit}
 .btn-sm:hover{color:var(--text);border-color:var(--text3)}
 .btn-danger{background:rgba(224,90,58,.15);color:var(--ng);border:1px solid rgba(224,90,58,.3)}
-.btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
-
-/* ── フォーム ────────────────────────── */
-input,select{width:100%;padding:9px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:14px;font-family:inherit;margin-top:4px;outline:none;transition:border-color .15s}
-input:focus,select:focus{border-color:var(--accent)}
-.field{margin-bottom:12px}
-.field .label{display:block;margin-bottom:4px}
-
-/* ── バッジ ─────────────────────────── */
+input{width:100%;padding:9px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:14px;font-family:inherit;margin-top:4px;outline:none;transition:border-color .15s}
+input:focus{border-color:var(--accent)}
 .badge{display:inline-block;font-size:10px;font-weight:600;padding:3px 8px;border-radius:20px}
-.badge-info{background:rgba(79,142,247,.15);color:var(--accent)}
-.badge-ok{background:rgba(58,198,106,.15);color:var(--ok)}
-.badge-warn{background:rgba(224,168,58,.15);color:var(--warn)}
-.badge-ng{background:rgba(224,90,58,.15);color:var(--ng)}
-
-/* ── ディバイダー ─────────────────────── */
+.b-ok{background:rgba(58,198,106,.15);color:var(--ok)}
+.b-warn{background:rgba(224,168,58,.15);color:var(--warn)}
+.b-ng{background:rgba(224,90,58,.15);color:var(--ng)}
 .div{height:1px;background:var(--border);margin:16px 0}
-
-/* ── タイマー ────────────────────────── */
 .timer-bar{height:3px;background:var(--bg3);border-radius:2px;margin:10px 0;overflow:hidden}
 .timer-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .1s linear}
 
-/* ── カードグリッド(4枚) ──────────────── */
+/* カードタイル */
 .card-grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
-.card-tile{border:1px solid var(--border);border-radius:var(--radius);background:var(--bg3);aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;transition:border-color .15s}
-.card-tile .ct-id{font-size:11px;font-weight:700;color:var(--text);text-align:center;padding:4px}
-.card-tile .ct-el{font-size:10px;margin-top:2px}
-.card-tile .ct-rar{font-size:10px;font-weight:700}
-.card-tile.fire{border-color:rgba(224,90,58,.4);background:rgba(224,90,58,.08)}
-.card-tile.water{border-color:rgba(58,139,224,.4);background:rgba(58,139,224,.08)}
-.card-tile.wood{border-color:rgba(58,198,106,.4);background:rgba(58,198,106,.08)}
-.card-tile.none{border-color:rgba(136,136,128,.3);background:rgba(136,136,128,.06)}
-.card-tile.collab{border-color:rgba(176,111,216,.4);background:rgba(176,111,216,.08)}
-.card-tile.empty{border-style:dashed;color:var(--text3)}
+.ct{border:1px solid var(--border);border-radius:var(--radius);background:var(--bg3);aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ct-id{font-size:11px;font-weight:700;text-align:center;padding:4px;line-height:1.3;word-break:break-all}
+.ct-el{font-size:10px;margin-top:2px}.ct-rar{font-size:10px;font-weight:700}
+.ct.fire{border-color:rgba(224,90,58,.4);background:rgba(224,90,58,.08)}
+.ct.water{border-color:rgba(58,139,224,.4);background:rgba(58,139,224,.08)}
+.ct.wood{border-color:rgba(58,198,106,.4);background:rgba(58,198,106,.08)}
+.ct.none{border-color:rgba(136,136,128,.3);background:rgba(136,136,128,.06)}
+.ct.collab{border-color:rgba(176,111,216,.4);background:rgba(176,111,216,.08)}
+.ct.empty{border-style:dashed;color:var(--text3)}
 .ct-rar.ur{color:var(--ur)}.ct-rar.sr{color:var(--sr)}.ct-rar.r{color:var(--r)}
 
-/* ── ヒーローグリッド ──────────────────── */
-.hero-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:6px;margin-top:8px;max-height:240px;overflow-y:auto}
-.hero-btn{padding:8px 6px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg3);color:var(--text);font-size:12px;font-weight:500;cursor:pointer;text-align:center;transition:all .12s;font-family:inherit;line-height:1.3}
-.hero-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(79,142,247,.08)}
-.hero-btn.correct{border-color:var(--ok)!important;background:rgba(58,198,106,.12)!important;color:var(--ok)!important}
-.hero-btn.wrong{border-color:var(--ng)!important;background:rgba(224,90,58,.10)!important;color:var(--ng)!important}
-.hero-btn.reveal{border-color:var(--accent)!important;background:rgba(79,142,247,.12)!important;color:var(--accent)!important}
-.hero-btn:disabled{opacity:.45;cursor:not-allowed}
+/* ヒーロー検索＋リスト */
+.hero-search-wrap{position:relative;margin-top:8px}
+.hero-search-input{margin-top:0;padding-right:32px}
+.hero-search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:0;line-height:1;display:none}
+.hero-search-clear.show{display:block}
+.hero-list{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);max-height:220px;overflow-y:auto;margin-top:4px}
+.hero-list-item{padding:9px 12px;cursor:pointer;font-size:13px;border-bottom:1px solid var(--border);transition:background .1s;display:flex;align-items:center;gap:8px}
+.hero-list-item:last-child{border-bottom:none}
+.hero-list-item:hover{background:rgba(79,142,247,.08)}
+.hero-list-item.selected{background:rgba(79,142,247,.12);color:var(--accent)}
+.hero-list-item.correct{background:rgba(58,198,106,.12);color:var(--ok)}
+.hero-list-item.wrong{background:rgba(224,90,58,.1);color:var(--ng)}
+.hero-list-item.reveal{background:rgba(79,142,247,.1);color:var(--accent);font-weight:600}
+.hero-list-item:disabled,.hero-list-item.disabled{opacity:.45;cursor:not-allowed;pointer-events:none}
+.hero-list-empty{padding:10px 12px;font-size:12px;color:var(--text3);text-align:center}
 
-/* ── フラッシュ ─────────────────────── */
+/* フラッシュ */
 .flash{padding:10px 14px;border-radius:var(--radius);font-size:13px;font-weight:600;margin-top:8px}
 .flash.ok{background:rgba(58,198,106,.12);color:var(--ok);border:1px solid rgba(58,198,106,.25)}
 .flash.ng{background:rgba(224,90,58,.1);color:var(--ng);border:1px solid rgba(224,90,58,.2)}
 .flash.first{background:rgba(224,168,58,.1);color:var(--warn);border:1px solid rgba(224,168,58,.25)}
 
-/* ── スコアボード ────────────────────── */
+/* スコア */
 .score-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px}
 .score-row:last-child{border-bottom:none}
 .score-pts{font-weight:700;color:var(--accent)}
 
-/* ── スロット(管理画面) ──────────────── */
+/* スロット */
 .slots4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}
 .slot{border:1px dashed var(--border);border-radius:var(--radius);min-height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;cursor:pointer;background:var(--bg3);transition:border-color .12s}
 .slot:hover{border-color:var(--accent)}.slot.has{border-style:solid;border-color:var(--border)}
@@ -122,32 +93,32 @@ input:focus,select:focus{border-color:var(--accent)}
 .slot .s-del{position:absolute;top:3px;right:3px;width:16px;height:16px;border-radius:50%;background:rgba(224,90,58,.2);color:var(--ng);border:none;cursor:pointer;font-size:10px;display:none;align-items:center;justify-content:center;font-family:inherit}
 .slot.has .s-del{display:flex}
 
-/* ── カードピッカー ─────────────────── */
+/* カードピッカー — フィルター複数AND */
 .picker-wrap{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:10px}
-.picker-filters{padding:8px;border-bottom:1px solid var(--border);display:flex;gap:5px;flex-wrap:wrap}
-.filt{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);cursor:pointer;font-family:inherit;transition:all .1s}
+.picker-filters{padding:8px;border-bottom:1px solid var(--border);display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.filt{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);cursor:pointer;font-family:inherit;transition:all .1s;user-select:none}
+.filt:hover{border-color:var(--text3);color:var(--text)}
 .filt.on{background:rgba(79,142,247,.15);color:var(--accent);border-color:var(--accent2)}
+.filt-reset{font-size:10px;padding:3px 8px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;font-family:inherit;margin-left:auto}
+.filt-reset:hover{color:var(--ng);border-color:var(--ng)}
+.filter-hint{padding:4px 8px 0;font-size:10px;color:var(--text3)}
 .picker-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:8px;max-height:200px;overflow-y:auto}
 .pick-card{border:1px solid var(--border);border-radius:6px;padding:6px 4px;text-align:center;cursor:pointer;background:var(--bg3);transition:all .1s}
 .pick-card:hover{border-color:var(--accent);background:rgba(79,142,247,.08)}
-.pick-card .pc-id{font-size:9px;color:var(--text2);margin-bottom:2px;word-break:break-all;line-height:1.2}
-.pick-card .pc-el{font-size:16px;line-height:1}
-.pick-card .pc-rar{font-size:9px;font-weight:700}
+.pc-id{font-size:9px;color:var(--text2);margin-bottom:2px;word-break:break-all;line-height:1.2}
+.pc-el{font-size:16px;line-height:1}.pc-rar{font-size:9px;font-weight:700}
+.picker-count{padding:4px 8px 6px;font-size:10px;color:var(--text3)}
 
-/* ── ピア一覧 ───────────────────────── */
+/* ピア */
 .peer-tag{font-size:11px;padding:4px 10px;border-radius:20px;background:var(--bg3);border:1px solid var(--border);color:var(--text2)}
-
-/* ── ログ ───────────────────────────── */
 .log{max-height:100px;overflow-y:auto;font-size:11px;color:var(--text2)}
 .log p{padding:3px 0;border-bottom:1px solid var(--border)}.log p:last-child{border-bottom:none}
-
-/* ── ピッカーの上ラベル ─────────────── */
 .pick-label{font-size:11px;color:var(--accent);margin-bottom:5px}
 
-/* ── デッキアイテム(管理一覧) ──────── */
+/* デッキ一覧 */
 .deck-item{padding:10px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
 .deck-item:last-child{border-bottom:none}
-.deck-cards{display:flex;gap:3px;margin-top:4px}
+.deck-cards{display:flex;gap:3px;margin-top:4px;flex-wrap:wrap}
 .deck-card-chip{font-size:9px;padding:2px 5px;border-radius:4px;background:var(--bg3);border:1px solid var(--border);color:var(--text2)}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -155,202 +126,173 @@ input:focus,select:focus{border-color:var(--accent)}
 <body>
 <div id="app">
 
-<!-- ── トップ ─────────────────────── -->
+<!-- トップ -->
 <div id="s-top" class="screen active">
   <div class="card" style="text-align:center;padding:32px 20px">
     <div style="font-size:40px;margin-bottom:12px">🧭</div>
     <h1 style="margin-bottom:6px">デッキ当てクイズ</h1>
     <p class="sub">4枚のカードを見てキャラを当てよう</p>
-    <button class="btn btn-primary" onclick="go('s-solo')">ソロで練習</button>
-    <button class="btn btn-secondary" onclick="go('s-room')">みんなで対戦（P2P）</button>
+    <button class="btn btn-p" onclick="go('s-solo')">ソロで練習</button>
+    <button class="btn btn-s" onclick="go('s-room')">みんなで対戦（P2P）</button>
   </div>
   <div class="card">
-    <div class="label">登録済みデッキ</div>
+    <div class="lbl">登録済みデッキ</div>
     <div id="top-count" style="font-size:13px;color:var(--text2);margin-bottom:10px">読み込み中...</div>
-    <button class="btn btn-secondary" onclick="go('s-manage')">デッキを管理 / 追加</button>
-  </div>
-  <div class="card" style="font-size:11px;color:var(--text3)">
-    <div class="label">データファイル</div>
-    <p style="margin-bottom:4px">heroes.json・cards.json を同じフォルダに置くとキャラ・カードを追加できます。</p>
-    <p>データ未ロード時は内蔵データを使用します。</p>
+    <button class="btn btn-s" onclick="go('s-manage')">デッキを管理 / 追加</button>
   </div>
 </div>
 
-<!-- ── ソロメニュー ────────────────── -->
+<!-- ソロメニュー -->
 <div id="s-solo" class="screen">
   <div class="card">
     <h2>ソロ練習</h2>
     <p class="sub">登録デッキからランダム出題・15秒タイマー</p>
     <div id="solo-status" style="font-size:13px;color:var(--text2);margin-bottom:12px"></div>
-    <button class="btn btn-primary" id="solo-go" onclick="startSolo()">スタート</button>
-    <button class="btn btn-secondary" onclick="go('s-top')">もどる</button>
+    <button class="btn btn-p" id="solo-go" onclick="startSolo()">スタート</button>
+    <button class="btn btn-s" onclick="go('s-top')">もどる</button>
   </div>
 </div>
 
-<!-- ── クイズ ─────────────────────── -->
+<!-- クイズ -->
 <div id="s-quiz" class="screen">
   <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-      <div class="label" style="margin:0">問題 <span id="qnum">1</span> / <span id="qtot">10</span></div>
+      <div class="lbl" style="margin:0">問題 <span id="qnum">1</span> / <span id="qtot">10</span></div>
       <div style="font-size:13px;color:var(--text2)">正解: <span id="sscore" style="font-weight:700;color:var(--accent)">0</span></div>
     </div>
     <div class="timer-bar"><div class="timer-fill" id="s-timer" style="width:100%"></div></div>
     <div class="card-grid4" id="sq-cards"></div>
-    <div class="label">このデッキのキャラは？</div>
-    <div class="hero-grid" id="sq-heroes"></div>
+    <div class="lbl">このデッキのキャラは？</div>
+    <div id="sq-hero-picker"></div>
     <div id="sq-flash"></div>
-    <button class="btn btn-secondary" id="sq-next" onclick="soloNext()" style="display:none;margin-top:10px">次の問題 →</button>
+    <button class="btn btn-s" id="sq-next" onclick="soloNext()" style="display:none;margin-top:10px">次の問題 →</button>
   </div>
 </div>
 
-<!-- ── ソロ結果 ────────────────────── -->
+<!-- 結果 -->
 <div id="s-result" class="screen">
   <div class="card" style="text-align:center;padding:32px 20px">
     <div id="res-emoji" style="font-size:48px;margin-bottom:10px">🎉</div>
     <h2 id="res-title"></h2>
     <p class="sub" id="res-sub"></p>
     <div id="res-score" style="font-size:44px;font-weight:700;color:var(--accent);margin:16px 0"></div>
-    <button class="btn btn-primary" onclick="startSolo()">もう一度</button>
-    <button class="btn btn-secondary" onclick="go('s-top')">トップへ</button>
+    <button class="btn btn-p" onclick="startSolo()">もう一度</button>
+    <button class="btn btn-s" onclick="go('s-top')">トップへ</button>
   </div>
 </div>
 
-<!-- ── 対戦ロビー ─────────────────── -->
+<!-- 対戦ロビー -->
 <div id="s-room" class="screen">
   <div class="card">
     <h2>みんなで対戦</h2>
-    <p class="sub">PeerJS P2P接続 — 部屋IDをLINEで共有して遊ぶ</p>
-    <div class="field">
-      <span class="label">あなたの名前</span>
-      <input id="my-name" value="プレイヤー1" maxlength="16">
-    </div>
+    <p class="sub">P2P接続 — 部屋IDをLINEで共有して遊ぶ</p>
+    <div class="lbl">あなたの名前</div>
+    <input id="my-name" value="プレイヤー1" maxlength="16" style="margin-bottom:12px">
     <div class="div"></div>
     <h3>🎤 司会者として部屋を作る</h3>
-    <p style="font-size:12px;color:var(--text2);margin-bottom:8px">デッキを選んで出題できます</p>
-    <button class="btn btn-primary" onclick="createRoom()">部屋を作る</button>
+    <button class="btn btn-p" onclick="createRoom()">部屋を作る</button>
     <div class="div"></div>
     <h3>🙋 参加者として入る</h3>
     <div style="display:flex;gap:6px;margin-top:6px">
       <input id="join-id" placeholder="部屋IDを貼り付け" style="flex:1;margin-top:0">
-      <button class="btn-sm" onclick="joinRoom()" style="white-space:nowrap;padding:9px 14px">参加</button>
+      <button class="btn-sm" onclick="joinRoom()" style="padding:9px 14px;white-space:nowrap">参加</button>
     </div>
-    <button class="btn btn-secondary" onclick="go('s-top')">もどる</button>
+    <button class="btn btn-s" onclick="go('s-top')">もどる</button>
   </div>
 </div>
 
-<!-- ── 司会者パネル ────────────────── -->
+<!-- 司会者パネル -->
 <div id="s-host" class="screen">
   <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
       <div><h2>司会者パネル</h2><p class="sub" style="margin:0">デッキを選んで出題しよう</p></div>
-      <span class="badge badge-ok">接続中</span>
+      <span class="badge b-ok">接続中</span>
     </div>
     <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:10px;margin-bottom:12px">
-      <div class="label">部屋ID（参加者に共有）</div>
+      <div class="lbl">部屋ID（参加者に共有）</div>
       <div style="display:flex;gap:6px;align-items:center;margin-top:4px">
         <code id="room-id" style="flex:1;font-size:12px;word-break:break-all;color:var(--text)"></code>
         <button class="btn-sm" onclick="copyId()">コピー</button>
       </div>
     </div>
-    <div class="label">参加者 (<span id="peer-count">0</span>人)</div>
+    <div class="lbl">参加者 (<span id="peer-count">0</span>人)</div>
     <div id="peer-list" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;min-height:22px"></div>
     <div class="div"></div>
-    <div class="label">出題するデッキを選択</div>
+    <div class="lbl">出題するデッキを選択</div>
     <div id="host-decks" style="max-height:160px;overflow-y:auto;margin-bottom:10px"></div>
-    <button class="btn btn-primary" id="host-send" onclick="hostSend()" disabled>このデッキを出題 →</button>
+    <button class="btn btn-p" id="host-send" onclick="hostSend()" disabled>このデッキを出題 →</button>
     <div class="div"></div>
-    <div class="label">回答ログ</div>
+    <div class="lbl">回答ログ</div>
     <div id="host-log" class="log"><p style="color:var(--text3)">まだ回答がありません</p></div>
     <div id="host-scores" style="margin-top:10px"></div>
-    <button class="btn btn-secondary" id="host-reveal" onclick="hostReveal()" style="display:none;margin-top:8px">✅ 正解を発表</button>
-    <button class="btn btn-secondary" onclick="closeRoom();go('s-top')" style="margin-top:6px">退出</button>
+    <button class="btn btn-s" id="host-reveal" onclick="hostReveal()" style="display:none;margin-top:8px">✅ 正解を発表</button>
+    <button class="btn btn-s" onclick="closeRoom();go('s-top')" style="margin-top:6px">退出</button>
   </div>
 </div>
 
-<!-- ── 参加者パネル ────────────────── -->
+<!-- 参加者パネル -->
 <div id="s-player" class="screen">
   <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
       <div><h2>回答者</h2><p class="sub" id="pl-sub" style="margin:0">司会者の出題を待っています</p></div>
-      <span class="badge badge-warn" id="pl-badge">待機中</span>
+      <span class="badge b-warn" id="pl-badge">待機中</span>
     </div>
     <div class="div"></div>
     <div id="pl-quiz" style="display:none">
-      <div class="label">出題デッキ</div>
+      <div class="lbl">出題デッキ</div>
       <div class="card-grid4" id="pl-cards"></div>
       <div class="timer-bar"><div class="timer-fill" id="p-timer" style="width:100%"></div></div>
-      <div class="label" style="margin-top:8px">このキャラは？（早押し！）</div>
-      <div class="hero-grid" id="pl-heroes"></div>
+      <div class="lbl" style="margin-top:8px">このキャラは？（早押し！）</div>
+      <div id="pl-hero-picker"></div>
       <div id="pl-flash"></div>
     </div>
     <div id="pl-scores"></div>
-    <button class="btn btn-secondary" onclick="closeRoom();go('s-top')" style="margin-top:12px">退出</button>
+    <button class="btn btn-s" onclick="closeRoom();go('s-top')" style="margin-top:12px">退出</button>
   </div>
 </div>
 
-<!-- ── デッキ管理 ─────────────────── -->
+<!-- デッキ管理 -->
 <div id="s-manage" class="screen">
   <div class="card">
     <h2>デッキ管理</h2>
     <p class="sub">クイズに使うデッキを登録・削除</p>
 
-    <div class="field">
-      <span class="label">キャラクター</span>
-      <select id="mg-hero">
-        <option value="">-- キャラを選択 --</option>
-      </select>
-    </div>
+    <div class="lbl">キャラクター</div>
+    <div id="mg-hero-picker"></div>
 
-    <div class="label">カード（スロットをタップして選択）</div>
-    <div class="slots4" id="mg-slots">
-      <div class="slot" id="ms0" onclick="openPicker(0)">
-        <span class="s-num">1</span><span class="s-add">＋</span>
-        <button class="s-del" onclick="clearSlot(event,0)">✕</button>
-      </div>
-      <div class="slot" id="ms1" onclick="openPicker(1)">
-        <span class="s-num">2</span><span class="s-add">＋</span>
-        <button class="s-del" onclick="clearSlot(event,1)">✕</button>
-      </div>
-      <div class="slot" id="ms2" onclick="openPicker(2)">
-        <span class="s-num">3</span><span class="s-add">＋</span>
-        <button class="s-del" onclick="clearSlot(event,2)">✕</button>
-      </div>
-      <div class="slot" id="ms3" onclick="openPicker(3)">
-        <span class="s-num">4</span><span class="s-add">＋</span>
-        <button class="s-del" onclick="clearSlot(event,3)">✕</button>
-      </div>
+    <div class="lbl" style="margin-top:12px">カード（スロットをタップして選択）</div>
+    <div class="slots4">
+      <div class="slot" id="ms0" onclick="openPicker(0)"><span class="s-num">1</span><span class="s-add">＋</span><button class="s-del" onclick="clearSlot(event,0)">✕</button></div>
+      <div class="slot" id="ms1" onclick="openPicker(1)"><span class="s-num">2</span><span class="s-add">＋</span><button class="s-del" onclick="clearSlot(event,1)">✕</button></div>
+      <div class="slot" id="ms2" onclick="openPicker(2)"><span class="s-num">3</span><span class="s-add">＋</span><button class="s-del" onclick="clearSlot(event,2)">✕</button></div>
+      <div class="slot" id="ms3" onclick="openPicker(3)"><span class="s-num">4</span><span class="s-add">＋</span><button class="s-del" onclick="clearSlot(event,3)">✕</button></div>
     </div>
 
     <div id="picker-area" style="display:none">
       <div class="pick-label" id="pick-label"></div>
       <div class="picker-wrap">
         <div class="picker-filters" id="picker-filters"></div>
+        <div class="filter-hint" id="filter-hint"></div>
+        <div class="picker-count" id="picker-count"></div>
         <div class="picker-grid" id="picker-grid"></div>
       </div>
     </div>
 
-    <div class="field">
-      <span class="label">デッキ名</span>
-      <input id="mg-name" placeholder="例：ジャスティス攻め">
-    </div>
-    <button class="btn btn-primary" onclick="mgSave()">保存</button>
+    <div class="lbl" style="margin-top:4px">デッキ名</div>
+    <input id="mg-name" placeholder="例：ジャスティス攻め">
+    <button class="btn btn-p" onclick="mgSave()">保存</button>
 
     <div class="div"></div>
-    <div class="label">登録済みデッキ一覧</div>
+    <div class="lbl">登録済みデッキ一覧</div>
     <div id="mg-list" style="max-height:280px;overflow-y:auto"></div>
-
-    <button class="btn btn-secondary" onclick="go('s-top')" style="margin-top:12px">もどる</button>
+    <button class="btn btn-s" onclick="go('s-top')" style="margin-top:12px">もどる</button>
   </div>
 </div>
 
-</div><!-- #app -->
-
+</div>
 <script>
-/* ======================================================
-   データ
-====================================================== */
-// 内蔵フォールバック（heroes.json が読めない場合）
-const FALLBACK_HEROES = [
+/* ===== データ ===== */
+const FALLBACK_HEROES=[
   {id:"tadanobu",name:"桜華忠臣"},{id:"voidoll",name:"ボイドール"},
   {id:"amashiro",name:"狐ヶ咲甘色"},{id:"adam",name:"アダム=ユーリエフ"},
   {id:"kirara",name:"輝龍院きらら"},{id:"luluqa",name:"ルルカ"},
@@ -377,102 +319,49 @@ const FALLBACK_HEROES = [
   {id:"pierre",name:"ピエール77世"},{id:"izuku",name:"緑谷出久"},
   {id:"popuko",name:"ポプ子&ピピ美"},
 ];
-
-const EL_META = {
-  d:{label:"火",color:"var(--fire)",cls:"fire"},
-  b:{label:"水",color:"var(--water)",cls:"water"},
-  e:{label:"木",color:"var(--wood)",cls:"wood"},
-  f:{label:"無",color:"var(--none)",cls:"none"},
-  s:{label:"コラボ",color:"var(--collab)",cls:"collab"},
-  a:{label:"コラボ",color:"var(--collab)",cls:"collab"},
-  c:{label:"コラボ",color:"var(--collab)",cls:"collab"},
-  g:{label:"コラボ",color:"var(--collab)",cls:"collab"},
-  h:{label:"コラボ",color:"var(--collab)",cls:"collab"},
-  k:{label:"コラボ",color:"var(--collab)",cls:"collab"},
-  n:{label:"コラボ",color:"var(--collab)",cls:"collab"},
+const EL_META={
+  d:{label:"火",cls:"fire"},b:{label:"水",cls:"water"},
+  e:{label:"木",cls:"wood"},f:{label:"無",cls:"none"},
+  s:{label:"コラボ",cls:"collab"},a:{label:"コラボ",cls:"collab"},
+  c:{label:"コラボ",cls:"collab"},g:{label:"コラボ",cls:"collab"},
+  h:{label:"コラボ",cls:"collab"},k:{label:"コラボ",cls:"collab"},n:{label:"コラボ",cls:"collab"},
 };
-const RAR_META = {
-  ur:{label:"UR",cls:"ur"},
-  sr:{label:"SR",cls:"sr"},
-  r:{label:"R",cls:"r"},
-};
+const RAR_META={ur:{label:"UR",cls:"ur"},sr:{label:"SR",cls:"sr"},r:{label:"R",cls:"r"}};
+const ELEM_EMOJI={d:"🔴",b:"🔵",e:"🟢",f:"⚫",s:"🟣",a:"🟣",c:"🟣",g:"🟣",h:"🟣",k:"🟣",n:"🟣"};
 
-// 実行時にloaded
-let HEROES = [];
-let CARDS  = [];
-let decks  = [];
+let HEROES=[], CARDS=[], decks=[];
 
-// データ読み込み
 async function loadData(){
-  // heroes.json
-  try {
-    const r = await fetch("heroes.json");
-    if(r.ok){ HEROES = await r.json(); }
-    else { HEROES = FALLBACK_HEROES; }
-  } catch(e){ HEROES = FALLBACK_HEROES; }
-
-  // cards.json
-  try {
-    const r = await fetch("cards.json");
-    if(r.ok){
-      const j = await r.json();
-      CARDS = j.cards || [];
-    } else { buildFallbackCards(); }
-  } catch(e){ buildFallbackCards(); }
-
-  // 保存デッキ
+  try{ const r=await fetch("heroes.json"); HEROES=r.ok?await r.json():FALLBACK_HEROES; }
+  catch(e){ HEROES=FALLBACK_HEROES; }
   try{
-    const raw = localStorage.getItem("cq_decks");
-    if(raw) decks = JSON.parse(raw);
-  }catch(e){}
-
-  init();
+    const r=await fetch("cards.json");
+    if(r.ok){ const j=await r.json(); CARDS=j.cards||[]; }
+    else buildFallbackCards();
+  }catch(e){ buildFallbackCards(); }
+  try{ const raw=localStorage.getItem("cq_decks"); if(raw)decks=JSON.parse(raw); }catch(e){}
+  refreshTop();
 }
-
 function buildFallbackCards(){
-  const pfx = [
-    {p:"d",el:"d"},{p:"b",el:"b"},{p:"e",el:"e"},{p:"f",el:"f"}
-  ];
-  for(const {p,el} of pfx){
-    for(let i=1;i<=20;i++) CARDS.push({id:`${p}_ur${i}`,element:el,rarity:"ur"});
-    for(let i=1;i<=10;i++) CARDS.push({id:`${p}_sr${i}`,element:el,rarity:"sr"});
-    for(let i=1;i<=5;i++)  CARDS.push({id:`${p}_r${i}`, element:el,rarity:"r"});
+  for(const p of ["d","b","e","f"]){
+    for(let i=1;i<=20;i++) CARDS.push({id:`${p}_ur${i}`,element:p,rarity:"ur"});
+    for(let i=1;i<=10;i++) CARDS.push({id:`${p}_sr${i}`,element:p,rarity:"sr"});
+    for(let i=1;i<=5;i++)  CARDS.push({id:`${p}_r${i}`,element:p,rarity:"r"});
   }
-  for(const p of ["s","a","c"]){
+  for(const p of ["s","a","c"])
     for(let i=1;i<=5;i++) CARDS.push({id:`${p}_ur${i}`,element:p,rarity:"ur"});
-  }
 }
-
 function saveDecks(){ try{localStorage.setItem("cq_decks",JSON.stringify(decks));}catch(e){} }
-
-/* ======================================================
-   ユーティリティ
-====================================================== */
 function cardInfo(id){
-  // cards.jsonに無ければIDから推測
-  const found = CARDS.find(c=>c.id===id);
-  if(found) return found;
-  const m = id.match(/^([a-z]+)_(ur|sr|r)\d+$/);
-  if(m) return {id, element:m[1], rarity:m[2]};
-  return {id, element:"f", rarity:"r"};
+  const f=CARDS.find(c=>c.id===id); if(f)return f;
+  const m=id.match(/^([a-z]+)_(ur|sr|r)\d+$/);
+  return m?{id,element:m[1],rarity:m[2]}:{id,element:"f",rarity:"r"};
 }
+function heroName(id){ const h=HEROES.find(h=>h.id===id); return h?h.name:id; }
+function elM(el){ return EL_META[el]||{label:el,cls:"none"}; }
+function rarM(r){ return RAR_META[r]||{label:r,cls:"r"}; }
 
-function heroName(id){
-  const h = HEROES.find(h=>h.id===id);
-  return h ? h.name : id;
-}
-
-function elMeta(el){ return EL_META[el] || {label:el,color:"var(--none)",cls:"none"}; }
-function rarMeta(r){ return RAR_META[r] || {label:r,cls:"r"}; }
-
-function cardEmoji(el){
-  const m={d:"🔴",b:"🔵",e:"🟢",f:"⚫",s:"🟣",a:"🟣",c:"🟣",g:"🟣",h:"🟣",k:"🟣",n:"🟣"};
-  return m[el]||"⬜";
-}
-
-/* ======================================================
-   画面遷移
-====================================================== */
+/* ===== 画面遷移 ===== */
 function go(id){
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
@@ -480,285 +369,314 @@ function go(id){
   if(id==="s-solo")   refreshSolo();
   if(id==="s-manage") initManage();
 }
-
-function init(){
-  refreshTop();
-}
-
 function refreshTop(){
-  document.getElementById("top-count").textContent = `${decks.length}件のデッキが登録されています`;
+  document.getElementById("top-count").textContent=`${decks.length}件のデッキが登録されています`;
 }
-
 function refreshSolo(){
-  const el  = document.getElementById("solo-status");
-  const btn = document.getElementById("solo-go");
-  if(decks.length===0){
-    el.textContent="デッキが0件です。先に「デッキを管理」から登録してください。";
-    btn.disabled=true;
-  } else {
-    el.textContent=`${decks.length}件のデッキが登録されています`;
-    btn.disabled=false;
-  }
+  const e=document.getElementById("solo-status"),b=document.getElementById("solo-go");
+  if(decks.length===0){ e.textContent="デッキが0件です。先に「デッキを管理」から登録してください。"; b.disabled=true; }
+  else{ e.textContent=`${decks.length}件のデッキが登録されています`; b.disabled=false; }
 }
 
-/* ======================================================
-   カードタイル描画
-====================================================== */
-function renderCardTile(cardId){
-  const c  = cardInfo(cardId);
-  const em = elMeta(c.element);
-  const rm = rarMeta(c.rarity);
-  return `<div class="card-tile ${em.cls}">
+/* ===== カードタイル ===== */
+function renderCardTile(cid){
+  const c=cardInfo(cid),em=elM(c.element),rm=rarM(c.rarity);
+  return `<div class="ct ${em.cls}">
     <div class="ct-id">${c.id}</div>
-    <div class="ct-el">${cardEmoji(c.element)} ${em.label}</div>
+    <div class="ct-el">${ELEM_EMOJI[c.element]||"⬜"} ${em.label}</div>
     <div class="ct-rar ${rm.cls}">${rm.label}</div>
   </div>`;
 }
-
-function renderCards(containerId, cardIds){
-  const g = document.getElementById(containerId);
-  g.innerHTML = (cardIds||[]).map((cid,i)=>
-    cid ? renderCardTile(cid) : `<div class="card-tile empty">？</div>`
-  ).join("") + (cardIds.length<4 ? Array(4-cardIds.length).fill(`<div class="card-tile empty">？</div>`).join("") : "");
+function renderCards(cid,ids){
+  const tiles=(ids||[]).map(id=>id?renderCardTile(id):`<div class="ct empty">？</div>`);
+  while(tiles.length<4) tiles.push(`<div class="ct empty">？</div>`);
+  document.getElementById(cid).innerHTML=tiles.join("");
 }
 
-/* ======================================================
-   ヒーローグリッド描画
-====================================================== */
-function renderHeroes(containerId, correctId, onAnswer){
-  const g = document.getElementById(containerId);
-  g.innerHTML = "";
+/* ===== ヒーロー検索ピッカー ===== */
+// mode: "select"(管理) / "quiz"(クイズ回答)
+// onSelect(heroId) コールバック
+// containerId: 描画先のdiv id
+// opts: { disabled, correctId, wrongId }
+function renderHeroPicker(containerId, onSelect, opts={}){
+  const wrap=document.getElementById(containerId);
+  wrap.innerHTML=`
+    <div class="hero-search-wrap">
+      <input class="hero-search-input" id="${containerId}-input" placeholder="キャラ名を検索..." autocomplete="off">
+      <button class="hero-search-clear" id="${containerId}-clear" onclick="clearHeroSearch('${containerId}')">✕</button>
+    </div>
+    <div class="hero-list" id="${containerId}-list"></div>`;
 
-  // 正解を含む16択をランダムに作成
-  let pool = [...HEROES].sort(()=>Math.random()-.5).slice(0,16);
-  if(!pool.find(h=>h.id===correctId)){
-    const correct = HEROES.find(h=>h.id===correctId);
-    if(correct) pool[Math.floor(Math.random()*16)] = correct;
+  const input=document.getElementById(`${containerId}-input`);
+  input.oninput=()=>{
+    const v=input.value;
+    document.getElementById(`${containerId}-clear`).classList.toggle("show",v.length>0);
+    updateHeroList(containerId,v,onSelect,opts);
+  };
+  updateHeroList(containerId,"",onSelect,opts);
+}
+
+function clearHeroSearch(containerId){
+  const input=document.getElementById(`${containerId}-input`);
+  input.value="";
+  document.getElementById(`${containerId}-clear`).classList.remove("show");
+  updateHeroList(containerId,"",()=>{},{}); // リセット表示
+  input.focus();
+}
+
+function updateHeroList(containerId, query, onSelect, opts={}){
+  const list=document.getElementById(`${containerId}-list`);
+  const q=query.trim().toLowerCase();
+  const filtered=q
+    ? HEROES.filter(h=>h.name.toLowerCase().includes(q)||h.id.toLowerCase().includes(q))
+    : HEROES;
+
+  if(filtered.length===0){
+    list.innerHTML=`<div class="hero-list-empty">「${query}」は見つかりません</div>`;
+    return;
   }
-  pool = pool.sort(()=>Math.random()-.5);
 
-  pool.forEach(h=>{
-    const b = document.createElement("button");
-    b.className = "hero-btn";
-    b.dataset.hid = h.id;
-    b.textContent = h.name;
-    b.onclick = ()=> onAnswer(h.id, b, pool, correctId);
-    g.appendChild(b);
-  });
+  list.innerHTML=filtered.map(h=>{
+    let cls="";
+    if(opts.correctId===h.id) cls="correct";
+    else if(opts.wrongId===h.id) cls="wrong";
+    else if(opts.revealId===h.id) cls="reveal";
+    const disabled=opts.disabled||false;
+    return `<div class="hero-list-item ${cls}${disabled?" disabled":""}" data-hid="${h.id}" onclick="${disabled?"":`heroListClick('${containerId}','${h.id}')`}">
+      ${h.name}
+    </div>`;
+  }).join("");
+
+  // コールバックをdataに保存
+  list._onSelect=onSelect;
 }
 
-/* ======================================================
-   ソロモード
-====================================================== */
-let soloScore=0, soloIdx=0, soloOrder=[], soloAnswered=false, soloTI=null;
+function heroListClick(containerId,hid){
+  const list=document.getElementById(`${containerId}-list`);
+  const onSelect=list._onSelect;
+  if(onSelect) onSelect(hid);
+}
+
+/* ===== ソロモード ===== */
+let soloScore=0,soloIdx=0,soloOrder=[],soloAnswered=false,soloTI=null;
+let soloCorrectId=null;
 
 function startSolo(){
   if(decks.length===0){ go("s-manage"); return; }
   soloScore=0; soloIdx=0;
-  soloOrder = [...decks].sort(()=>Math.random()-.5).slice(0, Math.min(10, decks.length));
-  document.getElementById("qtot").textContent = soloOrder.length;
-  showQ();
-  go("s-quiz");
+  soloOrder=[...decks].sort(()=>Math.random()-.5).slice(0,Math.min(10,decks.length));
+  document.getElementById("qtot").textContent=soloOrder.length;
+  showQ(); go("s-quiz");
 }
 
 function showQ(){
-  clearInterval(soloTI);
-  soloAnswered = false;
-  const deck = soloOrder[soloIdx];
-  document.getElementById("qnum").textContent    = soloIdx+1;
-  document.getElementById("sscore").textContent  = soloScore;
-  document.getElementById("sq-flash").innerHTML  = "";
-  document.getElementById("sq-next").style.display = "none";
+  clearInterval(soloTI); soloAnswered=false;
+  const deck=soloOrder[soloIdx]; soloCorrectId=deck.heroId;
+  document.getElementById("qnum").textContent=soloIdx+1;
+  document.getElementById("sscore").textContent=soloScore;
+  document.getElementById("sq-flash").innerHTML="";
+  document.getElementById("sq-next").style.display="none";
+  renderCards("sq-cards",deck.cards);
 
-  renderCards("sq-cards", deck.cards);
-  renderHeroes("sq-heroes", deck.heroId, (hid, btn, pool, correct)=>{
+  // ヒーロー検索ピッカー（クイズモード）
+  renderHeroPicker("sq-hero-picker",(hid)=>{
     if(soloAnswered) return;
-    soloAnswered = true;
-    clearInterval(soloTI);
-    pool.forEach(h=>{
-      const b = document.querySelector(`#sq-heroes [data-hid="${h.id}"]`);
-      if(b){ b.disabled=true; if(h.id===correct) b.classList.add("correct"); }
-    });
-    const flash = document.getElementById("sq-flash");
-    const name  = heroName(correct);
+    soloAnswered=true; clearInterval(soloTI);
+    const correct=soloCorrectId;
+    const flash=document.getElementById("sq-flash");
+    const name=heroName(correct);
+    // 選択結果を表示
     if(hid===correct){
       soloScore++;
-      document.getElementById("sscore").textContent = soloScore;
-      btn.classList.add("correct");
-      flash.innerHTML = `<div class="flash ok">✓ 正解！ ${name}</div>`;
+      document.getElementById("sscore").textContent=soloScore;
+      flash.innerHTML=`<div class="flash ok">✓ 正解！ ${name}</div>`;
+      updateHeroList("sq-hero-picker","",()=>{},{disabled:true,correctId:correct});
     } else {
-      btn.classList.add("wrong");
-      flash.innerHTML = `<div class="flash ng">✗ 不正解。正解は「${name}」</div>`;
+      flash.innerHTML=`<div class="flash ng">✗ 不正解。正解は「${name}」</div>`;
+      updateHeroList("sq-hero-picker","",()=>{},{disabled:true,correctId:correct,wrongId:hid});
     }
-    document.getElementById("sq-next").style.display = "block";
-  });
+    document.getElementById("sq-hero-picker-input").disabled=true;
+    document.getElementById("sq-next").style.display="block";
+  },{});
 
-  // タイマー
-  let t = 15;
-  document.getElementById("s-timer").style.width = "100%";
-  soloTI = setInterval(()=>{
-    t -= 0.1;
-    document.getElementById("s-timer").style.width = Math.max(0, t/15*100)+"%";
+  let t=15; document.getElementById("s-timer").style.width="100%";
+  soloTI=setInterval(()=>{
+    t-=0.1; document.getElementById("s-timer").style.width=Math.max(0,t/15*100)+"%";
     if(t<=0){
       clearInterval(soloTI);
       if(!soloAnswered){
-        soloAnswered = true;
-        const correct = soloOrder[soloIdx].heroId;
-        document.querySelectorAll("#sq-heroes .hero-btn").forEach(b=>{
-          b.disabled=true; if(b.dataset.hid===correct) b.classList.add("reveal");
-        });
-        document.getElementById("sq-flash").innerHTML = `<div class="flash ng">⏱ 時間切れ。正解は「${heroName(correct)}」</div>`;
-        document.getElementById("sq-next").style.display = "block";
+        soloAnswered=true;
+        const correct=soloCorrectId;
+        document.getElementById("sq-flash").innerHTML=`<div class="flash ng">⏱ 時間切れ。正解は「${heroName(correct)}」</div>`;
+        updateHeroList("sq-hero-picker","",()=>{},{disabled:true,revealId:correct});
+        document.getElementById("sq-hero-picker-input").disabled=true;
+        document.getElementById("sq-next").style.display="block";
       }
     }
-  }, 100);
+  },100);
 }
 
 function soloNext(){
   soloIdx++;
-  if(soloIdx >= soloOrder.length){
+  if(soloIdx>=soloOrder.length){
     clearInterval(soloTI);
-    const pct = Math.round(soloScore/soloOrder.length*100);
-    document.getElementById("res-score").textContent = `${soloScore} / ${soloOrder.length}`;
-    document.getElementById("res-sub").textContent   = `正答率 ${pct}%`;
-    let emoji="😔", title="もう少し練習しよう！";
-    if(pct>=80){ emoji="🏆"; title="コンパス博士！"; }
-    else if(pct>=60){ emoji="👍"; title="なかなかいい感じ！"; }
-    else if(pct>=40){ emoji="🙂"; title="半分以上正解！"; }
-    document.getElementById("res-emoji").textContent = emoji;
-    document.getElementById("res-title").textContent = title;
-    go("s-result");
-    return;
+    const pct=Math.round(soloScore/soloOrder.length*100);
+    document.getElementById("res-score").textContent=`${soloScore} / ${soloOrder.length}`;
+    document.getElementById("res-sub").textContent=`正答率 ${pct}%`;
+    let emoji="😔",title="もう少し練習しよう！";
+    if(pct>=80){emoji="🏆";title="コンパス博士！";}
+    else if(pct>=60){emoji="👍";title="なかなかいい感じ！";}
+    else if(pct>=40){emoji="🙂";title="半分以上正解！";}
+    document.getElementById("res-emoji").textContent=emoji;
+    document.getElementById("res-title").textContent=title;
+    go("s-result"); return;
   }
   showQ();
 }
 
-/* ======================================================
-   デッキ管理
-====================================================== */
-let mgCards = [null,null,null,null];
-let pickerSlot = -1;
-let pickerFilter = "all";
+/* ===== デッキ管理 ===== */
+let mgCards=[null,null,null,null], pickerSlot=-1;
+let activeFilters=new Set(); // AND複数フィルター
+let mgSelectedHero=null;
 
 function initManage(){
-  // キャラ選択肢を更新
-  const sel = document.getElementById("mg-hero");
-  sel.innerHTML = '<option value="">-- キャラを選択 --</option>';
-  HEROES.forEach(h=>{
-    const o = document.createElement("option");
-    o.value=h.id; o.textContent=h.name;
-    sel.appendChild(o);
-  });
+  mgCards=[null,null,null,null]; mgSelectedHero=null;
+  [0,1,2,3].forEach(i=>resetSlotEl(i));
+  document.getElementById("mg-name").value="";
+  document.getElementById("picker-area").style.display="none";
+  activeFilters=new Set();
 
-  // スロットリセット
-  mgCards = [null,null,null,null];
-  [0,1,2,3].forEach(i => resetSlotEl(i));
-  document.getElementById("mg-name").value = "";
-  document.getElementById("picker-area").style.display = "none";
+  // キャラ選択ピッカー
+  renderHeroPicker("mg-hero-picker",(hid)=>{
+    mgSelectedHero=hid;
+    // 選択状態を視覚的に反映
+    document.querySelectorAll("#mg-hero-picker-list .hero-list-item").forEach(el=>{
+      el.classList.toggle("selected",el.dataset.hid===hid);
+    });
+    const input=document.getElementById("mg-hero-picker-input");
+    input.value=heroName(hid);
+    document.getElementById("mg-hero-picker-clear").classList.add("show");
+  },{});
 
   buildFilterBtns();
   renderMgList();
 }
 
+/* カードフィルター複数AND */
+const FILTER_DEFS=[
+  {k:"ur",type:"rarity",l:"UR"},{k:"sr",type:"rarity",l:"SR"},{k:"r",type:"rarity",l:"R"},
+  {k:"d",type:"element",l:"🔴 火"},{k:"b",type:"element",l:"🔵 水"},
+  {k:"e",type:"element",l:"🟢 木"},{k:"f",type:"element",l:"⚫ 無"},
+  {k:"collab",type:"element",l:"🟣 コラボ"},
+];
+
 function buildFilterBtns(){
-  const filters = [
-    {k:"all",l:"すべて"},{k:"ur",l:"UR"},{k:"sr",l:"SR"},{k:"r",l:"R"},
-    {k:"d",l:"🔴 火"},{k:"b",l:"🔵 水"},{k:"e",l:"🟢 木"},{k:"f",l:"⚫ 無"},{k:"collab",l:"🟣 コラボ"}
-  ];
-  document.getElementById("picker-filters").innerHTML = filters.map(f=>
-    `<button class="filt${f.k==="all"?" on":""}" data-k="${f.k}" onclick="setFilter('${f.k}',this)">${f.l}</button>`
-  ).join("");
+  document.getElementById("picker-filters").innerHTML=
+    FILTER_DEFS.map(f=>`<button class="filt" data-k="${f.k}" onclick="toggleFilter('${f.k}')">${f.l}</button>`).join("")
+    +`<button class="filt-reset" onclick="resetFilters()">リセット</button>`;
+  updateFilterHint();
 }
 
-function setFilter(k, btn){
-  pickerFilter = k;
-  document.querySelectorAll("#picker-filters .filt").forEach(b=>b.classList.remove("on"));
-  btn.classList.add("on");
+function toggleFilter(k){
+  if(activeFilters.has(k)) activeFilters.delete(k);
+  else activeFilters.add(k);
+  document.querySelectorAll("#picker-filters .filt").forEach(b=>{
+    b.classList.toggle("on",activeFilters.has(b.dataset.k));
+  });
+  updateFilterHint();
   renderPickerGrid();
 }
 
+function resetFilters(){
+  activeFilters.clear();
+  document.querySelectorAll("#picker-filters .filt").forEach(b=>b.classList.remove("on"));
+  updateFilterHint();
+  renderPickerGrid();
+}
+
+function updateFilterHint(){
+  const h=document.getElementById("filter-hint");
+  if(activeFilters.size===0){ h.textContent=""; return; }
+  const labels=[...activeFilters].map(k=>FILTER_DEFS.find(f=>f.k===k)?.l||k);
+  h.textContent=`フィルター: ${labels.join(" AND ")}`;
+}
+
+function applyFilters(list){
+  if(activeFilters.size===0) return list;
+  return list.filter(c=>{
+    for(const k of activeFilters){
+      if(k==="ur"||k==="sr"||k==="r"){ if(c.rarity!==k) return false; }
+      else if(k==="collab"){ if(["d","b","e","f"].includes(c.element)) return false; }
+      else { if(c.element!==k) return false; }
+    }
+    return true;
+  });
+}
+
 function openPicker(slot){
-  pickerSlot = slot;
-  document.getElementById("pick-label").textContent = `スロット${slot+1} のカードを選択`;
-  document.getElementById("picker-area").style.display = "block";
+  pickerSlot=slot;
+  document.getElementById("pick-label").textContent=`スロット${slot+1} のカードを選択`;
+  document.getElementById("picker-area").style.display="block";
   renderPickerGrid();
 }
 
 function renderPickerGrid(){
-  const g = document.getElementById("picker-grid");
-  g.innerHTML = "";
-  let list = CARDS;
-  const f = pickerFilter;
-  if(f==="ur")     list = CARDS.filter(c=>c.rarity==="ur");
-  else if(f==="sr") list = CARDS.filter(c=>c.rarity==="sr");
-  else if(f==="r")  list = CARDS.filter(c=>c.rarity==="r");
-  else if(f==="collab") list = CARDS.filter(c=>!["d","b","e","f"].includes(c.element));
-  else if(["d","b","e","f"].includes(f)) list = CARDS.filter(c=>c.element===f);
-
-  list.slice(0,120).forEach(card=>{
-    const em = elMeta(card.element);
-    const rm = rarMeta(card.rarity);
-    const d  = document.createElement("div");
-    d.className = "pick-card";
-    d.innerHTML = `<div class="pc-el">${cardEmoji(card.element)}</div>
+  const g=document.getElementById("picker-grid");
+  const filtered=applyFilters(CARDS).slice(0,150);
+  document.getElementById("picker-count").textContent=
+    `${filtered.length}件${filtered.length>=150?" (150件まで表示)":""}`;
+  g.innerHTML=filtered.map(card=>{
+    const em=elM(card.element),rm=rarM(card.rarity);
+    return `<div class="pick-card" onclick="selectCard('${card.id}')">
+      <div class="pc-el">${ELEM_EMOJI[card.element]||"⬜"}</div>
       <div class="pc-id">${card.id}</div>
-      <div class="pc-rar ${rm.cls}">${rm.label}</div>`;
-    d.onclick = ()=>{
-      mgCards[pickerSlot] = card;
-      updateSlotEl(pickerSlot, card);
-      document.getElementById("picker-area").style.display = "none";
-    };
-    g.appendChild(d);
-  });
+      <div class="pc-rar ${rm.cls}">${rm.label}</div>
+    </div>`;
+  }).join("");
 }
 
-function updateSlotEl(i, card){
-  const el  = document.getElementById(`ms${i}`);
-  const em  = elMeta(card.element);
-  const rm  = rarMeta(card.rarity);
-  el.className = "slot has";
-  el.querySelector(".s-add").style.display = "none";
-  let idEl = el.querySelector(".s-id");
-  let elEl = el.querySelector(".s-el");
-  if(!idEl){ idEl = document.createElement("div"); idEl.className="s-id"; el.appendChild(idEl); }
-  if(!elEl){ elEl = document.createElement("div"); elEl.className="s-el"; el.appendChild(elEl); }
-  idEl.textContent = card.id;
-  elEl.textContent = `${cardEmoji(card.element)} ${rm.label}`;
+function selectCard(cardId){
+  const card=cardInfo(cardId);
+  mgCards[pickerSlot]=card;
+  updateSlotEl(pickerSlot,card);
+  document.getElementById("picker-area").style.display="none";
+}
+
+function updateSlotEl(i,card){
+  const el=document.getElementById(`ms${i}`),rm=rarM(card.rarity);
+  el.className="slot has";
+  el.querySelector(".s-add").style.display="none";
+  let idEl=el.querySelector(".s-id"),elEl=el.querySelector(".s-el");
+  if(!idEl){idEl=document.createElement("div");idEl.className="s-id";el.appendChild(idEl);}
+  if(!elEl){elEl=document.createElement("div");elEl.className="s-el";el.appendChild(elEl);}
+  idEl.textContent=card.id;
+  elEl.textContent=`${ELEM_EMOJI[card.element]||""} ${rm.label}`;
 }
 
 function resetSlotEl(i){
-  const el = document.getElementById(`ms${i}`);
-  el.className = "slot";
-  el.querySelector(".s-add").style.display = "";
+  const el=document.getElementById(`ms${i}`);
+  el.className="slot"; el.querySelector(".s-add").style.display="";
   el.querySelectorAll(".s-id,.s-el").forEach(e=>e.remove());
 }
-
-function clearSlot(e, i){
-  e.stopPropagation();
-  mgCards[i] = null;
-  resetSlotEl(i);
-}
+function clearSlot(e,i){ e.stopPropagation(); mgCards[i]=null; resetSlotEl(i); }
 
 function mgSave(){
-  const heroId = document.getElementById("mg-hero").value;
-  const name   = document.getElementById("mg-name").value.trim();
-  if(!heroId){ alert("キャラを選択してください"); return; }
-  if(mgCards.filter(Boolean).length < 4){ alert("4枚すべてのカードを選択してください"); return; }
+  if(!mgSelectedHero){ alert("キャラを選択してください"); return; }
+  if(mgCards.filter(Boolean).length<4){ alert("4枚すべてのカードを選択してください"); return; }
+  const name=document.getElementById("mg-name").value.trim();
   if(!name){ alert("デッキ名を入力してください"); return; }
-  decks.push({ id: Date.now(), heroId, cards: mgCards.map(c=>c.id), name });
-  saveDecks();
-  initManage();
-  renderMgList();
+  decks.push({id:Date.now(),heroId:mgSelectedHero,cards:mgCards.map(c=>c.id),name});
+  saveDecks(); initManage();
 }
 
 function renderMgList(){
-  const el = document.getElementById("mg-list");
+  const el=document.getElementById("mg-list");
   if(decks.length===0){
-    el.innerHTML = '<p style="font-size:13px;color:var(--text3);padding:10px 0">まだデッキがありません</p>';
+    el.innerHTML='<p style="font-size:13px;color:var(--text3);padding:10px 0">まだデッキがありません</p>';
     return;
   }
-  el.innerHTML = decks.map(d=>{
-    const chips = (d.cards||[]).map(cid=>`<span class="deck-card-chip">${cid}</span>`).join("");
+  el.innerHTML=decks.map(d=>{
+    const chips=(d.cards||[]).map(cid=>`<span class="deck-card-chip">${cid}</span>`).join("");
     return `<div class="deck-item">
       <div style="flex:1;min-width:0">
         <div style="font-size:13px;font-weight:600">${heroName(d.heroId)}</div>
@@ -769,230 +687,172 @@ function renderMgList(){
     </div>`;
   }).join("");
 }
+function deleteDeck(id){ decks=decks.filter(d=>d.id!==id); saveDecks(); renderMgList(); refreshTop(); }
 
-function deleteDeck(id){
-  decks = decks.filter(d=>d.id!==id);
-  saveDecks();
-  renderMgList();
-  refreshTop();
-}
-
-/* ======================================================
-   P2P 対戦（PeerJS）
-====================================================== */
-let peer=null, hostConn=null, playerConns={};
-let scores={}, hostCurDeck=null, selectedHostId=null;
+/* ===== P2P ===== */
+let peer=null,hostConn=null,playerConns={};
+let scores={},hostCurDeck=null,selectedHostId=null;
 
 function createRoom(){
-  const myName = document.getElementById("my-name").value.trim()||"司会者";
-  scores = {}; scores[myName] = 0;
-  closePeer();
-  peer = new Peer(undefined, {debug:0});
-  peer.on("open", id=>{
-    document.getElementById("room-id").textContent = id;
-    document.getElementById("peer-count").textContent = "0";
-    document.getElementById("peer-list").innerHTML = "";
-    document.getElementById("host-log").innerHTML = '<p style="color:var(--text3)">まだ回答がありません</p>';
-    renderHostDecks();
-    go("s-host");
+  const myName=document.getElementById("my-name").value.trim()||"司会者";
+  scores={}; scores[myName]=0; closePeer();
+  peer=new Peer(undefined,{debug:0});
+  peer.on("open",id=>{
+    document.getElementById("room-id").textContent=id;
+    document.getElementById("peer-count").textContent="0";
+    document.getElementById("peer-list").innerHTML="";
+    document.getElementById("host-log").innerHTML='<p style="color:var(--text3)">まだ回答がありません</p>';
+    renderHostDecks(); go("s-host");
   });
-  peer.on("connection", conn=>{
-    playerConns[conn.peer] = conn;
-    conn.on("open",  ()=>{ conn.send({type:"welcome",hostName:myName}); updatePeers(); });
-    conn.on("data",  d=> handleHost(d, conn));
-    conn.on("close", ()=>{ delete playerConns[conn.peer]; updatePeers(); });
+  peer.on("connection",conn=>{
+    playerConns[conn.peer]=conn;
+    conn.on("open",()=>{ conn.send({type:"welcome",hostName:myName}); updatePeers(); });
+    conn.on("data",d=>handleHost(d,conn));
+    conn.on("close",()=>{ delete playerConns[conn.peer]; updatePeers(); });
   });
-  peer.on("error", e=> alert("接続エラー: "+e.message));
+  peer.on("error",e=>alert("接続エラー: "+e.message));
 }
 
 function joinRoom(){
-  const rid    = document.getElementById("join-id").value.trim();
-  const myName = document.getElementById("my-name").value.trim()||"プレイヤー";
+  const rid=document.getElementById("join-id").value.trim();
+  const myName=document.getElementById("my-name").value.trim()||"プレイヤー";
   if(!rid){ alert("部屋IDを入力してください"); return; }
   closePeer();
-  peer = new Peer(undefined, {debug:0});
-  peer.on("open", ()=>{
-    hostConn = peer.connect(rid);
-    hostConn.on("open", ()=>{
-      hostConn.send({type:"join", name:myName});
-      document.getElementById("pl-badge").textContent = "接続済み";
-      document.getElementById("pl-badge").className = "badge badge-ok";
-      document.getElementById("pl-quiz").style.display = "none";
+  peer=new Peer(undefined,{debug:0});
+  peer.on("open",()=>{
+    hostConn=peer.connect(rid);
+    hostConn.on("open",()=>{
+      hostConn.send({type:"join",name:myName});
+      document.getElementById("pl-badge").textContent="接続済み";
+      document.getElementById("pl-badge").className="badge b-ok";
+      document.getElementById("pl-quiz").style.display="none";
       go("s-player");
     });
-    hostConn.on("data",  d=> handlePlayer(d, myName));
-    hostConn.on("close", ()=>{ document.getElementById("pl-badge").textContent="切断"; document.getElementById("pl-badge").className="badge badge-ng"; });
-    hostConn.on("error", ()=> alert("接続できませんでした。IDを確認してください"));
+    hostConn.on("data",d=>handlePlayer(d,myName));
+    hostConn.on("close",()=>{ document.getElementById("pl-badge").textContent="切断"; document.getElementById("pl-badge").className="badge b-ng"; });
+    hostConn.on("error",()=>alert("接続できませんでした。IDを確認してください"));
   });
-  peer.on("error", e=> alert("接続エラー: "+e.message));
+  peer.on("error",e=>alert("接続エラー: "+e.message));
 }
 
-// --- 司会者側受信 ---
-function handleHost(data, conn){
+function handleHost(data,conn){
   if(data.type==="join"){
-    if(!scores[data.name]) scores[data.name]=0;
-    addLog(`✅ ${data.name} が参加`);
-    updatePeers();
-    bcastScores();
+    if(!scores[data.name])scores[data.name]=0;
+    addLog(`✅ ${data.name} が参加`); updatePeers(); bcastScores();
   }
   if(data.type==="answer"){
-    const correct = hostCurDeck && data.heroId===hostCurDeck.heroId;
-    const pts = correct && data.first ? 3 : correct ? 1 : 0;
-    if(!scores[data.name]) scores[data.name]=0;
-    scores[data.name] += pts;
-    const mark = correct ? "✓" : "✗";
-    const bonus = data.first&&correct ? " 🏆+3" : correct?" +1":"";
-    addLog(`${mark} ${data.name}：${heroName(data.heroId)}${bonus}`);
+    const correct=hostCurDeck&&data.heroId===hostCurDeck.heroId;
+    const pts=correct&&data.first?3:correct?1:0;
+    if(!scores[data.name])scores[data.name]=0;
+    scores[data.name]+=pts;
+    addLog(`${correct?"✓":"✗"} ${data.name}：${heroName(data.heroId)}${data.first&&correct?" 🏆+3":correct?" +1":""}`);
     bcastScores();
-    conn.send({type:"answer-result", correct, first:data.first, scores});
+    conn.send({type:"answer-result",correct,first:data.first,scores});
   }
 }
 
-// --- 参加者側受信 ---
-let _firstAnswered = false;
-function handlePlayer(data, myName){
-  if(data.type==="welcome"){
-    document.getElementById("pl-sub").textContent = `司会者: ${data.hostName}`;
-  }
+let _plAnswered=false;
+function handlePlayer(data,myName){
+  if(data.type==="welcome") document.getElementById("pl-sub").textContent=`司会者: ${data.hostName}`;
   if(data.type==="question"){
-    _firstAnswered = false;
-    clearInterval(window._pTI);
-    document.getElementById("pl-badge").textContent = "出題中";
-    document.getElementById("pl-badge").className = "badge badge-warn";
-    document.getElementById("pl-flash").innerHTML = "";
-    document.getElementById("pl-quiz").style.display = "block";
+    _plAnswered=false; clearInterval(window._pTI);
+    document.getElementById("pl-badge").textContent="出題中";
+    document.getElementById("pl-badge").className="badge b-warn";
+    document.getElementById("pl-flash").innerHTML="";
+    document.getElementById("pl-quiz").style.display="block";
+    renderCards("pl-cards",data.cards);
 
-    renderCards("pl-cards", data.cards);
-    renderHeroes("pl-heroes", data.heroId, (hid, btn, pool, correct)=>{
-      if(_firstAnswered) return;
-      _firstAnswered = true;
-      clearInterval(window._pTI);
-      pool.forEach(h=>{
-        const b = document.querySelector(`#pl-heroes [data-hid="${h.id}"]`);
-        if(b) b.disabled = true;
-      });
-      const isFirst = !data._ans; data._ans = true;
-      hostConn.send({type:"answer", heroId:hid, name:myName, first:isFirst});
+    renderHeroPicker("pl-hero-picker",(hid)=>{
+      if(_plAnswered) return; _plAnswered=true; clearInterval(window._pTI);
+      const correct=data.heroId;
+      const isFirst=!data._ans; data._ans=true;
+      hostConn.send({type:"answer",heroId:hid,name:myName,first:isFirst});
+      document.getElementById("pl-hero-picker-input").disabled=true;
       if(hid===correct){
-        btn.classList.add("correct");
-        document.getElementById("pl-flash").innerHTML = `<div class="flash first">⚡ 回答送信！正解かも…</div>`;
+        document.getElementById("pl-flash").innerHTML=`<div class="flash first">⚡ 回答送信！正解かも…</div>`;
+        updateHeroList("pl-hero-picker","",()=>{},{disabled:true,correctId:correct});
       } else {
-        btn.classList.add("wrong");
-        document.getElementById("pl-flash").innerHTML = `<div class="flash ng">✗ 回答送信…</div>`;
+        document.getElementById("pl-flash").innerHTML=`<div class="flash ng">✗ 回答送信…</div>`;
+        updateHeroList("pl-hero-picker","",()=>{},{disabled:true,correctId:correct,wrongId:hid});
       }
-    });
+    },{});
 
     let t=20; document.getElementById("p-timer").style.width="100%";
-    window._pTI = setInterval(()=>{
+    window._pTI=setInterval(()=>{
       t-=0.1; document.getElementById("p-timer").style.width=Math.max(0,t/20*100)+"%";
       if(t<=0) clearInterval(window._pTI);
     },100);
   }
   if(data.type==="answer-result"){
-    const flash = document.getElementById("pl-flash");
-    if(data.correct && data.first) flash.innerHTML=`<div class="flash first">🏆 1番乗り正解！ +3pt</div>`;
-    else if(data.correct)          flash.innerHTML=`<div class="flash ok">✓ 正解！ +1pt</div>`;
-    else                           flash.innerHTML=`<div class="flash ng">✗ 不正解</div>`;
-    if(data.scores) renderScores("pl-scores", data.scores);
+    const f=document.getElementById("pl-flash");
+    if(data.correct&&data.first) f.innerHTML=`<div class="flash first">🏆 1番乗り正解！ +3pt</div>`;
+    else if(data.correct)        f.innerHTML=`<div class="flash ok">✓ 正解！ +1pt</div>`;
+    else                         f.innerHTML=`<div class="flash ng">✗ 不正解</div>`;
+    if(data.scores) renderScores("pl-scores",data.scores);
   }
   if(data.type==="reveal"){
     clearInterval(window._pTI);
-    const name = heroName(data.heroId);
-    document.getElementById("pl-flash").innerHTML = `<div class="flash ok">👁 正解：${name}</div>`;
-    document.querySelectorAll("#pl-heroes .hero-btn").forEach(b=>{
-      b.disabled=true; if(b.dataset.hid===data.heroId) b.classList.add("reveal");
-    });
-    document.getElementById("pl-badge").textContent="待機中"; document.getElementById("pl-badge").className="badge badge-warn";
-    if(data.scores) renderScores("pl-scores", data.scores);
+    document.getElementById("pl-flash").innerHTML=`<div class="flash ok">👁 正解：${heroName(data.heroId)}</div>`;
+    updateHeroList("pl-hero-picker","",()=>{},{disabled:true,revealId:data.heroId});
+    document.getElementById("pl-badge").textContent="待機中"; document.getElementById("pl-badge").className="badge b-warn";
+    if(data.scores) renderScores("pl-scores",data.scores);
   }
-  if(data.type==="scores"){ renderScores("pl-scores", data.scores); }
+  if(data.type==="scores") renderScores("pl-scores",data.scores);
 }
 
-// --- 共通 ---
-function renderScores(cid, sc){
+function renderScores(cid,sc){
   if(!sc) return;
-  const el = document.getElementById(cid);
-  const sorted = Object.entries(sc).sort((a,b)=>b[1]-a[1]);
-  el.innerHTML = `<div class="label" style="margin-top:10px">スコア</div>` +
-    sorted.map(([name,pts],i)=>
-      `<div class="score-row"><span>${i===0?"🥇":i===1?"🥈":i===2?"🥉":"　"} ${name}</span><span class="score-pts">${pts}pt</span></div>`
-    ).join("");
+  const sorted=Object.entries(sc).sort((a,b)=>b[1]-a[1]);
+  document.getElementById(cid).innerHTML=`<div class="lbl" style="margin-top:10px">スコア</div>`
+    +sorted.map(([n,p],i)=>`<div class="score-row"><span>${i===0?"🥇":i===1?"🥈":i===2?"🥉":"　"} ${n}</span><span class="score-pts">${p}pt</span></div>`).join("");
 }
 
 function renderHostDecks(){
-  const el = document.getElementById("host-decks");
-  if(decks.length===0){
-    el.innerHTML='<p style="font-size:13px;color:var(--text3)">デッキがありません</p>';
-    return;
-  }
-  el.innerHTML = decks.map(d=>
-    `<div class="score-row" id="hd-${d.id}" style="cursor:pointer" onclick="selHostDeck(${d.id})">
-      <span style="font-size:13px">${heroName(d.heroId)} — ${d.name}</span>
-      <span style="color:var(--text3)">›</span>
-    </div>`
-  ).join("");
-  document.getElementById("host-send").disabled = true;
+  const el=document.getElementById("host-decks");
+  if(!decks.length){ el.innerHTML='<p style="font-size:13px;color:var(--text3)">デッキがありません</p>'; return; }
+  el.innerHTML=decks.map(d=>`<div class="score-row" id="hd-${d.id}" style="cursor:pointer" onclick="selHostDeck(${d.id})">
+    <span style="font-size:13px">${heroName(d.heroId)} — ${d.name}</span><span style="color:var(--text3)">›</span>
+  </div>`).join("");
+  document.getElementById("host-send").disabled=true;
 }
-
 function selHostDeck(id){
-  selectedHostId = id;
-  document.getElementById("host-send").disabled = false;
+  selectedHostId=id;
+  document.getElementById("host-send").disabled=false;
   document.querySelectorAll("#host-decks .score-row").forEach(r=>r.style.background="");
-  const row = document.getElementById(`hd-${id}`);
-  if(row) row.style.background = "rgba(79,142,247,.1)";
+  const row=document.getElementById(`hd-${id}`);
+  if(row) row.style.background="rgba(79,142,247,.1)";
 }
-
 function hostSend(){
-  const deck = decks.find(d=>d.id===selectedHostId);
-  if(!deck) return;
-  hostCurDeck = deck;
-  const payload = {type:"question", cards:deck.cards, heroId:deck.heroId};
-  Object.values(playerConns).forEach(c=>c.send(payload));
-  document.getElementById("host-reveal").style.display = "block";
-  document.getElementById("host-log").innerHTML = '<p style="color:var(--text3)">回答待ち...</p>';
+  const deck=decks.find(d=>d.id===selectedHostId); if(!deck) return;
+  hostCurDeck=deck;
+  Object.values(playerConns).forEach(c=>c.send({type:"question",cards:deck.cards,heroId:deck.heroId}));
+  document.getElementById("host-reveal").style.display="block";
+  document.getElementById("host-log").innerHTML='<p style="color:var(--text3)">回答待ち...</p>';
   addLog(`📤 出題：${heroName(deck.heroId)}「${deck.name}」`);
 }
-
 function hostReveal(){
   if(!hostCurDeck) return;
-  Object.values(playerConns).forEach(c=>c.send({type:"reveal", heroId:hostCurDeck.heroId, scores}));
-  document.getElementById("host-reveal").style.display = "none";
-  renderScores("host-scores", scores);
+  Object.values(playerConns).forEach(c=>c.send({type:"reveal",heroId:hostCurDeck.heroId,scores}));
+  document.getElementById("host-reveal").style.display="none";
+  renderScores("host-scores",scores);
 }
-
-function bcastScores(){
-  Object.values(playerConns).forEach(c=>c.send({type:"scores", scores}));
-  renderScores("host-scores", scores);
-}
-
+function bcastScores(){ Object.values(playerConns).forEach(c=>c.send({type:"scores",scores})); renderScores("host-scores",scores); }
 function updatePeers(){
-  const cnt = Object.keys(playerConns).length;
-  document.getElementById("peer-count").textContent = cnt;
-  const el = document.getElementById("peer-list");
-  el.innerHTML = cnt===0
-    ? '<span style="font-size:12px;color:var(--text3)">まだ誰もいません</span>'
-    : Object.keys(playerConns).map(id=>`<span class="peer-tag">${id.slice(0,8)}…</span>`).join("");
+  const cnt=Object.keys(playerConns).length;
+  document.getElementById("peer-count").textContent=cnt;
+  document.getElementById("peer-list").innerHTML=cnt===0
+    ?'<span style="font-size:12px;color:var(--text3)">まだ誰もいません</span>'
+    :Object.keys(playerConns).map(id=>`<span class="peer-tag">${id.slice(0,8)}…</span>`).join("");
 }
-
-function addLog(msg){
-  const el = document.getElementById("host-log");
-  const p  = document.createElement("p"); p.textContent = msg;
-  el.insertBefore(p, el.firstChild);
-}
-
+function addLog(msg){ const el=document.getElementById("host-log"),p=document.createElement("p"); p.textContent=msg; el.insertBefore(p,el.firstChild); }
 function copyId(){
-  const id = document.getElementById("room-id").textContent;
-  navigator.clipboard.writeText(id).then(()=>{
-    const btn = event.target; const orig = btn.textContent;
-    btn.textContent = "コピー済み ✓";
-    setTimeout(()=>btn.textContent=orig, 2000);
+  navigator.clipboard.writeText(document.getElementById("room-id").textContent).then(()=>{
+    const b=event.target,o=b.textContent; b.textContent="コピー済み ✓"; setTimeout(()=>b.textContent=o,2000);
   });
 }
-
-function closePeer(){ if(peer){ try{peer.destroy();}catch(e){} } peer=null; hostConn=null; playerConns={}; }
+function closePeer(){ if(peer){try{peer.destroy();}catch(e){}} peer=null; hostConn=null; playerConns={}; }
 function closeRoom(){ closePeer(); }
 
-/* ── 起動 ── */
 loadData();
 </script>
 </body>
