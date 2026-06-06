@@ -1,1091 +1,4029 @@
 {
-  "_comment": "element: d=火 b=水 e=木 f=無 / rarity: ur sr r / collab: コラボ名(string)または null",
-  "_howto_add": "通常カード例: {\"id\":\"d_ur21\",\"name\":\"カード名\",\"element\":\"d\",\"rarity\":\"ur\",\"collab\":null} / コラボ例: {\"id\":\"s_ur6\",\"name\":\"レムUR\",\"element\":\"s\",\"rarity\":\"ur\",\"collab\":\"Re:ゼロ\"}",
+  "_comment": "element: IDプレフィックス / rarity: ur sr r / color: 火水木無 / collab: コラボ名またはnull",
+  "_howto_add": "例(通常): {\"id\":\"f_ur5\",\"name\":\"カード名\",\"element\":\"f\",\"rarity\":\"ur\",\"color\":\"火\",\"type\":\"強\",\"collab\":null} / コラボ例: collabにコラボ名を入れる",
   "cards": [
     {
-      "id": "d_ur1",
-      "name": "d_ur1",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_ur2",
-      "name": "d_ur2",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_ur3",
-      "name": "d_ur3",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_ur4",
-      "name": "d_ur4",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_ur5",
-      "name": "d_ur5",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_ur6",
-      "name": "d_ur6",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_ur7",
-      "name": "d_ur7",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_ur8",
-      "name": "d_ur8",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_ur9",
-      "name": "d_ur9",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_ur10",
-      "name": "d_ur10",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_ur11",
-      "name": "d_ur11",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_ur12",
-      "name": "d_ur12",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_ur13",
-      "name": "d_ur13",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_ur14",
-      "name": "d_ur14",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_ur15",
-      "name": "d_ur15",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_ur16",
-      "name": "d_ur16",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_ur17",
-      "name": "d_ur17",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_ur18",
-      "name": "d_ur18",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_ur19",
-      "name": "d_ur19",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_ur20",
-      "name": "d_ur20",
-      "element": "d",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "d_sr1",
-      "name": "d_sr1",
-      "element": "d",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "d_sr2",
-      "name": "d_sr2",
-      "element": "d",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "d_sr3",
-      "name": "d_sr3",
-      "element": "d",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "d_sr4",
-      "name": "d_sr4",
-      "element": "d",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "d_sr5",
-      "name": "d_sr5",
-      "element": "d",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "d_sr6",
-      "name": "d_sr6",
-      "element": "d",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "d_sr7",
-      "name": "d_sr7",
-      "element": "d",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "d_sr8",
-      "name": "d_sr8",
-      "element": "d",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "d_sr9",
-      "name": "d_sr9",
-      "element": "d",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "d_sr10",
-      "name": "d_sr10",
-      "element": "d",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "d_r1",
-      "name": "d_r1",
-      "element": "d",
-      "rarity": "r",
-      "collab": null
-    },
-    {
-      "id": "d_r2",
-      "name": "d_r2",
-      "element": "d",
-      "rarity": "r",
-      "collab": null
-    },
-    {
-      "id": "d_r3",
-      "name": "d_r3",
-      "element": "d",
-      "rarity": "r",
-      "collab": null
-    },
-    {
-      "id": "d_r4",
-      "name": "d_r4",
-      "element": "d",
-      "rarity": "r",
-      "collab": null
-    },
-    {
-      "id": "d_r5",
-      "name": "d_r5",
-      "element": "d",
-      "rarity": "r",
-      "collab": null
-    },
-    {
-      "id": "b_ur1",
-      "name": "b_ur1",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_ur2",
-      "name": "b_ur2",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_ur3",
-      "name": "b_ur3",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_ur4",
-      "name": "b_ur4",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_ur5",
-      "name": "b_ur5",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_ur6",
-      "name": "b_ur6",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_ur7",
-      "name": "b_ur7",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_ur8",
-      "name": "b_ur8",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_ur9",
-      "name": "b_ur9",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_ur10",
-      "name": "b_ur10",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_ur11",
-      "name": "b_ur11",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_ur12",
-      "name": "b_ur12",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_ur13",
-      "name": "b_ur13",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_ur14",
-      "name": "b_ur14",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_ur15",
-      "name": "b_ur15",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_ur16",
-      "name": "b_ur16",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_ur17",
-      "name": "b_ur17",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_ur18",
-      "name": "b_ur18",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_ur19",
-      "name": "b_ur19",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_ur20",
-      "name": "b_ur20",
-      "element": "b",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "b_sr1",
-      "name": "b_sr1",
-      "element": "b",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "b_sr2",
-      "name": "b_sr2",
-      "element": "b",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "b_sr3",
-      "name": "b_sr3",
-      "element": "b",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "b_sr4",
-      "name": "b_sr4",
-      "element": "b",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "b_sr5",
-      "name": "b_sr5",
-      "element": "b",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "b_sr6",
-      "name": "b_sr6",
-      "element": "b",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "b_sr7",
-      "name": "b_sr7",
-      "element": "b",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "b_sr8",
-      "name": "b_sr8",
-      "element": "b",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "b_sr9",
-      "name": "b_sr9",
-      "element": "b",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "b_sr10",
-      "name": "b_sr10",
-      "element": "b",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "b_r1",
-      "name": "b_r1",
-      "element": "b",
-      "rarity": "r",
-      "collab": null
-    },
-    {
-      "id": "b_r2",
-      "name": "b_r2",
-      "element": "b",
-      "rarity": "r",
-      "collab": null
-    },
-    {
-      "id": "b_r3",
-      "name": "b_r3",
-      "element": "b",
-      "rarity": "r",
-      "collab": null
-    },
-    {
-      "id": "b_r4",
-      "name": "b_r4",
-      "element": "b",
-      "rarity": "r",
-      "collab": null
-    },
-    {
-      "id": "b_r5",
-      "name": "b_r5",
-      "element": "b",
-      "rarity": "r",
-      "collab": null
-    },
-    {
-      "id": "e_ur1",
-      "name": "e_ur1",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_ur2",
-      "name": "e_ur2",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_ur3",
-      "name": "e_ur3",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_ur4",
-      "name": "e_ur4",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_ur5",
-      "name": "e_ur5",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_ur6",
-      "name": "e_ur6",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_ur7",
-      "name": "e_ur7",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_ur8",
-      "name": "e_ur8",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_ur9",
-      "name": "e_ur9",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_ur10",
-      "name": "e_ur10",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_ur11",
-      "name": "e_ur11",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_ur12",
-      "name": "e_ur12",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_ur13",
-      "name": "e_ur13",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_ur14",
-      "name": "e_ur14",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_ur15",
-      "name": "e_ur15",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_ur16",
-      "name": "e_ur16",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_ur17",
-      "name": "e_ur17",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_ur18",
-      "name": "e_ur18",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_ur19",
-      "name": "e_ur19",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_ur20",
-      "name": "e_ur20",
-      "element": "e",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "e_sr1",
-      "name": "e_sr1",
-      "element": "e",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "e_sr2",
-      "name": "e_sr2",
-      "element": "e",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "e_sr3",
-      "name": "e_sr3",
-      "element": "e",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "e_sr4",
-      "name": "e_sr4",
-      "element": "e",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "e_sr5",
-      "name": "e_sr5",
-      "element": "e",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "e_sr6",
-      "name": "e_sr6",
-      "element": "e",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "e_sr7",
-      "name": "e_sr7",
-      "element": "e",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "e_sr8",
-      "name": "e_sr8",
-      "element": "e",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "e_sr9",
-      "name": "e_sr9",
-      "element": "e",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "e_sr10",
-      "name": "e_sr10",
-      "element": "e",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "e_r1",
-      "name": "e_r1",
-      "element": "e",
-      "rarity": "r",
-      "collab": null
-    },
-    {
-      "id": "e_r2",
-      "name": "e_r2",
-      "element": "e",
-      "rarity": "r",
-      "collab": null
-    },
-    {
-      "id": "e_r3",
-      "name": "e_r3",
-      "element": "e",
-      "rarity": "r",
-      "collab": null
-    },
-    {
-      "id": "e_r4",
-      "name": "e_r4",
-      "element": "e",
-      "rarity": "r",
-      "collab": null
-    },
-    {
-      "id": "e_r5",
-      "name": "e_r5",
-      "element": "e",
-      "rarity": "r",
-      "collab": null
-    },
-    {
-      "id": "f_ur1",
-      "name": "f_ur1",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_ur2",
-      "name": "f_ur2",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_ur3",
-      "name": "f_ur3",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_ur4",
-      "name": "f_ur4",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_ur5",
-      "name": "f_ur5",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_ur6",
-      "name": "f_ur6",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_ur7",
-      "name": "f_ur7",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_ur8",
-      "name": "f_ur8",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_ur9",
-      "name": "f_ur9",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_ur10",
-      "name": "f_ur10",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_ur11",
-      "name": "f_ur11",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_ur12",
-      "name": "f_ur12",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_ur13",
-      "name": "f_ur13",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_ur14",
-      "name": "f_ur14",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_ur15",
-      "name": "f_ur15",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_ur16",
-      "name": "f_ur16",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_ur17",
-      "name": "f_ur17",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_ur18",
-      "name": "f_ur18",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_ur19",
-      "name": "f_ur19",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_ur20",
-      "name": "f_ur20",
-      "element": "f",
-      "rarity": "ur",
-      "collab": null
-    },
-    {
-      "id": "f_sr1",
-      "name": "f_sr1",
-      "element": "f",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "f_sr2",
-      "name": "f_sr2",
-      "element": "f",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "f_sr3",
-      "name": "f_sr3",
-      "element": "f",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "f_sr4",
-      "name": "f_sr4",
-      "element": "f",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "f_sr5",
-      "name": "f_sr5",
-      "element": "f",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "f_sr6",
-      "name": "f_sr6",
-      "element": "f",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "f_sr7",
-      "name": "f_sr7",
-      "element": "f",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "f_sr8",
-      "name": "f_sr8",
-      "element": "f",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "f_sr9",
-      "name": "f_sr9",
-      "element": "f",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
-      "id": "f_sr10",
-      "name": "f_sr10",
-      "element": "f",
-      "rarity": "sr",
-      "collab": null
-    },
-    {
       "id": "f_r1",
-      "name": "f_r1",
+      "name": "ドリーム☆ミーティア",
       "element": "f",
       "rarity": "r",
+      "color": "火",
+      "type": "強",
       "collab": null
     },
     {
       "id": "f_r2",
-      "name": "f_r2",
+      "name": "保健室の救急セット",
       "element": "f",
       "rarity": "r",
+      "color": "木",
+      "type": "癒",
       "collab": null
     },
     {
       "id": "f_r3",
-      "name": "f_r3",
+      "name": "連合宇宙軍 ステルス迷彩",
       "element": "f",
       "rarity": "r",
+      "color": "水",
+      "type": "移",
       "collab": null
     },
     {
       "id": "f_r4",
-      "name": "f_r4",
+      "name": "雨霊の加護 ウィネバ",
       "element": "f",
       "rarity": "r",
+      "color": "水",
+      "type": "癒",
       "collab": null
     },
     {
-      "id": "f_r5",
-      "name": "f_r5",
+      "id": "f_sr1",
+      "name": "操宴軍馬 ベディーネン・パンツァー",
       "element": "f",
+      "rarity": "sr",
+      "color": "木",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "f_sr2",
+      "name": "一撃必殺 ブラストアッパー",
+      "element": "f",
+      "rarity": "sr",
+      "color": "火",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "f_sr3",
+      "name": "楽団員 サンバール",
+      "element": "f",
+      "rarity": "sr",
+      "color": "水",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "f_sr4",
+      "name": "激旨！到着！戦場食堂車 バトルダイナー",
+      "element": "f",
+      "rarity": "sr",
+      "color": "水",
+      "type": "強",
+      "collab": null
+    },
+    {
+      "id": "f_sr5",
+      "name": "‡四大精霊‡ シルフ",
+      "element": "f",
+      "rarity": "sr",
+      "color": "木",
+      "type": "強",
+      "collab": null
+    },
+    {
+      "id": "f_ur1",
+      "name": "究極系ノーガード戦法",
+      "element": "f",
+      "rarity": "ur",
+      "color": "火",
+      "type": "防",
+      "collab": null
+    },
+    {
+      "id": "f_ur2",
+      "name": "ぶじゅつかの超速加速",
+      "element": "f",
+      "rarity": "ur",
+      "color": "木",
+      "type": "強",
+      "collab": null
+    },
+    {
+      "id": "f_ur3",
+      "name": "楽団長 ドルケストル",
+      "element": "f",
+      "rarity": "ur",
+      "color": "火",
+      "type": "強",
+      "collab": null
+    },
+    {
+      "id": "f_ur4",
+      "name": "-蒼王宮- 恩寵天使 ソーン=ユーリエフ",
+      "element": "f",
+      "rarity": "ur",
+      "color": "水",
+      "type": "移",
+      "collab": null
+    },
+    {
+      "id": "e_r1",
+      "name": "初級魔法 ふれいむ",
+      "element": "e",
       "rarity": "r",
+      "color": "火",
+      "type": "遠",
       "collab": null
     },
     {
-      "id": "s_ur1",
-      "name": "s_ur1",
-      "element": "s",
-      "rarity": "ur",
+      "id": "e_r2",
+      "name": "初級魔法 ぶりざーど",
+      "element": "e",
+      "rarity": "r",
+      "color": "水",
+      "type": "遠",
       "collab": null
     },
     {
-      "id": "s_ur2",
-      "name": "s_ur2",
-      "element": "s",
-      "rarity": "ur",
+      "id": "e_r3",
+      "name": "銀行強盗 デリンジャー",
+      "element": "e",
+      "rarity": "r",
+      "color": "木",
+      "type": "遠",
       "collab": null
     },
     {
-      "id": "s_ur3",
-      "name": "s_ur3",
-      "element": "s",
-      "rarity": "ur",
+      "id": "e_r4",
+      "name": "不思議の一休み「トランプちゃん」",
+      "element": "e",
+      "rarity": "r",
+      "color": "木",
+      "type": "近",
       "collab": null
     },
     {
-      "id": "s_ur4",
-      "name": "s_ur4",
-      "element": "s",
-      "rarity": "ur",
+      "id": "e_sr1",
+      "name": "焼却ロボ Fladoll-4649",
+      "element": "e",
+      "rarity": "sr",
+      "color": "火",
+      "type": "遠",
       "collab": null
     },
     {
-      "id": "s_ur5",
-      "name": "s_ur5",
-      "element": "s",
-      "rarity": "ur",
+      "id": "e_sr2",
+      "name": "ひめたる力の覚醒",
+      "element": "e",
+      "rarity": "sr",
+      "color": "木",
+      "type": "強",
       "collab": null
     },
     {
-      "id": "a_ur1",
-      "name": "a_ur1",
-      "element": "a",
-      "rarity": "ur",
+      "id": "e_sr3",
+      "name": "聖女の守り手 黒猫リリィ",
+      "element": "e",
+      "rarity": "sr",
+      "color": "水",
+      "type": "癒",
       "collab": null
     },
     {
-      "id": "a_ur2",
-      "name": "a_ur2",
-      "element": "a",
-      "rarity": "ur",
+      "id": "e_sr4",
+      "name": "楽団員 アルプ",
+      "element": "e",
+      "rarity": "sr",
+      "color": "火",
+      "type": "癒",
       "collab": null
     },
     {
-      "id": "a_ur3",
-      "name": "a_ur3",
-      "element": "a",
-      "rarity": "ur",
+      "id": "e_sr5",
+      "name": "-蒼王宮- 白翼騎士 ジェニト",
+      "element": "e",
+      "rarity": "sr",
+      "color": "水",
+      "type": "近",
       "collab": null
     },
     {
-      "id": "a_ur4",
-      "name": "a_ur4",
-      "element": "a",
-      "rarity": "ur",
+      "id": "e_sr6",
+      "name": "樹霊の加護 イシュティニケ",
+      "element": "e",
+      "rarity": "sr",
+      "color": "火",
+      "type": "近",
       "collab": null
     },
     {
-      "id": "a_ur5",
-      "name": "a_ur5",
-      "element": "a",
+      "id": "e_ur1",
+      "name": "対消滅ロングレンジライフルHum-Buster",
+      "element": "e",
       "rarity": "ur",
+      "color": "水",
+      "type": "遠",
+      "collab": null
+    },
+    {
+      "id": "e_ur2",
+      "name": "名門サッカー部 イナズマシュート",
+      "element": "e",
+      "rarity": "ur",
+      "color": "木",
+      "type": "遠",
+      "collab": null
+    },
+    {
+      "id": "e_ur3",
+      "name": "魂を司る聖天使 ガブリエル",
+      "element": "e",
+      "rarity": "ur",
+      "color": "水",
+      "type": "癒",
+      "collab": null
+    },
+    {
+      "id": "e_ur4",
+      "name": "妖炎参謀 月夜叉",
+      "element": "e",
+      "rarity": "ur",
+      "color": "火",
+      "type": "癒",
+      "collab": null
+    },
+    {
+      "id": "e_ur5",
+      "name": "UMEEEEEE!!! ㌍伝道 通信教育カラァーテェ",
+      "element": "e",
+      "rarity": "ur",
+      "color": "木",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "d_r1",
+      "name": "はらぺこゴースト",
+      "element": "d",
+      "rarity": "r",
+      "color": "水",
+      "type": "弱",
+      "collab": null
+    },
+    {
+      "id": "d_r2",
+      "name": "聖女の親友修道女 マリー",
+      "element": "d",
+      "rarity": "r",
+      "color": "水",
+      "type": "癒",
+      "collab": null
+    },
+    {
+      "id": "d_r3",
+      "name": "たんじょうび ぷれぜんと",
+      "element": "d",
+      "rarity": "r",
+      "color": "火",
+      "type": "弱",
+      "collab": null
+    },
+    {
+      "id": "d_r4",
+      "name": "紅薔薇の聖王剣 セルピエンテ",
+      "element": "d",
+      "rarity": "r",
+      "color": "木",
+      "type": "弱",
+      "collab": null
+    },
+    {
+      "id": "d_r5",
+      "name": "アイちゃんのオススメ防弾パーカー",
+      "element": "d",
+      "rarity": "r",
+      "color": "火",
+      "type": "防",
+      "collab": null
+    },
+    {
+      "id": "d_r6",
+      "name": "∗支配ノ美∗ エレンホス",
+      "element": "d",
+      "rarity": "r",
+      "color": "木",
+      "type": "弱",
+      "collab": null
+    },
+    {
+      "id": "d_r7",
+      "name": "#夜光犯罪特区 #天馬エイワズ",
+      "element": "d",
+      "rarity": "r",
+      "color": "火",
+      "type": "癒",
+      "collab": null
+    },
+    {
+      "id": "d_sr1",
+      "name": "ゲームバズーカ",
+      "element": "d",
+      "rarity": "sr",
+      "color": "木",
+      "type": "遠",
+      "collab": null
+    },
+    {
+      "id": "d_sr2",
+      "name": "聖槍ろんぎぬす",
+      "element": "d",
+      "rarity": "sr",
+      "color": "木",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "d_sr3",
+      "name": "連合宇宙軍 フルアーマー機動兵",
+      "element": "d",
+      "rarity": "sr",
+      "color": "水",
+      "type": "強",
+      "collab": null
+    },
+    {
+      "id": "d_sr4",
+      "name": "おにいちゃん ぎゅーってして",
+      "element": "d",
+      "rarity": "sr",
+      "color": "木",
+      "type": "弱",
+      "collab": null
+    },
+    {
+      "id": "d_sr5",
+      "name": "ドスブラック★シスコンブラザー",
+      "element": "d",
+      "rarity": "sr",
+      "color": "火",
+      "type": "弱",
+      "collab": null
+    },
+    {
+      "id": "d_sr6",
+      "name": "戦禍の灯/ フレイヤ― -哀傷のドッグタグ-",
+      "element": "d",
+      "rarity": "sr",
+      "color": "水",
+      "type": "癒",
+      "collab": null
+    },
+    {
+      "id": "d_ur1",
+      "name": "機航師弾 フルーク・ツォイク",
+      "element": "d",
+      "rarity": "ur",
+      "color": "火",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "d_ur2",
+      "name": "荒れ狂う天空王 ぶれいずどらごん",
+      "element": "d",
+      "rarity": "ur",
+      "color": "木",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "d_ur3",
+      "name": "祭りの真打ち！打ち上げ花火",
+      "element": "d",
+      "rarity": "ur",
+      "color": "木",
+      "type": "癒",
+      "collab": null
+    },
+    {
+      "id": "d_ur4",
+      "name": "おかあさん だーいすき",
+      "element": "d",
+      "rarity": "ur",
+      "color": "木",
+      "type": "弱",
+      "collab": null
+    },
+    {
+      "id": "d_ur5",
+      "name": "戦略の灯/ 国防長官フレイ",
+      "element": "d",
+      "rarity": "ur",
+      "color": "水",
+      "type": "癒",
+      "collab": null
+    },
+    {
+      "id": "d_ur6",
+      "name": "闘魂！注入！受け継がれし魂 ゲームバズーカ",
+      "element": "d",
+      "rarity": "ur",
+      "color": "火",
+      "type": "遠",
+      "collab": null
+    },
+    {
+      "id": "c_r1",
+      "name": "連合宇宙軍 ジャスティスハンマー",
+      "element": "c",
+      "rarity": "r",
+      "color": "火",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "c_r2",
+      "name": "きょうせんしの大剣",
+      "element": "c",
+      "rarity": "r",
+      "color": "水",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "c_r3",
+      "name": "爆弾魔 バルカン",
+      "element": "c",
+      "rarity": "r",
+      "color": "木",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "c_r4",
+      "name": "爆術死鬼 ツクモ",
+      "element": "c",
+      "rarity": "r",
+      "color": "火",
+      "type": "罠",
+      "collab": null
+    },
+    {
+      "id": "c_r5",
+      "name": "祭りの終わり！満天提灯",
+      "element": "c",
+      "rarity": "r",
+      "color": "火",
+      "type": "強",
+      "collab": null
+    },
+    {
+      "id": "c_r6",
+      "name": "崩愛の爆弾 ジ・エラー",
+      "element": "c",
+      "rarity": "r",
+      "color": "水",
+      "type": "罠",
+      "collab": null
+    },
+    {
+      "id": "c_r7",
+      "name": "レーザー特注忍具 -双天小烏丸-",
+      "element": "c",
+      "rarity": "r",
+      "color": "水",
+      "type": "強",
+      "collab": null
+    },
+    {
+      "id": "c_r8",
+      "name": "戦士の灯/ 超圧縮荷電粒子砲 ラグナロク",
+      "element": "c",
+      "rarity": "r",
+      "color": "火",
+      "type": "遠",
+      "collab": null
+    },
+    {
+      "id": "c_r9",
+      "name": "蜘蛛縫組 Ж 愛してマスコット ウサ太郎",
+      "element": "c",
+      "rarity": "r",
+      "color": "木",
+      "type": "罠",
+      "collab": null
+    },
+    {
+      "id": "c_r10",
+      "name": "でんせつのけんとたて",
+      "element": "c",
+      "rarity": "r",
+      "color": "火",
+      "type": "強",
+      "collab": null
+    },
+    {
+      "id": "c_sr1",
+      "name": "切り裂き魔 ジャック",
+      "element": "c",
+      "rarity": "sr",
+      "color": "木",
+      "type": "連",
+      "collab": null
+    },
+    {
+      "id": "c_sr2",
+      "name": "祭り行列！山車燈籠",
+      "element": "c",
+      "rarity": "sr",
+      "color": "火",
+      "type": "遠",
+      "collab": null
+    },
+    {
+      "id": "c_sr3",
+      "name": "あこがれのアイドルからの声援",
+      "element": "c",
+      "rarity": "sr",
+      "color": "水",
+      "type": "強",
+      "collab": null
+    },
+    {
+      "id": "c_sr4",
+      "name": "情愛の四女 クララ",
+      "element": "c",
+      "rarity": "sr",
+      "color": "火",
+      "type": "癒",
+      "collab": null
+    },
+    {
+      "id": "c_sr5",
+      "name": "紅薔薇の不壊盾 イノセンテ",
+      "element": "c",
+      "rarity": "sr",
+      "color": "火",
+      "type": "強",
+      "collab": null
+    },
+    {
+      "id": "c_sr6",
+      "name": "デジタル堅牢忍具 -不可視金蔵-",
+      "element": "c",
+      "rarity": "sr",
+      "color": "火",
+      "type": "防",
+      "collab": null
+    },
+    {
+      "id": "c_sr7",
+      "name": "∗振付ノ美∗ オルケーシス",
+      "element": "c",
+      "rarity": "sr",
+      "color": "水",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "c_sr8",
+      "name": "-蒼王宮- 黒滅導師 アカンティラド",
+      "element": "c",
+      "rarity": "sr",
+      "color": "水",
+      "type": "癒",
+      "collab": null
+    },
+    {
+      "id": "c_sr9",
+      "name": "【デルミン】エンジェリック.A.破虎",
+      "element": "c",
+      "rarity": "sr",
+      "color": "木",
+      "type": "遠",
+      "collab": null
+    },
+    {
+      "id": "c_sr10",
+      "name": "UMEEEEEE!!! ㌍倍増 ピッツァハーレム",
+      "element": "c",
+      "rarity": "sr",
+      "color": "水",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "c_sr11",
+      "name": "‡四大精霊‡ ノーム",
+      "element": "c",
+      "rarity": "sr",
+      "color": "木",
+      "type": "周",
       "collab": null
     },
     {
       "id": "c_ur1",
-      "name": "c_ur1",
+      "name": "連合宇宙軍 強襲制圧型 装甲多脚戦車",
       "element": "c",
       "rarity": "ur",
+      "color": "水",
+      "type": "周",
       "collab": null
     },
     {
       "id": "c_ur2",
-      "name": "c_ur2",
+      "name": "祭りの目玉！ドラゴン花火",
       "element": "c",
       "rarity": "ur",
+      "color": "火",
+      "type": "罠",
       "collab": null
     },
     {
       "id": "c_ur3",
-      "name": "c_ur3",
+      "name": "どこにでもいけるドア",
       "element": "c",
       "rarity": "ur",
+      "color": "木",
+      "type": "移",
       "collab": null
     },
     {
       "id": "c_ur4",
-      "name": "c_ur4",
+      "name": "極悪！最低！悪人派遣会社社長 ベリバッド",
       "element": "c",
       "rarity": "ur",
+      "color": "木",
+      "type": "他",
       "collab": null
     },
     {
       "id": "c_ur5",
-      "name": "c_ur5",
+      "name": "せかいをまもる！守護星の女神",
       "element": "c",
       "rarity": "ur",
+      "color": "木",
+      "type": "他",
       "collab": null
+    },
+    {
+      "id": "c_ur6",
+      "name": "【天罰の熾天使】†ファースト†",
+      "element": "c",
+      "rarity": "ur",
+      "color": "火",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "b_r1",
+      "name": "はらぺこ吸血バット",
+      "element": "b",
+      "rarity": "r",
+      "color": "火",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "b_r2",
+      "name": "死献薬 シュタルク・トート",
+      "element": "b",
+      "rarity": "r",
+      "color": "水",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "b_r3",
+      "name": "¦¦¦狐ヶ咲¦¦¦ 黒漆祓拵 為次",
+      "element": "b",
+      "rarity": "r",
+      "color": "火",
+      "type": "反",
+      "collab": null
+    },
+    {
+      "id": "b_r4",
+      "name": "失われし宝剣¦ゾモロドネガル",
+      "element": "b",
+      "rarity": "r",
+      "color": "木",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "b_sr1",
+      "name": "放火魔 スコーピオン",
+      "element": "b",
+      "rarity": "sr",
+      "color": "火",
+      "type": "連",
+      "collab": null
+    },
+    {
+      "id": "b_sr2",
+      "name": "電撃ロボ Eledoll-115",
+      "element": "b",
+      "rarity": "sr",
+      "color": "木",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "b_sr3",
+      "name": "聖女の前衛 ジル・ド・レ",
+      "element": "b",
+      "rarity": "sr",
+      "color": "火",
+      "type": "連",
+      "collab": null
+    },
+    {
+      "id": "b_sr4",
+      "name": "聖女の後衛 銃士レオン",
+      "element": "b",
+      "rarity": "sr",
+      "color": "木",
+      "type": "遠",
+      "collab": null
+    },
+    {
+      "id": "b_sr5",
+      "name": "地獄の番犬 ケルベロス",
+      "element": "b",
+      "rarity": "sr",
+      "color": "火",
+      "type": "罠",
+      "collab": null
+    },
+    {
+      "id": "b_sr6",
+      "name": "連合宇宙軍 広域電磁波ジャマー",
+      "element": "b",
+      "rarity": "sr",
+      "color": "水",
+      "type": "弱",
+      "collab": null
+    },
+    {
+      "id": "b_sr7",
+      "name": "帝皇機神 ケーニヒ・イェーガー",
+      "element": "b",
+      "rarity": "sr",
+      "color": "水",
+      "type": "防",
+      "collab": null
+    },
+    {
+      "id": "b_sr8",
+      "name": "ゼルっちの横流しフルオートライフル",
+      "element": "b",
+      "rarity": "sr",
+      "color": "火",
+      "type": "遠",
+      "collab": null
+    },
+    {
+      "id": "b_sr9",
+      "name": "オンエア部下忍者 -アニマルチューバーズ-",
+      "element": "b",
+      "rarity": "sr",
+      "color": "木",
+      "type": "連",
+      "collab": null
+    },
+    {
+      "id": "b_sr10",
+      "name": "∗伝説ノ美∗ プロティバラリナ",
+      "element": "b",
+      "rarity": "sr",
+      "color": "火",
+      "type": "強",
+      "collab": null
+    },
+    {
+      "id": "b_sr11",
+      "name": "【デルミン】デビルミント島",
+      "element": "b",
+      "rarity": "sr",
+      "color": "水",
+      "type": "弱",
+      "collab": null
+    },
+    {
+      "id": "b_sr12",
+      "name": "#夜光犯罪特区 #やめるちゃんアゲ",
+      "element": "b",
+      "rarity": "sr",
+      "color": "水",
+      "type": "反",
+      "collab": null
+    },
+    {
+      "id": "b_sr13",
+      "name": "UMEEEEEE!!! ㌍満載 ピッツァフルコース",
+      "element": "b",
+      "rarity": "sr",
+      "color": "水",
+      "type": "罠",
+      "collab": null
+    },
+    {
+      "id": "b_sr14",
+      "name": "¦¦¦狸ヶ原¦¦¦ 偽紫 刀一郎",
+      "element": "b",
+      "rarity": "sr",
+      "color": "木",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "b_sr15",
+      "name": "熱血！猛進！配給支援部隊 Mr.ランチャー",
+      "element": "b",
+      "rarity": "sr",
+      "color": "木",
+      "type": "反",
+      "collab": null
+    },
+    {
+      "id": "b_sr16",
+      "name": "//*#イレギュラーウィルス#*//",
+      "element": "b",
+      "rarity": "sr",
+      "color": "木",
+      "type": "罠",
+      "collab": null
+    },
+    {
+      "id": "b_sr17",
+      "name": "‡四大精霊‡ ウンディーネ",
+      "element": "b",
+      "rarity": "sr",
+      "color": "水",
+      "type": "癒",
+      "collab": null
+    },
+    {
+      "id": "b_sr18",
+      "name": "‡四大精霊‡ サラマンダー",
+      "element": "b",
+      "rarity": "sr",
+      "color": "火",
+      "type": "強",
+      "collab": null
+    },
+    {
+      "id": "b_sr19",
+      "name": "いのちをかいふく！かけだし僧侶",
+      "element": "b",
+      "rarity": "sr",
+      "color": "木",
+      "type": "癒",
+      "collab": null
+    },
+    {
+      "id": "b_ur1",
+      "name": "妖軍一統 ゲネラール",
+      "element": "b",
+      "rarity": "ur",
+      "color": "火",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "b_ur2",
+      "name": "連合宇宙軍 シールドブレイカー",
+      "element": "b",
+      "rarity": "ur",
+      "color": "木",
+      "type": "弱",
+      "collab": null
+    },
+    {
+      "id": "b_ur3",
+      "name": "恒星間転送装置 Tele-Pass",
+      "element": "b",
+      "rarity": "ur",
+      "color": "水",
+      "type": "移",
+      "collab": null
+    },
+    {
+      "id": "b_ur4",
+      "name": "反導砲 カノーネ・ファイエル",
+      "element": "b",
+      "rarity": "ur",
+      "color": "水",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "b_ur5",
+      "name": "おとうさん あそんであそんでー",
+      "element": "b",
+      "rarity": "ur",
+      "color": "水",
+      "type": "弱",
+      "collab": null
+    },
+    {
+      "id": "b_ur6",
+      "name": "ミナ&ルナ&レナのバーゲンセール戦争",
+      "element": "b",
+      "rarity": "ur",
+      "color": "木",
+      "type": "反",
+      "collab": null
+    },
+    {
+      "id": "b_ur7",
+      "name": "ハイカラ盟友忍者 -壬生咲みみみ-",
+      "element": "b",
+      "rarity": "ur",
+      "color": "火",
+      "type": "癒",
+      "collab": null
+    },
+    {
+      "id": "b_ur8",
+      "name": "∗絢爛ノ美∗ ボラ＆アルヒコ＆アペイロン",
+      "element": "b",
+      "rarity": "ur",
+      "color": "木",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "b_ur9",
+      "name": "-蒼王宮- 聖歌連隊 ミローディア",
+      "element": "b",
+      "rarity": "ur",
+      "color": "火",
+      "type": "癒",
+      "collab": null
+    },
+    {
+      "id": "b_ur10",
+      "name": "【デルミン】デビルミント始龍",
+      "element": "b",
+      "rarity": "ur",
+      "color": "水",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "b_ur11",
+      "name": "合体攻撃！ドリーム☆エンジェルズアロー",
+      "element": "b",
+      "rarity": "ur",
+      "color": "木",
+      "type": "遠",
+      "collab": null
+    },
+    {
+      "id": "b_ur12",
+      "name": "UMEEEEEE!!! ㌍覇王 プニャトフスキ一族",
+      "element": "b",
+      "rarity": "ur",
+      "color": "火",
+      "type": "罠",
+      "collab": null
+    },
+    {
+      "id": "b_ur13",
+      "name": "¦¦¦狐ヶ咲¦¦¦ 祓三姉妹 夢色¦桃色",
+      "element": "b",
+      "rarity": "ur",
+      "color": "火",
+      "type": "反",
+      "collab": null
+    },
+    {
+      "id": "b_ur14",
+      "name": "戦陣の灯/ VDN-93 強襲揚陸艦 ユグドラシル",
+      "element": "b",
+      "rarity": "ur",
+      "color": "木",
+      "type": "遠",
+      "collab": null
+    },
+    {
+      "id": "b_ur15",
+      "name": "不思議の王子様「白馬の晴斗くん」",
+      "element": "b",
+      "rarity": "ur",
+      "color": "火",
+      "type": "癒",
+      "collab": null
+    },
+    {
+      "id": "b_ur16",
+      "name": "蜘蛛縫組 Ж 三代目組長 蜘蛛縫 正太郎",
+      "element": "b",
+      "rarity": "ur",
+      "color": "火",
+      "type": "罠",
+      "collab": null
+    },
+    {
+      "id": "b_ur17",
+      "name": "失われし呪物¦蛇神アペプ",
+      "element": "b",
+      "rarity": "ur",
+      "color": "火",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "a_r1",
+      "name": "剣道部エースの五月雨突き",
+      "element": "a",
+      "rarity": "r",
+      "color": "水",
+      "type": "連",
+      "collab": null
+    },
+    {
+      "id": "a_r2",
+      "name": "千血妖刀 牛鬼村正",
+      "element": "a",
+      "rarity": "r",
+      "color": "木",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "a_r3",
+      "name": "はらぺこメイジ",
+      "element": "a",
+      "rarity": "r",
+      "color": "木",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "a_r4",
+      "name": "祭りの思い出！おじいちゃんの祝砲",
+      "element": "a",
+      "rarity": "r",
+      "color": "火",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "a_r5",
+      "name": "【デルミン】オニギリクママン",
+      "element": "a",
+      "rarity": "r",
+      "color": "火",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "a_r6",
+      "name": "‡焼亡の森‡ 静寂の宝槍 ルー",
+      "element": "a",
+      "rarity": "r",
+      "color": "木",
+      "type": "連",
+      "collab": null
+    },
+    {
+      "id": "a_r7",
+      "name": "‡滅国の城‡ 名も亡き眷属コウモリ",
+      "element": "a",
+      "rarity": "r",
+      "color": "水",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "a_sr1",
+      "name": "看守長 キャバルリー",
+      "element": "a",
+      "rarity": "sr",
+      "color": "水",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "a_sr2",
+      "name": "全翼飛将 グライフ",
+      "element": "a",
+      "rarity": "sr",
+      "color": "木",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "a_sr3",
+      "name": "魔法少女☆ルルカ",
+      "element": "a",
+      "rarity": "sr",
+      "color": "火",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "a_sr4",
+      "name": "化学部の放課後ジッケンタイム",
+      "element": "a",
+      "rarity": "sr",
+      "color": "火",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "a_sr5",
+      "name": "祭りの華！だんじりガール",
+      "element": "a",
+      "rarity": "sr",
+      "color": "水",
+      "type": "癒",
+      "collab": null
+    },
+    {
+      "id": "a_sr6",
+      "name": "拷問館 パウ・ライヒェ",
+      "element": "a",
+      "rarity": "sr",
+      "color": "木",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "a_sr7",
+      "name": "奏愛の三女 エレオノーラ",
+      "element": "a",
+      "rarity": "sr",
+      "color": "木",
+      "type": "罠",
+      "collab": null
+    },
+    {
+      "id": "a_sr8",
+      "name": "紅薔薇の生命線 パレンティア",
+      "element": "a",
+      "rarity": "sr",
+      "color": "火",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "a_sr9",
+      "name": "-蒼王宮- 翠光騎士 リョーフキー",
+      "element": "a",
+      "rarity": "sr",
+      "color": "木",
+      "type": "癒",
+      "collab": null
+    },
+    {
+      "id": "a_sr10",
+      "name": "-蒼王宮- 監獄騎士 ヴィーセリツァ",
+      "element": "a",
+      "rarity": "sr",
+      "color": "木",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "a_sr11",
+      "name": "#夜光犯罪特区 #メビウス目撃情報",
+      "element": "a",
+      "rarity": "sr",
+      "color": "火",
+      "type": "連",
+      "collab": null
+    },
+    {
+      "id": "a_sr12",
+      "name": "魔法少女 レレカ☆ロロカ",
+      "element": "a",
+      "rarity": "sr",
+      "color": "水",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "a_sr13",
+      "name": "¦¦¦狐ヶ咲¦¦¦ 四典老師 虹色",
+      "element": "a",
+      "rarity": "sr",
+      "color": "火",
+      "type": "反",
+      "collab": null
+    },
+    {
+      "id": "a_sr14",
+      "name": "戦慄の灯/ AGBW-3990N ヘイムダル",
+      "element": "a",
+      "rarity": "sr",
+      "color": "木",
+      "type": "連",
+      "collab": null
+    },
+    {
+      "id": "a_sr15",
+      "name": "不思議の籠球部「白秋晴斗くん」",
+      "element": "a",
+      "rarity": "sr",
+      "color": "火",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "a_sr16",
+      "name": "蜘蛛縫組 Ж 舎弟衆 万亀川/蛇ノ目/虎山",
+      "element": "a",
+      "rarity": "sr",
+      "color": "木",
+      "type": "罠",
+      "collab": null
+    },
+    {
+      "id": "a_sr17",
+      "name": "失われし水源¦水王アイマン・マーイ",
+      "element": "a",
+      "rarity": "sr",
+      "color": "水",
+      "type": "防",
+      "collab": null
+    },
+    {
+      "id": "a_ur1",
+      "name": "学園の王者 生徒会執行部",
+      "element": "a",
+      "rarity": "ur",
+      "color": "水",
+      "type": "連",
+      "collab": null
+    },
+    {
+      "id": "a_ur2",
+      "name": "オールレンジアタック",
+      "element": "a",
+      "rarity": "ur",
+      "color": "水",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "a_ur3",
+      "name": "迅雷の科学者 アバカン",
+      "element": "a",
+      "rarity": "ur",
+      "color": "木",
+      "type": "遠",
+      "collab": null
+    },
+    {
+      "id": "a_ur4",
+      "name": "連合宇宙軍 サテライトキャノン",
+      "element": "a",
+      "rarity": "ur",
+      "color": "水",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "a_ur5",
+      "name": "全員集合！魔法少女リリカ☆ルルカ",
+      "element": "a",
+      "rarity": "ur",
+      "color": "火",
+      "type": "遠",
+      "collab": null
+    },
+    {
+      "id": "a_ur6",
+      "name": "狂愛の次女 ヴァルヴァラ",
+      "element": "a",
+      "rarity": "ur",
+      "color": "水",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "a_ur7",
+      "name": "紅薔薇の暗殺術 クルエルダー",
+      "element": "a",
+      "rarity": "ur",
+      "color": "木",
+      "type": "遠",
+      "collab": null
+    },
+    {
+      "id": "a_ur8",
+      "name": "チーちゃんのウワキオシオキ狙撃",
+      "element": "a",
+      "rarity": "ur",
+      "color": "木",
+      "type": "遠",
+      "collab": null
+    },
+    {
+      "id": "a_ur9",
+      "name": "創霊の加護 タイオワ",
+      "element": "a",
+      "rarity": "ur",
+      "color": "火",
+      "type": "強",
+      "collab": null
+    },
+    {
+      "id": "a_ur10",
+      "name": "∗真実ノ美∗ ジョバンニ",
+      "element": "a",
+      "rarity": "ur",
+      "color": "水",
+      "type": "反",
+      "collab": null
+    },
+    {
+      "id": "a_ur11",
+      "name": "【デルミン】デビルミント鬼龍パパミン",
+      "element": "a",
+      "rarity": "ur",
+      "color": "木",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "a_ur12",
+      "name": "絶夢の魔女 リベレーション★ルルカ",
+      "element": "a",
+      "rarity": "ur",
+      "color": "火",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "a_ur13",
+      "name": "¦¦¦狸ヶ原¦¦¦ 破戒怨士 喰色",
+      "element": "a",
+      "rarity": "ur",
+      "color": "水",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "a_ur14",
+      "name": "‡滅国の城‡ 双生王 レヴィ・シュシュマルシュ",
+      "element": "a",
+      "rarity": "ur",
+      "color": "水",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "a_ur15",
+      "name": "‡滅国の城‡ 偽らざる鮮血の玉座",
+      "element": "a",
+      "rarity": "ur",
+      "color": "水",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "a_ur16",
+      "name": "失われし血族¦カティーア大盗賊団",
+      "element": "a",
+      "rarity": "ur",
+      "color": "木",
+      "type": "癒",
+      "collab": null
+    },
+    {
+      "id": "s_r1",
+      "name": "反政府勢力クラッキング Case-171",
+      "element": "s",
+      "rarity": "r",
+      "color": "木",
+      "type": "弱",
+      "collab": null
+    },
+    {
+      "id": "s_r2",
+      "name": "かぞく みんなで おしゃしん",
+      "element": "s",
+      "rarity": "r",
+      "color": "木",
+      "type": "罠",
+      "collab": null
+    },
+    {
+      "id": "s_sr1",
+      "name": "魔法少女☆ララカ",
+      "element": "s",
+      "rarity": "sr",
+      "color": "水",
+      "type": "遠",
+      "collab": null
+    },
+    {
+      "id": "s_sr2",
+      "name": "祭り開始！どでかい和太鼓",
+      "element": "s",
+      "rarity": "sr",
+      "color": "火",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "s_sr3",
+      "name": "呪詛包帯",
+      "element": "s",
+      "rarity": "sr",
+      "color": "水",
+      "type": "罠",
+      "collab": null
+    },
+    {
+      "id": "s_sr4",
+      "name": "不思議の美術部「玄冬淡雪＆朱夏夜雨ちゃん」",
+      "element": "s",
+      "rarity": "sr",
+      "color": "水",
+      "type": "弱",
+      "collab": null
+    },
+    {
+      "id": "s_sr5",
+      "name": "蜘蛛縫組 Ж 組本部 裁縫会合室",
+      "element": "s",
+      "rarity": "sr",
+      "color": "火",
+      "type": "罠",
+      "collab": null
+    },
+    {
+      "id": "s_sr6",
+      "name": "//*#イレギュラー Errordoll-18782#*//",
+      "element": "s",
+      "rarity": "sr",
+      "color": "無",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "s_sr7",
+      "name": "まおうのせんぺい！殺戮武闘ロボ",
+      "element": "s",
+      "rarity": "sr",
+      "color": "火",
+      "type": "他",
+      "collab": null
+    },
+    {
+      "id": "s_sr8",
+      "name": "失われし慈悲¦ケバブ屋のおっちゃん",
+      "element": "s",
+      "rarity": "sr",
+      "color": "木",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "s_ur1",
+      "name": "とある家庭用メカの反乱",
+      "element": "s",
+      "rarity": "ur",
+      "color": "火",
+      "type": "連",
+      "collab": null
+    },
+    {
+      "id": "s_ur2",
+      "name": "運命の女神 エボリューション☆リリカ",
+      "element": "s",
+      "rarity": "ur",
+      "color": "水",
+      "type": "遠",
+      "collab": null
+    },
+    {
+      "id": "s_ur3",
+      "name": "革命の旗",
+      "element": "s",
+      "rarity": "ur",
+      "color": "火",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "s_ur4",
+      "name": "深淵より湧き上がるシャドウ",
+      "element": "s",
+      "rarity": "ur",
+      "color": "火",
+      "type": "遠",
+      "collab": null
+    },
+    {
+      "id": "s_ur5",
+      "name": "ドリーム☆マジカルスクエア",
+      "element": "s",
+      "rarity": "ur",
+      "color": "水",
+      "type": "弱",
+      "collab": null
+    },
+    {
+      "id": "s_ur6",
+      "name": "全天首都防壁 Hum-Sphere LLIK",
+      "element": "s",
+      "rarity": "ur",
+      "color": "木",
+      "type": "防",
+      "collab": null
+    },
+    {
+      "id": "s_ur7",
+      "name": "銀河防衛ロボ Unidoll-2525",
+      "element": "s",
+      "rarity": "ur",
+      "color": "水",
+      "type": "癒",
+      "collab": null
+    },
+    {
+      "id": "s_ur8",
+      "name": "祭りの粋！オトコの手筒花火",
+      "element": "s",
+      "rarity": "ur",
+      "color": "火",
+      "type": "他",
+      "collab": null
+    },
+    {
+      "id": "s_ur9",
+      "name": "モノリス Hum-Unknown",
+      "element": "s",
+      "rarity": "ur",
+      "color": "水",
+      "type": "罠",
+      "collab": null
+    },
+    {
+      "id": "s_ur10",
+      "name": "神技官 アンジュ・ソレイユ",
+      "element": "s",
+      "rarity": "ur",
+      "color": "火",
+      "type": "癒",
+      "collab": null
+    },
+    {
+      "id": "s_ur11",
+      "name": "独災者 アングリフ・ギフト",
+      "element": "s",
+      "rarity": "ur",
+      "color": "木",
+      "type": "遠",
+      "collab": null
+    },
+    {
+      "id": "s_ur12",
+      "name": "忘愛の長女 アレクサンドラ",
+      "element": "s",
+      "rarity": "ur",
+      "color": "火",
+      "type": "罠",
+      "collab": null
+    },
+    {
+      "id": "s_ur13",
+      "name": "楽団姫 ディーバ",
+      "element": "s",
+      "rarity": "ur",
+      "color": "水",
+      "type": "防",
+      "collab": null
+    },
+    {
+      "id": "s_ur14",
+      "name": "紅薔薇の副団長 アミスター",
+      "element": "s",
+      "rarity": "ur",
+      "color": "火",
+      "type": "他",
+      "collab": null
+    },
+    {
+      "id": "s_ur15",
+      "name": "-蒼王宮-氷冠女王イデア=N=ユランブルク",
+      "element": "s",
+      "rarity": "ur",
+      "color": "水",
+      "type": "弱",
+      "collab": null
+    },
+    {
+      "id": "s_ur16",
+      "name": "ガルガルのピカピカデコ戦車",
+      "element": "s",
+      "rarity": "ur",
+      "color": "火",
+      "type": "他",
+      "collab": null
+    },
+    {
+      "id": "s_ur17",
+      "name": "雷霊の加護 ワキンヤン",
+      "element": "s",
+      "rarity": "ur",
+      "color": "木",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "s_ur18",
+      "name": "ライバル狂刃忍者 -幽々院ゆらら-",
+      "element": "s",
+      "rarity": "ur",
+      "color": "木",
+      "type": "連",
+      "collab": null
+    },
+    {
+      "id": "s_ur19",
+      "name": "-蒼王宮- 終焉禁獣 グラナート",
+      "element": "s",
+      "rarity": "ur",
+      "color": "水",
+      "type": "周",
+      "collab": null
+    },
+    {
+      "id": "s_ur20",
+      "name": "背に負いし亡き妻の加護",
+      "element": "s",
+      "rarity": "ur",
+      "color": "火",
+      "type": "防",
+      "collab": null
+    },
+    {
+      "id": "s_ur21",
+      "name": "#夜光犯罪特区 #きてるちゃんライヴ",
+      "element": "s",
+      "rarity": "ur",
+      "color": "水",
+      "type": "他",
+      "collab": null
+    },
+    {
+      "id": "s_ur22",
+      "name": "#夜光犯罪特区 #終夜の俺様賛美会",
+      "element": "s",
+      "rarity": "ur",
+      "color": "木",
+      "type": "他",
+      "collab": null
+    },
+    {
+      "id": "s_ur23",
+      "name": "不思議の支配者「ハートの女王さま」",
+      "element": "s",
+      "rarity": "ur",
+      "color": "水",
+      "type": "他",
+      "collab": null
+    },
+    {
+      "id": "s_ur24",
+      "name": "蜘蛛縫組 Ж 面従相談役 千切 常影",
+      "element": "s",
+      "rarity": "ur",
+      "color": "水",
+      "type": "罠",
+      "collab": null
+    },
+    {
+      "id": "s_ur25",
+      "name": "//*#イレギュラー 戦闘摂理偽装システム#*//",
+      "element": "s",
+      "rarity": "ur",
+      "color": "水",
+      "type": "他",
+      "collab": null
+    },
+    {
+      "id": "s_ur26",
+      "name": "//*#イレギュラードールズ#*//",
+      "element": "s",
+      "rarity": "ur",
+      "color": "火",
+      "type": "他",
+      "collab": null
+    },
+    {
+      "id": "s_ur27",
+      "name": "‡焼亡の森‡ 溺愛弟 ルー・メルク・シルワ",
+      "element": "s",
+      "rarity": "ur",
+      "color": "木",
+      "type": "連",
+      "collab": null
+    },
+    {
+      "id": "s_ur28",
+      "name": "‡焼亡の森‡ 奴隷狩り密売団 ケルマト",
+      "element": "s",
+      "rarity": "ur",
+      "color": "火",
+      "type": "罠",
+      "collab": null
+    },
+    {
+      "id": "s_ur29",
+      "name": "せかいをはかい！恐怖の大魔王",
+      "element": "s",
+      "rarity": "ur",
+      "color": "水",
+      "type": "近",
+      "collab": null
+    },
+    {
+      "id": "csm_sr5",
+      "name": "ビーム",
+      "element": "csm",
+      "rarity": "sr",
+      "color": "水",
+      "type": "移",
+      "collab": "チェンソーマン"
+    },
+    {
+      "id": "csm_sr6",
+      "name": "天使の悪魔",
+      "element": "csm",
+      "rarity": "sr",
+      "color": "木",
+      "type": "防",
+      "collab": "チェンソーマン"
+    },
+    {
+      "id": "csm_ur5",
+      "name": "【チェンソーマン】チェンソーマン",
+      "element": "csm",
+      "rarity": "ur",
+      "color": "火",
+      "type": "反",
+      "collab": "チェンソーマン"
+    },
+    {
+      "id": "csm_ur6",
+      "name": "【チェンソーマン】レゼ",
+      "element": "csm",
+      "rarity": "ur",
+      "color": "木",
+      "type": "周",
+      "collab": "チェンソーマン"
+    },
+    {
+      "id": "fake_sr1",
+      "name": "フランチェスカ・プレラーティ",
+      "element": "fake",
+      "rarity": "sr",
+      "color": "水",
+      "type": "防",
+      "collab": "Fate/strange Fake"
+    },
+    {
+      "id": "fake_sr2",
+      "name": "オーランド・リーヴ",
+      "element": "fake",
+      "rarity": "sr",
+      "color": "木",
+      "type": "周",
+      "collab": "Fate/strange Fake"
+    },
+    {
+      "id": "fake_sr3",
+      "name": "アサシン",
+      "element": "fake",
+      "rarity": "sr",
+      "color": "火",
+      "type": "遠",
+      "collab": "Fate/strange Fake"
+    },
+    {
+      "id": "fake_sr4",
+      "name": "ジェスター・カルトゥーレ",
+      "element": "fake",
+      "rarity": "sr",
+      "color": "火",
+      "type": "連",
+      "collab": "Fate/strange Fake"
+    },
+    {
+      "id": "fake_ur1",
+      "name": "【Fate/strange Fake】To The City",
+      "element": "fake",
+      "rarity": "ur",
+      "color": "水",
+      "type": "防",
+      "collab": "Fate/strange Fake"
+    },
+    {
+      "id": "fake_ur2",
+      "name": "【Fate/strange Fake】慢心無き戦",
+      "element": "fake",
+      "rarity": "ur",
+      "color": "無",
+      "type": "近",
+      "collab": "Fate/strange Fake"
+    },
+    {
+      "id": "fake_ur3",
+      "name": "【Fate/strange Fake】造られし命達",
+      "element": "fake",
+      "rarity": "ur",
+      "color": "木",
+      "type": "連",
+      "collab": "Fate/strange Fake"
+    },
+    {
+      "id": "fake_ur4",
+      "name": "【Fate/strange Fake】時計塔の師弟",
+      "element": "fake",
+      "rarity": "ur",
+      "color": "火",
+      "type": "癒",
+      "collab": "Fate/strange Fake"
+    },
+    {
+      "id": "popte_sr1",
+      "name": "ポプ子",
+      "element": "popte",
+      "rarity": "sr",
+      "color": "火",
+      "type": "癒",
+      "collab": "ポプテピピック"
+    },
+    {
+      "id": "popte_sr2",
+      "name": "ピピ美",
+      "element": "popte",
+      "rarity": "sr",
+      "color": "木",
+      "type": "遠",
+      "collab": "ポプテピピック"
+    },
+    {
+      "id": "popte_sr3",
+      "name": "ポプ子＆ピピ美",
+      "element": "popte",
+      "rarity": "sr",
+      "color": "水",
+      "type": "遠",
+      "collab": "ポプテピピック"
+    },
+    {
+      "id": "popte_ur1",
+      "name": "【ポプテピピック】POP TEAM EPIC",
+      "element": "popte",
+      "rarity": "ur",
+      "color": "水",
+      "type": "癒",
+      "collab": "ポプテピピック"
+    },
+    {
+      "id": "popte_ur2",
+      "name": "【ポプテピピック】万全のポプ子",
+      "element": "popte",
+      "rarity": "ur",
+      "color": "木",
+      "type": "強",
+      "collab": "ポプテピピック"
+    },
+    {
+      "id": "popte_ur3",
+      "name": "【ポプテピピック】たたかないで…",
+      "element": "popte",
+      "rarity": "ur",
+      "color": "火",
+      "type": "強",
+      "collab": "ポプテピピック"
+    },
+    {
+      "id": "kagejitsu_sr1",
+      "name": "ベータ",
+      "element": "kagejitsu",
+      "rarity": "sr",
+      "color": "木",
+      "type": "周",
+      "collab": "陰の実力者になりたくて!"
+    },
+    {
+      "id": "kagejitsu_sr2",
+      "name": "イプシロン",
+      "element": "kagejitsu",
+      "rarity": "sr",
+      "color": "火",
+      "type": "周",
+      "collab": "陰の実力者になりたくて!"
+    },
+    {
+      "id": "kagejitsu_sr3",
+      "name": "イータ",
+      "element": "kagejitsu",
+      "rarity": "sr",
+      "color": "水",
+      "type": "防",
+      "collab": "陰の実力者になりたくて!"
+    },
+    {
+      "id": "kagejitsu_ur1",
+      "name": "【陰実】HIGHEST",
+      "element": "kagejitsu",
+      "rarity": "ur",
+      "color": "水",
+      "type": "周",
+      "collab": "陰の実力者になりたくて!"
+    },
+    {
+      "id": "kagejitsu_ur2",
+      "name": "【陰実】偽りの中の戯れ",
+      "element": "kagejitsu",
+      "rarity": "ur",
+      "color": "木",
+      "type": "周",
+      "collab": "陰の実力者になりたくて!"
+    },
+    {
+      "id": "kagejitsu_ur3",
+      "name": "【陰実】七陰の頭脳",
+      "element": "kagejitsu",
+      "rarity": "ur",
+      "color": "火",
+      "type": "癒",
+      "collab": "陰の実力者になりたくて!"
+    },
+    {
+      "id": "toaru_sr5",
+      "name": "インデックス",
+      "element": "toaru",
+      "rarity": "sr",
+      "color": "木",
+      "type": "癒",
+      "collab": "とある魔術の禁書目録"
+    },
+    {
+      "id": "toaru_sr6",
+      "name": "ラストオーダー",
+      "element": "toaru",
+      "rarity": "sr",
+      "color": "火",
+      "type": "強",
+      "collab": "とある魔術の禁書目録"
+    },
+    {
+      "id": "toaru_ur5",
+      "name": "【禁書目録】聖人と天才",
+      "element": "toaru",
+      "rarity": "ur",
+      "color": "木",
+      "type": "近",
+      "collab": "とある魔術の禁書目録"
+    },
+    {
+      "id": "toaru_ur6",
+      "name": "【禁書目録】未元物質（ダークマター）",
+      "element": "toaru",
+      "rarity": "ur",
+      "color": "水",
+      "type": "強",
+      "collab": "とある魔術の禁書目録"
+    },
+    {
+      "id": "hh_sr1",
+      "name": "レオリオ",
+      "element": "hh",
+      "rarity": "sr",
+      "color": "火",
+      "type": "近",
+      "collab": "HUNTER×HUNTER"
+    },
+    {
+      "id": "hh_sr2",
+      "name": "クラピカ",
+      "element": "hh",
+      "rarity": "sr",
+      "color": "水",
+      "type": "癒",
+      "collab": "HUNTER×HUNTER"
+    },
+    {
+      "id": "hh_sr3",
+      "name": "カイト",
+      "element": "hh",
+      "rarity": "sr",
+      "color": "木",
+      "type": "周",
+      "collab": "HUNTER×HUNTER"
+    },
+    {
+      "id": "hh_sr4",
+      "name": "ネフェルピトー",
+      "element": "hh",
+      "rarity": "sr",
+      "color": "木",
+      "type": "防",
+      "collab": "HUNTER×HUNTER"
+    },
+    {
+      "id": "hh_ur1",
+      "name": "【HUNTER×HUNTER】旅立ちと仲間たち",
+      "element": "hh",
+      "rarity": "ur",
+      "color": "火",
+      "type": "周",
+      "collab": "HUNTER×HUNTER"
+    },
+    {
+      "id": "hh_ur2",
+      "name": "【HUNTER×HUNTER】ゾルディック家",
+      "element": "hh",
+      "rarity": "ur",
+      "color": "木",
+      "type": "反",
+      "collab": "HUNTER×HUNTER"
+    },
+    {
+      "id": "hh_ur3",
+      "name": "【HUNTER×HUNTER】奇術師 ヒソカ",
+      "element": "hh",
+      "rarity": "ur",
+      "color": "水",
+      "type": "他",
+      "collab": "HUNTER×HUNTER"
+    },
+    {
+      "id": "hh_ur4",
+      "name": "【HUNTER×HUNTER】決意と覚悟の拳",
+      "element": "hh",
+      "rarity": "ur",
+      "color": "無",
+      "type": "近",
+      "collab": "HUNTER×HUNTER"
+    },
+    {
+      "id": "abyss_sr1",
+      "name": "レグ",
+      "element": "abyss",
+      "rarity": "sr",
+      "color": "水",
+      "type": "連",
+      "collab": "メイドインアビス"
+    },
+    {
+      "id": "abyss_sr2",
+      "name": "リコ",
+      "element": "abyss",
+      "rarity": "sr",
+      "color": "木",
+      "type": "連",
+      "collab": "メイドインアビス"
+    },
+    {
+      "id": "abyss_sr3",
+      "name": "ナナチ",
+      "element": "abyss",
+      "rarity": "sr",
+      "color": "火",
+      "type": "防",
+      "collab": "メイドインアビス"
+    },
+    {
+      "id": "abyss_ur1",
+      "name": "【メイドインアビス】火葬砲",
+      "element": "abyss",
+      "rarity": "ur",
+      "color": "火",
+      "type": "連",
+      "collab": "メイドインアビス"
+    },
+    {
+      "id": "abyss_ur2",
+      "name": "【メイドインアビス】黎明卿",
+      "element": "abyss",
+      "rarity": "ur",
+      "color": "無",
+      "type": "遠",
+      "collab": "メイドインアビス"
+    },
+    {
+      "id": "abyss_ur3",
+      "name": "【メイドインアビス】ナナチ＆ミーティ",
+      "element": "abyss",
+      "rarity": "ur",
+      "color": "水",
+      "type": "癒",
+      "collab": "メイドインアビス"
+    },
+    {
+      "id": "youjo_sr1",
+      "name": "ターニャ・デグレチャフ",
+      "element": "youjo",
+      "rarity": "sr",
+      "color": "火",
+      "type": "反",
+      "collab": "幼女戦記"
+    },
+    {
+      "id": "youjo_sr2",
+      "name": "ヴィーシャ",
+      "element": "youjo",
+      "rarity": "sr",
+      "color": "木",
+      "type": "癒",
+      "collab": "幼女戦記"
+    },
+    {
+      "id": "youjo_sr3",
+      "name": "メアリー",
+      "element": "youjo",
+      "rarity": "sr",
+      "color": "水",
+      "type": "周",
+      "collab": "幼女戦記"
+    },
+    {
+      "id": "youjo_ur1",
+      "name": "【幼女戦記】ラインの悪魔",
+      "element": "youjo",
+      "rarity": "ur",
+      "color": "水",
+      "type": "近",
+      "collab": "幼女戦記"
+    },
+    {
+      "id": "youjo_ur2",
+      "name": "【幼女戦記】反撃の狼煙",
+      "element": "youjo",
+      "rarity": "ur",
+      "color": "木",
+      "type": "他",
+      "collab": "幼女戦記"
+    },
+    {
+      "id": "youjo_ur3",
+      "name": "【幼女戦記】神の恩寵",
+      "element": "youjo",
+      "rarity": "ur",
+      "color": "火",
+      "type": "強",
+      "collab": "幼女戦記"
+    },
+    {
+      "id": "csm_sr1",
+      "name": "サムライソード",
+      "element": "csm",
+      "rarity": "sr",
+      "color": "火",
+      "type": "強",
+      "collab": "チェンソーマン"
+    },
+    {
+      "id": "csm_sr2",
+      "name": "岸辺",
+      "element": "csm",
+      "rarity": "sr",
+      "color": "火",
+      "type": "周",
+      "collab": "チェンソーマン"
+    },
+    {
+      "id": "csm_sr3",
+      "name": "姫野",
+      "element": "csm",
+      "rarity": "sr",
+      "color": "水",
+      "type": "連",
+      "collab": "チェンソーマン"
+    },
+    {
+      "id": "csm_sr4",
+      "name": "東山コベニ",
+      "element": "csm",
+      "rarity": "sr",
+      "color": "木",
+      "type": "癒",
+      "collab": "チェンソーマン"
+    },
+    {
+      "id": "csm_ur1",
+      "name": "【チェンソーマン】マキマ",
+      "element": "csm",
+      "rarity": "ur",
+      "color": "火",
+      "type": "連",
+      "collab": "チェンソーマン"
+    },
+    {
+      "id": "csm_ur2",
+      "name": "【チェンソーマン】早川アキ",
+      "element": "csm",
+      "rarity": "ur",
+      "color": "水",
+      "type": "近",
+      "collab": "チェンソーマン"
+    },
+    {
+      "id": "csm_ur3",
+      "name": "【チェンソーマン】公安対魔特異4課",
+      "element": "csm",
+      "rarity": "ur",
+      "color": "水",
+      "type": "癒",
+      "collab": "チェンソーマン"
+    },
+    {
+      "id": "csm_ur4",
+      "name": "【チェンソーマン】犬とチェンソー",
+      "element": "csm",
+      "rarity": "ur",
+      "color": "木",
+      "type": "防",
+      "collab": "チェンソーマン"
+    },
+    {
+      "id": "exe_sr1",
+      "name": "ガッツマン.EXE & 大山デカオ",
+      "element": "exe",
+      "rarity": "sr",
+      "color": "木",
+      "type": "近",
+      "collab": "ロックマンエグゼ"
+    },
+    {
+      "id": "exe_sr2",
+      "name": "ロール.EXE & 桜井メイル",
+      "element": "exe",
+      "rarity": "sr",
+      "color": "火",
+      "type": "癒",
+      "collab": "ロックマンエグゼ"
+    },
+    {
+      "id": "exe_sr3",
+      "name": "Dr.ワイリー",
+      "element": "exe",
+      "rarity": "sr",
+      "color": "水",
+      "type": "他",
+      "collab": "ロックマンエグゼ"
+    },
+    {
+      "id": "exe_ur1",
+      "name": "【ロックマンエグゼ】ショックウェーブ",
+      "element": "exe",
+      "rarity": "ur",
+      "color": "水",
+      "type": "近",
+      "collab": "ロックマンエグゼ"
+    },
+    {
+      "id": "exe_ur2",
+      "name": "【ロックマンエグゼ】ダブルストリーム",
+      "element": "exe",
+      "rarity": "ur",
+      "color": "火",
+      "type": "防",
+      "collab": "ロックマンエグゼ"
+    },
+    {
+      "id": "exe_ur3",
+      "name": "【ロックマンエグゼ】アースブレイカー",
+      "element": "exe",
+      "rarity": "ur",
+      "color": "木",
+      "type": "周",
+      "collab": "ロックマンエグゼ"
+    },
+    {
+      "id": "musyoku_sr1",
+      "name": "ロキシーの人形",
+      "element": "musyoku",
+      "rarity": "sr",
+      "color": "火",
+      "type": "弱",
+      "collab": "無職転生"
+    },
+    {
+      "id": "musyoku_sr2",
+      "name": "シルフィエット",
+      "element": "musyoku",
+      "rarity": "sr",
+      "color": "木",
+      "type": "防",
+      "collab": "無職転生"
+    },
+    {
+      "id": "musyoku_sr3",
+      "name": "ルイジェルド・スペルディア",
+      "element": "musyoku",
+      "rarity": "sr",
+      "color": "水",
+      "type": "遠",
+      "collab": "無職転生"
+    },
+    {
+      "id": "musyoku_ur1",
+      "name": "【無職転生】夕暮れのひと時",
+      "element": "musyoku",
+      "rarity": "ur",
+      "color": "火",
+      "type": "癒",
+      "collab": "無職転生"
+    },
+    {
+      "id": "musyoku_ur2",
+      "name": "【無職転生】すれ違う物語",
+      "element": "musyoku",
+      "rarity": "ur",
+      "color": "水",
+      "type": "周",
+      "collab": "無職転生"
+    },
+    {
+      "id": "musyoku_ur3",
+      "name": "【無職転生】無慈悲なる邂逅",
+      "element": "musyoku",
+      "rarity": "ur",
+      "color": "木",
+      "type": "弱",
+      "collab": "無職転生"
+    },
+    {
+      "id": "danmachi_ur4",
+      "name": "【ダンまち】聖火の女神と宴",
+      "element": "danmachi",
+      "rarity": "ur",
+      "color": "火",
+      "type": "近",
+      "collab": "ダンまち"
+    },
+    {
+      "id": "danmachi_ur5",
+      "name": "【ダンまち】恥じらいの疾風",
+      "element": "danmachi",
+      "rarity": "ur",
+      "color": "木",
+      "type": "他",
+      "collab": "ダンまち"
+    },
+    {
+      "id": "toaru_sr1",
+      "name": "白井黒子",
+      "element": "toaru",
+      "rarity": "sr",
+      "color": "火",
+      "type": "移",
+      "collab": "とある科学の超電磁砲"
+    },
+    {
+      "id": "toaru_sr2",
+      "name": "初春飾利",
+      "element": "toaru",
+      "rarity": "sr",
+      "color": "木",
+      "type": "周",
+      "collab": "とある科学の超電磁砲"
+    },
+    {
+      "id": "toaru_sr3",
+      "name": "佐天涙子",
+      "element": "toaru",
+      "rarity": "sr",
+      "color": "水",
+      "type": "防",
+      "collab": "とある科学の超電磁砲"
+    },
+    {
+      "id": "toaru_sr4",
+      "name": "フレンダ=セイヴェルン",
+      "element": "toaru",
+      "rarity": "sr",
+      "color": "水",
+      "type": "罠",
+      "collab": "とある科学の超電磁砲"
+    },
+    {
+      "id": "toaru_ur1",
+      "name": "【超電磁砲】常盤台の超電磁砲(レールガン)",
+      "element": "toaru",
+      "rarity": "ur",
+      "color": "火",
+      "type": "遠",
+      "collab": "とある科学の超電磁砲"
+    },
+    {
+      "id": "toaru_ur2",
+      "name": "【超電磁砲】超能力者(レベル5)の第一位",
+      "element": "toaru",
+      "rarity": "ur",
+      "color": "水",
+      "type": "反",
+      "collab": "とある科学の超電磁砲"
+    },
+    {
+      "id": "toaru_ur3",
+      "name": "【超電磁砲】とある少女たちの物語",
+      "element": "toaru",
+      "rarity": "ur",
+      "color": "木",
+      "type": "癒",
+      "collab": "とある科学の超電磁砲"
+    },
+    {
+      "id": "toaru_ur4",
+      "name": "【超電磁砲】幻想殺し(イマジンブレイカー)",
+      "element": "toaru",
+      "rarity": "ur",
+      "color": "火",
+      "type": "近",
+      "collab": "とある科学の超電磁砲"
+    },
+    {
+      "id": "tensura_sr1",
+      "name": "ヴェルドラ",
+      "element": "tensura",
+      "rarity": "sr",
+      "color": "水",
+      "type": "強",
+      "collab": "転生したらスライムだった件"
+    },
+    {
+      "id": "tensura_sr2",
+      "name": "ミリム",
+      "element": "tensura",
+      "rarity": "sr",
+      "color": "火",
+      "type": "癒",
+      "collab": "転生したらスライムだった件"
+    },
+    {
+      "id": "tensura_sr3",
+      "name": "クレイマン",
+      "element": "tensura",
+      "rarity": "sr",
+      "color": "木",
+      "type": "近",
+      "collab": "転生したらスライムだった件"
+    },
+    {
+      "id": "tensura_ur1",
+      "name": "【転スラ】転生したらスライムだった件",
+      "element": "tensura",
+      "rarity": "ur",
+      "color": "水",
+      "type": "防",
+      "collab": "転生したらスライムだった件"
+    },
+    {
+      "id": "tensura_ur2",
+      "name": "【転スラ】集う者達",
+      "element": "tensura",
+      "rarity": "ur",
+      "color": "火",
+      "type": "周",
+      "collab": "転生したらスライムだった件"
+    },
+    {
+      "id": "tensura_ur3",
+      "name": "【転スラ】受け継がれる想い",
+      "element": "tensura",
+      "rarity": "ur",
+      "color": "木",
+      "type": "遠",
+      "collab": "転生したらスライムだった件"
+    },
+    {
+      "id": "na_sr1",
+      "name": "ヨルハ部隊司令官",
+      "element": "na",
+      "rarity": "sr",
+      "color": "水",
+      "type": "罠",
+      "collab": "NieR:Automata"
+    },
+    {
+      "id": "na_sr2",
+      "name": "オペレーター 60／210",
+      "element": "na",
+      "rarity": "sr",
+      "color": "木",
+      "type": "近",
+      "collab": "NieR:Automata"
+    },
+    {
+      "id": "na_sr3",
+      "name": "パスカル",
+      "element": "na",
+      "rarity": "sr",
+      "color": "火",
+      "type": "癒",
+      "collab": "NieR:Automata"
+    },
+    {
+      "id": "na_ur1",
+      "name": "【NieR:Automata】戦いの始まり",
+      "element": "na",
+      "rarity": "ur",
+      "color": "水",
+      "type": "反",
+      "collab": "NieR:Automata"
+    },
+    {
+      "id": "na_ur2",
+      "name": "【NieR:Automata】静寂の時",
+      "element": "na",
+      "rarity": "ur",
+      "color": "木",
+      "type": "近",
+      "collab": "NieR:Automata"
+    },
+    {
+      "id": "na_ur3",
+      "name": "【NieR:Automata】交錯する運命",
+      "element": "na",
+      "rarity": "ur",
+      "color": "火",
+      "type": "近",
+      "collab": "NieR:Automata"
+    },
+    {
+      "id": "sao_sr1",
+      "name": "シリカ&ピナ",
+      "element": "sao",
+      "rarity": "sr",
+      "color": "火",
+      "type": "癒",
+      "collab": "ソードアートオンライン"
+    },
+    {
+      "id": "sao_sr2",
+      "name": "リズベット",
+      "element": "sao",
+      "rarity": "sr",
+      "color": "水",
+      "type": "強",
+      "collab": "ソードアートオンライン"
+    },
+    {
+      "id": "sao_sr3",
+      "name": "エギル",
+      "element": "sao",
+      "rarity": "sr",
+      "color": "木",
+      "type": "近",
+      "collab": "ソードアートオンライン"
+    },
+    {
+      "id": "sao_sr4",
+      "name": "ヒースクリフ",
+      "element": "sao",
+      "rarity": "sr",
+      "color": "水",
+      "type": "周",
+      "collab": "ソードアートオンライン"
+    },
+    {
+      "id": "sao_ur1",
+      "name": "【SAO】朝露の少女と",
+      "element": "sao",
+      "rarity": "ur",
+      "color": "火",
+      "type": "防",
+      "collab": "ソードアートオンライン"
+    },
+    {
+      "id": "sao_ur2",
+      "name": "【SAO】氷の狙撃手",
+      "element": "sao",
+      "rarity": "ur",
+      "color": "火",
+      "type": "遠",
+      "collab": "ソードアートオンライン"
+    },
+    {
+      "id": "sao_ur3",
+      "name": "【SAO】妖精たちの国にて",
+      "element": "sao",
+      "rarity": "ur",
+      "color": "水",
+      "type": "癒",
+      "collab": "ソードアートオンライン"
+    },
+    {
+      "id": "sao_ur4",
+      "name": "【SAO】旅路の果て",
+      "element": "sao",
+      "rarity": "ur",
+      "color": "木",
+      "type": "連",
+      "collab": "ソードアートオンライン"
+    },
+    {
+      "id": "ol_sr1",
+      "name": "シャルティア・ブラッドフォールン",
+      "element": "ol",
+      "rarity": "sr",
+      "color": "火",
+      "type": "強",
+      "collab": "オーバーロード"
+    },
+    {
+      "id": "ol_sr2",
+      "name": "セバス・チャン",
+      "element": "ol",
+      "rarity": "sr",
+      "color": "木",
+      "type": "反",
+      "collab": "オーバーロード"
+    },
+    {
+      "id": "ol_sr3",
+      "name": "アウラ・ベラ・フィオーラ",
+      "element": "ol",
+      "rarity": "sr",
+      "color": "水",
+      "type": "連",
+      "collab": "オーバーロード"
+    },
+    {
+      "id": "ol_ur1",
+      "name": "【オーバーロード】不死者の王 アインズ",
+      "element": "ol",
+      "rarity": "ur",
+      "color": "火",
+      "type": "近",
+      "collab": "オーバーロード"
+    },
+    {
+      "id": "ol_ur2",
+      "name": "【オーバーロード】守護者統括 アルベド",
+      "element": "ol",
+      "rarity": "ur",
+      "color": "木",
+      "type": "癒",
+      "collab": "オーバーロード"
+    },
+    {
+      "id": "ol_ur3",
+      "name": "【オーバーロード】英雄モモン&美姫ナーベ",
+      "element": "ol",
+      "rarity": "ur",
+      "color": "水",
+      "type": "強",
+      "collab": "オーバーロード"
+    },
+    {
+      "id": "p5_sr1",
+      "name": "フォックス",
+      "element": "p5",
+      "rarity": "sr",
+      "color": "水",
+      "type": "近",
+      "collab": "ペルソナ5"
+    },
+    {
+      "id": "p5_sr2",
+      "name": "クイーン",
+      "element": "p5",
+      "rarity": "sr",
+      "color": "火",
+      "type": "弱",
+      "collab": "ペルソナ5"
+    },
+    {
+      "id": "p5_sr3",
+      "name": "ノワール",
+      "element": "p5",
+      "rarity": "sr",
+      "color": "木",
+      "type": "癒",
+      "collab": "ペルソナ5"
+    },
+    {
+      "id": "p5_ur1",
+      "name": "【ペルソナ5】TAKE YOUR HEART",
+      "element": "p5",
+      "rarity": "ur",
+      "color": "火",
+      "type": "移",
+      "collab": "ペルソナ5"
+    },
+    {
+      "id": "p5_ur2",
+      "name": "【ペルソナ5】運命の囚われ",
+      "element": "p5",
+      "rarity": "ur",
+      "color": "水",
+      "type": "防",
+      "collab": "ペルソナ5"
+    },
+    {
+      "id": "p5_ur3",
+      "name": "【ペルソナ5】心の怪盗団",
+      "element": "p5",
+      "rarity": "ur",
+      "color": "木",
+      "type": "周",
+      "collab": "ペルソナ5"
+    },
+    {
+      "id": "ryza_sr1",
+      "name": "レント・マルスリンク",
+      "element": "ryza",
+      "rarity": "sr",
+      "color": "水",
+      "type": "反",
+      "collab": "ライザのアトリエ2"
+    },
+    {
+      "id": "ryza_sr2",
+      "name": "パトリツィア・アーベルハイム",
+      "element": "ryza",
+      "rarity": "sr",
+      "color": "火",
+      "type": "近",
+      "collab": "ライザのアトリエ2"
+    },
+    {
+      "id": "ryza_sr3",
+      "name": "セリ・グロース",
+      "element": "ryza",
+      "rarity": "sr",
+      "color": "木",
+      "type": "癒",
+      "collab": "ライザのアトリエ2"
+    },
+    {
+      "id": "ryza_ur1",
+      "name": "【ライザのアトリエ2】いざ！冒険の旅へ！",
+      "element": "ryza",
+      "rarity": "ur",
+      "color": "火",
+      "type": "弱",
+      "collab": "ライザのアトリエ2"
+    },
+    {
+      "id": "ryza_ur2",
+      "name": "【ライザのアトリエ2】夏だ！海だ！水着だ！",
+      "element": "ryza",
+      "rarity": "ur",
+      "color": "水",
+      "type": "周",
+      "collab": "ライザのアトリエ2"
+    },
+    {
+      "id": "ryza_ur3",
+      "name": "【ライザのアトリエ2】ひと夏の思い出",
+      "element": "ryza",
+      "rarity": "ur",
+      "color": "木",
+      "type": "強",
+      "collab": "ライザのアトリエ2"
+    },
+    {
+      "id": "bunsuto_sr1",
+      "name": "宮沢賢治",
+      "element": "bunsuto",
+      "rarity": "sr",
+      "color": "木",
+      "type": "遠",
+      "collab": "文豪ストレイドッグス"
+    },
+    {
+      "id": "bunsuto_sr2",
+      "name": "江戸川乱歩",
+      "element": "bunsuto",
+      "rarity": "sr",
+      "color": "火",
+      "type": "弱",
+      "collab": "文豪ストレイドッグス"
+    },
+    {
+      "id": "bunsuto_sr3",
+      "name": "与謝野晶子",
+      "element": "bunsuto",
+      "rarity": "sr",
+      "color": "水",
+      "type": "癒",
+      "collab": "文豪ストレイドッグス"
+    },
+    {
+      "id": "bunsuto_sr4",
+      "name": "福沢諭吉",
+      "element": "bunsuto",
+      "rarity": "sr",
+      "color": "水",
+      "type": "周",
+      "collab": "文豪ストレイドッグス"
+    },
+    {
+      "id": "bunsuto_ur1",
+      "name": "【文スト】武装探偵社",
+      "element": "bunsuto",
+      "rarity": "ur",
+      "color": "水",
+      "type": "周",
+      "collab": "文豪ストレイドッグス"
+    },
+    {
+      "id": "bunsuto_ur2",
+      "name": "【文スト】ありふれた日常の幸せ",
+      "element": "bunsuto",
+      "rarity": "ur",
+      "color": "火",
+      "type": "癒",
+      "collab": "文豪ストレイドッグス"
+    },
+    {
+      "id": "bunsuto_ur3",
+      "name": "【文スト】理想という病を愛す",
+      "element": "bunsuto",
+      "rarity": "ur",
+      "color": "火",
+      "type": "近",
+      "collab": "文豪ストレイドッグス"
+    },
+    {
+      "id": "bunsuto_ur4",
+      "name": "【文スト】双つの黒",
+      "element": "bunsuto",
+      "rarity": "ur",
+      "color": "木",
+      "type": "防",
+      "collab": "文豪ストレイドッグス"
+    },
+    {
+      "id": "ff_sr1",
+      "name": "グラディオラス",
+      "element": "ff",
+      "rarity": "sr",
+      "color": "火",
+      "type": "周",
+      "collab": "ファイナルファンタジーXV"
+    },
+    {
+      "id": "ff_sr2",
+      "name": "シドニー",
+      "element": "ff",
+      "rarity": "sr",
+      "color": "木",
+      "type": "防",
+      "collab": "ファイナルファンタジーXV"
+    },
+    {
+      "id": "ff_sr3",
+      "name": "アラネア",
+      "element": "ff",
+      "rarity": "sr",
+      "color": "水",
+      "type": "反",
+      "collab": "ファイナルファンタジーXV"
+    },
+    {
+      "id": "ff_ur1",
+      "name": "【FFXV】輝かしき未来へ",
+      "element": "ff",
+      "rarity": "ur",
+      "color": "木",
+      "type": "強",
+      "collab": "ファイナルファンタジーXV"
+    },
+    {
+      "id": "ff_ur2",
+      "name": "【FFXV】彼の者の物語",
+      "element": "ff",
+      "rarity": "ur",
+      "color": "火",
+      "type": "遠",
+      "collab": "ファイナルファンタジーXV"
+    },
+    {
+      "id": "ff_ur3",
+      "name": "【FFXV】父子の絆",
+      "element": "ff",
+      "rarity": "ur",
+      "color": "水",
+      "type": "癒",
+      "collab": "ファイナルファンタジーXV"
+    },
+    {
+      "id": "danmachi_sr1",
+      "name": "リュー・リオン",
+      "element": "danmachi",
+      "rarity": "sr",
+      "color": "木",
+      "type": "連",
+      "collab": "ダンまち"
+    },
+    {
+      "id": "danmachi_sr2",
+      "name": "ベル・クラネル",
+      "element": "danmachi",
+      "rarity": "sr",
+      "color": "火",
+      "type": "近",
+      "collab": "ダンまち"
+    },
+    {
+      "id": "danmachi_sr3",
+      "name": "リリルカ・アーデ",
+      "element": "danmachi",
+      "rarity": "sr",
+      "color": "水",
+      "type": "罠",
+      "collab": "ダンまち"
+    },
+    {
+      "id": "danmachi_ur1",
+      "name": "【ダンまち】ソード・オラトリア",
+      "element": "danmachi",
+      "rarity": "ur",
+      "color": "水",
+      "type": "連",
+      "collab": "ダンまち"
+    },
+    {
+      "id": "danmachi_ur2",
+      "name": "【ダンまち】眷族の物語(ファミリア・ミィス)",
+      "element": "danmachi",
+      "rarity": "ur",
+      "color": "火",
+      "type": "癒",
+      "collab": "ダンまち"
+    },
+    {
+      "id": "danmachi_ur3",
+      "name": "【ダンまち】至福の一時",
+      "element": "danmachi",
+      "rarity": "ur",
+      "color": "木",
+      "type": "防",
+      "collab": "ダンまち"
+    },
+    {
+      "id": "kabuki_r1",
+      "name": "【超歌舞伎】マルコス'55",
+      "element": "kabuki",
+      "rarity": "r",
+      "color": "火",
+      "type": "周",
+      "collab": "超歌舞伎×千本桜"
+    },
+    {
+      "id": "kabuki_r2",
+      "name": "【超歌舞伎】ニコラテスラ",
+      "element": "kabuki",
+      "rarity": "r",
+      "color": "水",
+      "type": "罠",
+      "collab": "超歌舞伎×千本桜"
+    },
+    {
+      "id": "kabuki_r3",
+      "name": "【超歌舞伎】アダム=ユーリエフ",
+      "element": "kabuki",
+      "rarity": "r",
+      "color": "木",
+      "type": "近",
+      "collab": "超歌舞伎×千本桜"
+    },
+    {
+      "id": "kabuki_sr1",
+      "name": "【千本桜】鏡音鈴＆鏡音錬",
+      "element": "kabuki",
+      "rarity": "sr",
+      "color": "木",
+      "type": "強",
+      "collab": "超歌舞伎×千本桜"
+    },
+    {
+      "id": "kabuki_sr2",
+      "name": "【超歌舞伎】青龍の精",
+      "element": "kabuki",
+      "rarity": "sr",
+      "color": "水",
+      "type": "周",
+      "collab": "超歌舞伎×千本桜"
+    },
+    {
+      "id": "kabuki_sr3",
+      "name": "【超歌舞伎】母と娘の絆",
+      "element": "kabuki",
+      "rarity": "sr",
+      "color": "火",
+      "type": "移",
+      "collab": "超歌舞伎×千本桜"
+    },
+    {
+      "id": "kabuki_ur1",
+      "name": "【千本桜】初音未來",
+      "element": "kabuki",
+      "rarity": "ur",
+      "color": "木",
+      "type": "近",
+      "collab": "超歌舞伎×千本桜"
+    },
+    {
+      "id": "kabuki_ur2",
+      "name": "【超歌舞伎】転生なしたる白狐",
+      "element": "kabuki",
+      "rarity": "ur",
+      "color": "火",
+      "type": "防",
+      "collab": "超歌舞伎×千本桜"
+    },
+    {
+      "id": "kabuki_ur3",
+      "name": "【超歌舞伎】今昔饗宴千本桜",
+      "element": "kabuki",
+      "rarity": "ur",
+      "color": "水",
+      "type": "癒",
+      "collab": "超歌舞伎×千本桜"
+    },
+    {
+      "id": "fate_sr1",
+      "name": "衛宮士郎",
+      "element": "fate",
+      "rarity": "sr",
+      "color": "火",
+      "type": "近",
+      "collab": "fate"
+    },
+    {
+      "id": "fate_sr2",
+      "name": "ライダー",
+      "element": "fate",
+      "rarity": "sr",
+      "color": "木",
+      "type": "強",
+      "collab": "fate"
+    },
+    {
+      "id": "fate_sr3",
+      "name": "間桐桜 -マキリの杯-",
+      "element": "fate",
+      "rarity": "sr",
+      "color": "水",
+      "type": "罠",
+      "collab": "fate"
+    },
+    {
+      "id": "fate_sr4",
+      "name": "遠坂凛",
+      "element": "fate",
+      "rarity": "sr",
+      "color": "火",
+      "type": "遠",
+      "collab": "fate"
+    },
+    {
+      "id": "fate_ur1",
+      "name": "【Fate/stay night [HF]】舞い散る桜",
+      "element": "fate",
+      "rarity": "ur",
+      "color": "木",
+      "type": "癒",
+      "collab": "fate"
+    },
+    {
+      "id": "fate_ur2",
+      "name": "【Fate/stay night [HF]】lost butterfly",
+      "element": "fate",
+      "rarity": "ur",
+      "color": "水",
+      "type": "防",
+      "collab": "fate"
+    },
+    {
+      "id": "fate_ur3",
+      "name": "【Fate/stay night [HF]】狂戦士の咆哮",
+      "element": "fate",
+      "rarity": "ur",
+      "color": "木",
+      "type": "周",
+      "collab": "fate"
+    },
+    {
+      "id": "fate_ur4",
+      "name": "【Fate/stay night [HF]】激辛麻婆豆腐",
+      "element": "fate",
+      "rarity": "ur",
+      "color": "火",
+      "type": "弱",
+      "collab": "fate"
+    },
+    {
+      "id": "sg_sr1",
+      "name": "フェイリス・ニャンニャン",
+      "element": "sg",
+      "rarity": "sr",
+      "color": "火",
+      "type": "近",
+      "collab": "STEINS;GATE"
+    },
+    {
+      "id": "sg_sr3",
+      "name": "橋田 至",
+      "element": "sg",
+      "rarity": "sr",
+      "color": "木",
+      "type": "強",
+      "collab": "STEINS;GATE"
+    },
+    {
+      "id": "sg_sr2",
+      "name": "阿万音 鈴羽",
+      "element": "sg",
+      "rarity": "sr",
+      "color": "水",
+      "type": "連",
+      "collab": "STEINS;GATE"
+    },
+    {
+      "id": "sg_ur2",
+      "name": "【STEINS;GATE】黄昏の憩い",
+      "element": "sg",
+      "rarity": "ur",
+      "color": "火",
+      "type": "癒",
+      "collab": "STEINS;GATE"
+    },
+    {
+      "id": "sg_ur3",
+      "name": "【STEINS;GATE】未来を司る女神作戦",
+      "element": "sg",
+      "rarity": "ur",
+      "color": "水",
+      "type": "近",
+      "collab": "STEINS;GATE"
+    },
+    {
+      "id": "sg_ur1",
+      "name": "【STEINS;GATE】時間跳躍の協力者",
+      "element": "sg",
+      "rarity": "ur",
+      "color": "木",
+      "type": "強",
+      "collab": "STEINS;GATE"
+    },
+    {
+      "id": "nekomiya_sr3",
+      "name": "【ニヒヒ対人地雷】猫宮ひなた",
+      "element": "nekomiya",
+      "rarity": "sr",
+      "color": "木",
+      "type": "罠",
+      "collab": "猫宮ひなた"
+    },
+    {
+      "id": "nekomiya_sr2",
+      "name": "【ぶっぱ短機関銃】猫宮ひなた",
+      "element": "nekomiya",
+      "rarity": "sr",
+      "color": "木",
+      "type": "周",
+      "collab": "猫宮ひなた"
+    },
+    {
+      "id": "nekomiya_sr1",
+      "name": "【パルクール2丁拳銃】猫宮ひなた",
+      "element": "nekomiya",
+      "rarity": "sr",
+      "color": "水",
+      "type": "連",
+      "collab": "猫宮ひなた"
+    },
+    {
+      "id": "nekomiya_ur3",
+      "name": "【最高にハイ!!!エナドリ】猫宮ひなた",
+      "element": "nekomiya",
+      "rarity": "ur",
+      "color": "水",
+      "type": "癒",
+      "collab": "猫宮ひなた"
+    },
+    {
+      "id": "nekomiya_ur2",
+      "name": "【ワンショットワンキル】猫宮ひなた",
+      "element": "nekomiya",
+      "rarity": "ur",
+      "color": "火",
+      "type": "遠",
+      "collab": "猫宮ひなた"
+    },
+    {
+      "id": "nekomiya_ur1",
+      "name": "【火遊びフラッシュバン】猫宮ひなた",
+      "element": "nekomiya",
+      "rarity": "ur",
+      "color": "火",
+      "type": "罠",
+      "collab": "猫宮ひなた"
+    },
+    {
+      "id": "kyojin_sr1",
+      "name": "【進撃の巨人】 エレン",
+      "element": "kyojin",
+      "rarity": "sr",
+      "color": "火",
+      "type": "近",
+      "collab": "進撃の巨人"
+    },
+    {
+      "id": "kyojin_sr2",
+      "name": "【進撃の巨人】 ミカサ",
+      "element": "kyojin",
+      "rarity": "sr",
+      "color": "水",
+      "type": "近",
+      "collab": "進撃の巨人"
+    },
+    {
+      "id": "kyojin_sr3",
+      "name": "【進撃の巨人】 アルミン",
+      "element": "kyojin",
+      "rarity": "sr",
+      "color": "木",
+      "type": "罠",
+      "collab": "進撃の巨人"
+    },
+    {
+      "id": "kyojin_ur1",
+      "name": "【進撃の巨人】 小さな刃",
+      "element": "kyojin",
+      "rarity": "ur",
+      "color": "木",
+      "type": "連",
+      "collab": "進撃の巨人"
+    },
+    {
+      "id": "kyojin_ur2",
+      "name": "【進撃の巨人】 超大型巨人襲来",
+      "element": "kyojin",
+      "rarity": "ur",
+      "color": "火",
+      "type": "周",
+      "collab": "進撃の巨人"
+    },
+    {
+      "id": "kyojin_ur3",
+      "name": "【進撃の巨人】 娘々ストレッチ",
+      "element": "kyojin",
+      "rarity": "ur",
+      "color": "水",
+      "type": "癒",
+      "collab": "進撃の巨人"
+    },
+    {
+      "id": "konosuba_sr1",
+      "name": "カズマ",
+      "element": "konosuba",
+      "rarity": "sr",
+      "color": "木",
+      "type": "遠",
+      "collab": "この素晴らしい世界に祝福を!"
+    },
+    {
+      "id": "konosuba_sr2",
+      "name": "ダクネス",
+      "element": "konosuba",
+      "rarity": "sr",
+      "color": "火",
+      "type": "強",
+      "collab": "この素晴らしい世界に祝福を!"
+    },
+    {
+      "id": "konosuba_sr3",
+      "name": "ウィズ",
+      "element": "konosuba",
+      "rarity": "sr",
+      "color": "水",
+      "type": "弱",
+      "collab": "この素晴らしい世界に祝福を!"
+    },
+    {
+      "id": "konosuba_sr4",
+      "name": "ゆんゆん",
+      "element": "konosuba",
+      "rarity": "sr",
+      "color": "火",
+      "type": "罠",
+      "collab": "この素晴らしい世界に祝福を!"
+    },
+    {
+      "id": "konosuba_ur1",
+      "name": "【爆裂アークウィザード】めぐみん",
+      "element": "konosuba",
+      "rarity": "ur",
+      "color": "火",
+      "type": "近",
+      "collab": "この素晴らしい世界に祝福を!"
+    },
+    {
+      "id": "konosuba_ur2",
+      "name": "【慈愛の貧乏リッチー】ウィズ",
+      "element": "konosuba",
+      "rarity": "ur",
+      "color": "水",
+      "type": "遠",
+      "collab": "この素晴らしい世界に祝福を!"
+    },
+    {
+      "id": "konosuba_ur3",
+      "name": "【駄女神's】アクア＆めぐみん＆ダクネス",
+      "element": "konosuba",
+      "rarity": "ur",
+      "color": "木",
+      "type": "防",
+      "collab": "この素晴らしい世界に祝福を!"
+    },
+    {
+      "id": "konosuba_ur4",
+      "name": "【風呂上がりの休息】アクア＆めぐみん",
+      "element": "konosuba",
+      "rarity": "ur",
+      "color": "水",
+      "type": "癒",
+      "collab": "この素晴らしい世界に祝福を!"
+    },
+    {
+      "id": "danron_sr1",
+      "name": "日向 創",
+      "element": "danron",
+      "rarity": "sr",
+      "color": "火",
+      "type": "周",
+      "collab": "ダンガンロンパ"
+    },
+    {
+      "id": "danron_sr2",
+      "name": "田中 眼蛇夢",
+      "element": "danron",
+      "rarity": "sr",
+      "color": "水",
+      "type": "遠",
+      "collab": "ダンガンロンパ"
+    },
+    {
+      "id": "danron_sr3",
+      "name": "江ノ島 盾子",
+      "element": "danron",
+      "rarity": "sr",
+      "color": "木",
+      "type": "防",
+      "collab": "ダンガンロンパ"
+    },
+    {
+      "id": "danron_ur1",
+      "name": "【超高校級の希望】苗木 誠",
+      "element": "danron",
+      "rarity": "ur",
+      "color": "木",
+      "type": "弱",
+      "collab": "ダンガンロンパ"
+    },
+    {
+      "id": "danron_ur2",
+      "name": "【超高校級の幸運】狛枝 凪斗",
+      "element": "danron",
+      "rarity": "ur",
+      "color": "火",
+      "type": "周",
+      "collab": "ダンガンロンパ"
+    },
+    {
+      "id": "danron_ur3",
+      "name": "【超高校級のゲーマー】七海 千秋",
+      "element": "danron",
+      "rarity": "ur",
+      "color": "水",
+      "type": "癒",
+      "collab": "ダンガンロンパ"
+    },
+    {
+      "id": "satsuten_sr1",
+      "name": "アイザック・フォスター",
+      "element": "satsuten",
+      "rarity": "sr",
+      "color": "水",
+      "type": "近",
+      "collab": "殺戮の天使"
+    },
+    {
+      "id": "satsuten_sr2",
+      "name": "レイチェル・ガードナー",
+      "element": "satsuten",
+      "rarity": "sr",
+      "color": "火",
+      "type": "癒",
+      "collab": "殺戮の天使"
+    },
+    {
+      "id": "satsuten_sr3",
+      "name": "ピザック",
+      "element": "satsuten",
+      "rarity": "sr",
+      "color": "水",
+      "type": "罠",
+      "collab": "殺戮の天使"
+    },
+    {
+      "id": "satsuten_ur1",
+      "name": "【愉悦の一閃】アイザック",
+      "element": "satsuten",
+      "rarity": "ur",
+      "color": "木",
+      "type": "近",
+      "collab": "殺戮の天使"
+    },
+    {
+      "id": "satsuten_ur2",
+      "name": "【ルナティック・アイズ】レイチェル",
+      "element": "satsuten",
+      "rarity": "ur",
+      "color": "火",
+      "type": "弱",
+      "collab": "殺戮の天使"
+    },
+    {
+      "id": "satsuten_ur3",
+      "name": "【イカれた約束】ザック＆レイ",
+      "element": "satsuten",
+      "rarity": "ur",
+      "color": "水",
+      "type": "防",
+      "collab": "殺戮の天使"
+    },
+    {
+      "id": "miku_sr4",
+      "name": "【ハッピーシンガー】鏡音 リン",
+      "element": "miku",
+      "rarity": "sr",
+      "color": "木",
+      "type": "強",
+      "collab": "鏡音リン・レン"
+    },
+    {
+      "id": "miku_sr5",
+      "name": "【パワフルプレイヤー】鏡音 レン",
+      "element": "miku",
+      "rarity": "sr",
+      "color": "火",
+      "type": "周",
+      "collab": "鏡音リン・レン"
+    },
+    {
+      "id": "miku_ur4",
+      "name": "【熱狂する双演】鏡音リン&鏡音レン",
+      "element": "miku",
+      "rarity": "ur",
+      "color": "火",
+      "type": "周",
+      "collab": "鏡音リン・レン"
+    },
+    {
+      "id": "miku_ur5",
+      "name": "【夢超える共演】初音ミク&鏡音リンレン",
+      "element": "miku",
+      "rarity": "ur",
+      "color": "水",
+      "type": "癒",
+      "collab": "鏡音リン・レン"
+    },
+    {
+      "id": "bl_r1",
+      "name": "【BEATLESS】レイシア",
+      "element": "bl",
+      "rarity": "r",
+      "color": "水",
+      "type": "遠",
+      "collab": "BEATLESS"
+    },
+    {
+      "id": "bl_r2",
+      "name": "【BEATLESS】スノウドロップ",
+      "element": "bl",
+      "rarity": "r",
+      "color": "木",
+      "type": "弱",
+      "collab": "BEATLESS"
+    },
+    {
+      "id": "bl_r3",
+      "name": "【BEATLESS】メトーデ",
+      "element": "bl",
+      "rarity": "r",
+      "color": "火",
+      "type": "移",
+      "collab": "BEATLESS"
+    },
+    {
+      "id": "bl_sr1",
+      "name": "【BEATLESS】レイシアと遠藤アラト",
+      "element": "bl",
+      "rarity": "sr",
+      "color": "木",
+      "type": "癒",
+      "collab": "BEATLESS"
+    },
+    {
+      "id": "gg_sr9",
+      "name": "ソル＝バッドガイ",
+      "element": "gg",
+      "rarity": "sr",
+      "color": "火",
+      "type": "遠",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_sr10",
+      "name": "ディズィー",
+      "element": "gg",
+      "rarity": "sr",
+      "color": "水",
+      "type": "周",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_ur9",
+      "name": "【画竜点睛】梅喧(ばいけん)",
+      "element": "gg",
+      "rarity": "ur",
+      "color": "火",
+      "type": "反",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_ur10",
+      "name": "【口寄せ・大型神陣】アンサー",
+      "element": "gg",
+      "rarity": "ur",
+      "color": "木",
+      "type": "罠",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "rezero_sr1",
+      "name": "スバル",
+      "element": "rezero",
+      "rarity": "sr",
+      "color": "木",
+      "type": "移",
+      "collab": "Re:ゼロから始める異世界生活"
+    },
+    {
+      "id": "rezero_sr2",
+      "name": "ラム",
+      "element": "rezero",
+      "rarity": "sr",
+      "color": "水",
+      "type": "遠",
+      "collab": "Re:ゼロから始める異世界生活"
+    },
+    {
+      "id": "rezero_sr3",
+      "name": "ベアトリス",
+      "element": "rezero",
+      "rarity": "sr",
+      "color": "火",
+      "type": "罠",
+      "collab": "Re:ゼロから始める異世界生活"
+    },
+    {
+      "id": "rezero_sr4",
+      "name": "フェリス",
+      "element": "rezero",
+      "rarity": "sr",
+      "color": "水",
+      "type": "癒",
+      "collab": "Re:ゼロから始める異世界生活"
+    },
+    {
+      "id": "rezero_ur1",
+      "name": "【リゼロ】ゼロから始まる異世界生活",
+      "element": "rezero",
+      "rarity": "ur",
+      "color": "火",
+      "type": "癒",
+      "collab": "Re:ゼロから始める異世界生活"
+    },
+    {
+      "id": "rezero_ur2",
+      "name": "【リゼロ】絶望という病",
+      "element": "rezero",
+      "rarity": "ur",
+      "color": "木",
+      "type": "近",
+      "collab": "Re:ゼロから始める異世界生活"
+    },
+    {
+      "id": "rezero_ur3",
+      "name": "【リゼロ】ひとときの団欒",
+      "element": "rezero",
+      "rarity": "ur",
+      "color": "水",
+      "type": "強",
+      "collab": "Re:ゼロから始める異世界生活"
+    },
+    {
+      "id": "rezero_ur4",
+      "name": "【リゼロ】間断なき結束",
+      "element": "rezero",
+      "rarity": "ur",
+      "color": "火",
+      "type": "周",
+      "collab": "Re:ゼロから始める異世界生活"
+    },
+    {
+      "id": "ref_r1",
+      "name": "THE REFLECTION エクスオン",
+      "element": "ref",
+      "rarity": "r",
+      "color": "火",
+      "type": "近",
+      "collab": "THE REFLECTION"
+    },
+    {
+      "id": "ref_r2",
+      "name": "THE REFLECTION アイガイ",
+      "element": "ref",
+      "rarity": "r",
+      "color": "水",
+      "type": "遠",
+      "collab": "THE REFLECTION"
+    },
+    {
+      "id": "ref_r3",
+      "name": "THE REFLECTION エレノア",
+      "element": "ref",
+      "rarity": "r",
+      "color": "木",
+      "type": "移",
+      "collab": "THE REFLECTION"
+    },
+    {
+      "id": "ref_sr1",
+      "name": "THE REFLECTION ナインスワンダー",
+      "element": "ref",
+      "rarity": "sr",
+      "color": "木",
+      "type": "癒",
+      "collab": "THE REFLECTION"
+    },
+    {
+      "id": "sf_sr1",
+      "name": "F.A.N.G",
+      "element": "sf",
+      "rarity": "sr",
+      "color": "木",
+      "type": "周",
+      "collab": "ストリートファイターV"
+    },
+    {
+      "id": "sf_sr2",
+      "name": "M.バイソン",
+      "element": "sf",
+      "rarity": "sr",
+      "color": "水",
+      "type": "連",
+      "collab": "ストリートファイターV"
+    },
+    {
+      "id": "sf_sr3",
+      "name": "バルログ",
+      "element": "sf",
+      "rarity": "sr",
+      "color": "火",
+      "type": "近",
+      "collab": "ストリートファイターV"
+    },
+    {
+      "id": "sf_sr4",
+      "name": "ダルシム",
+      "element": "sf",
+      "rarity": "sr",
+      "color": "火",
+      "type": "遠",
+      "collab": "ストリートファイターV"
+    },
+    {
+      "id": "sf_ur1",
+      "name": "【ラッシュ＆ブレイズ】ケン",
+      "element": "sf",
+      "rarity": "ur",
+      "color": "火",
+      "type": "連",
+      "collab": "ストリートファイターV"
+    },
+    {
+      "id": "sf_ur2",
+      "name": "【魂屠る闇】ネカリ",
+      "element": "sf",
+      "rarity": "ur",
+      "color": "木",
+      "type": "近",
+      "collab": "ストリートファイターV"
+    },
+    {
+      "id": "sf_ur3",
+      "name": "【拳を極めし者】豪鬼",
+      "element": "sf",
+      "rarity": "ur",
+      "color": "水",
+      "type": "連",
+      "collab": "ストリートファイターV"
+    },
+    {
+      "id": "sf_ur4",
+      "name": "【最終最凶】ベガ",
+      "element": "sf",
+      "rarity": "ur",
+      "color": "水",
+      "type": "近",
+      "collab": "ストリートファイターV"
+    },
+    {
+      "id": "hakka_r1",
+      "name": "ハッカドール 1号",
+      "element": "hakka",
+      "rarity": "r",
+      "color": "木",
+      "type": "強",
+      "collab": "ハッカドール"
+    },
+    {
+      "id": "hakka_r2",
+      "name": "ハッカドール 2号",
+      "element": "hakka",
+      "rarity": "r",
+      "color": "火",
+      "type": "癒",
+      "collab": "ハッカドール"
+    },
+    {
+      "id": "hakka_r3",
+      "name": "ハッカドール 3号",
+      "element": "hakka",
+      "rarity": "r",
+      "color": "水",
+      "type": "近",
+      "collab": "ハッカドール"
+    },
+    {
+      "id": "hakka_r4",
+      "name": "ハッカドール 三人集合",
+      "element": "hakka",
+      "rarity": "r",
+      "color": "木",
+      "type": "移",
+      "collab": "ハッカドール"
+    },
+    {
+      "id": "miku_sr1",
+      "name": "【スカイウォーカー】初音 ミク",
+      "element": "miku",
+      "rarity": "sr",
+      "color": "水",
+      "type": "強",
+      "collab": "初音ミク"
+    },
+    {
+      "id": "miku_sr2",
+      "name": "【ピースメーカー】初音 ミク",
+      "element": "miku",
+      "rarity": "sr",
+      "color": "水",
+      "type": "防",
+      "collab": "初音ミク"
+    },
+    {
+      "id": "miku_sr3",
+      "name": "【チャームスピーカー】初音 ミク",
+      "element": "miku",
+      "rarity": "sr",
+      "color": "木",
+      "type": "遠",
+      "collab": "初音ミク"
+    },
+    {
+      "id": "miku_ur1",
+      "name": "【空駆ける歌姫】初音 ミク",
+      "element": "miku",
+      "rarity": "ur",
+      "color": "木",
+      "type": "強",
+      "collab": "初音ミク"
+    },
+    {
+      "id": "miku_ur2",
+      "name": "【号令する歌姫】初音 ミク",
+      "element": "miku",
+      "rarity": "ur",
+      "color": "火",
+      "type": "周",
+      "collab": "初音ミク"
+    },
+    {
+      "id": "miku_ur3",
+      "name": "【祝福する歌姫】初音 ミク",
+      "element": "miku",
+      "rarity": "ur",
+      "color": "火",
+      "type": "癒",
+      "collab": "初音ミク"
+    },
+    {
+      "id": "gg_r1",
+      "name": "ジャンクヤード・ドッグ",
+      "element": "gg",
+      "rarity": "r",
+      "color": "火",
+      "type": "強",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_r2",
+      "name": "ファイヤーホイール Mk.ll",
+      "element": "gg",
+      "rarity": "r",
+      "color": "木",
+      "type": "強",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_r3",
+      "name": "よく喧嘩相手になってくれました",
+      "element": "gg",
+      "rarity": "r",
+      "color": "火",
+      "type": "遠",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_r4",
+      "name": "よく話し相手になってくれました",
+      "element": "gg",
+      "rarity": "r",
+      "color": "水",
+      "type": "連",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_sr1",
+      "name": "カイ＝キスク",
+      "element": "gg",
+      "rarity": "sr",
+      "color": "水",
+      "type": "近",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_sr2",
+      "name": "シン＝キスク",
+      "element": "gg",
+      "rarity": "sr",
+      "color": "水",
+      "type": "近",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_sr3",
+      "name": "エルフェルト＝ヴァレンタイン",
+      "element": "gg",
+      "rarity": "sr",
+      "color": "木",
+      "type": "弱",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_sr4",
+      "name": "ラムレザル＝ヴァレンタイン",
+      "element": "gg",
+      "rarity": "sr",
+      "color": "木",
+      "type": "弱",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_sr5",
+      "name": "ジャック・オー",
+      "element": "gg",
+      "rarity": "sr",
+      "color": "火",
+      "type": "防",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_sr6",
+      "name": "メイ",
+      "element": "gg",
+      "rarity": "sr",
+      "color": "木",
+      "type": "周",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_sr7",
+      "name": "蔵土縁紗夢(くらどべり じゃむ)",
+      "element": "gg",
+      "rarity": "sr",
+      "color": "火",
+      "type": "連",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_sr8",
+      "name": "【刺激的絶命拳】ファウスト",
+      "element": "gg",
+      "rarity": "sr",
+      "color": "木",
+      "type": "近",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_ur1",
+      "name": "【ライジング・フォース】カイ",
+      "element": "gg",
+      "rarity": "ur",
+      "color": "水",
+      "type": "遠",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_ur2",
+      "name": "【ライディーン】シン",
+      "element": "gg",
+      "rarity": "ur",
+      "color": "水",
+      "type": "近",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_ur3",
+      "name": "【マグナムウェディング】エルフェルト",
+      "element": "gg",
+      "rarity": "ur",
+      "color": "火",
+      "type": "遠",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_ur4",
+      "name": "【アニモエスティンギ】ラムレザル",
+      "element": "gg",
+      "rarity": "ur",
+      "color": "木",
+      "type": "連",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_ur5",
+      "name": "【アイウォントアウト】ジャック・オー",
+      "element": "gg",
+      "rarity": "ur",
+      "color": "火",
+      "type": "周",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_ur6",
+      "name": "【アイアンメイデン】ミリア",
+      "element": "gg",
+      "rarity": "ur",
+      "color": "水",
+      "type": "周",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_ur7",
+      "name": "【我羨惚(がせんこつ)】紗夢(じゃむ)",
+      "element": "gg",
+      "rarity": "ur",
+      "color": "火",
+      "type": "近",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "gg_ur8",
+      "name": "ギアメーカー",
+      "element": "gg",
+      "rarity": "ur",
+      "color": "木",
+      "type": "癒",
+      "collab": "ギルティギア"
+    },
+    {
+      "id": "anime_ur1",
+      "name": "【#コンパス2.0】アニメ キービジュアル",
+      "element": "anime",
+      "rarity": "ur",
+      "color": "水",
+      "type": "癒",
+      "collab": "アニメーキービジュアル"
     }
   ]
 }
