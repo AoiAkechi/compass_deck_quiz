@@ -292,74 +292,76 @@ input:focus{border-color:var(--accent)}
 </div>
 <script>
 /* ===== データ ===== */
-const FALLBACK_HEROES=[
-  {id:"tadanobu",name:"桜華忠臣"},{id:"voidoll",name:"ボイドール"},
-  {id:"amashiro",name:"狐ヶ咲甘色"},{id:"adam",name:"アダム=ユーリエフ"},
-  {id:"kirara",name:"輝龍院きらら"},{id:"luluqa",name:"ルルカ"},
-  {id:"zack",name:"ザック&レイチェル"},{id:"tomas",name:"トマス"},
-  {id:"hinata",name:"猫宮ひなた"},{id:"justice",name:"ジャスティス"},
-  {id:"maria",name:"マリア"},{id:"thirteen",name:"サーティーン"},
-  {id:"lin",name:"リン"},{id:"lirika",name:"リリカ"},
-  {id:"sol",name:"ソル=バッドガイ"},{id:"dizzy",name:"ディズィー"},
-  {id:"colapse",name:"コラプス"},{id:"delmin",name:"デビルミント鬼龍デルミン"},
-  {id:"okarin",name:"岡部倫太郎"},{id:"emilia",name:"エミリア"},
-  {id:"rem",name:"レム"},{id:"lam",name:"ラム"},
-  {id:"levy",name:"リヴァイ"},{id:"noctis",name:"ノクティス"},
-  {id:"kirito",name:"キリト"},{id:"asuna",name:"アスナ"},
-  {id:"2b",name:"2B"},{id:"rimuru",name:"リムル"},
-  {id:"misaka",name:"御坂美琴"},{id:"roxie",name:"ロキシー"},
-  {id:"rockman",name:"ロックマン"},{id:"joker",name:"ジョーカー"},
-  {id:"raizer",name:"ライザ"},{id:"alice",name:"アリス"},
-  {id:"gilgamesh",name:"ギルガメッシュ"},{id:"kuussi",name:"クー・シー"},
-  {id:"power",name:"パワー"},{id:"sinon",name:"シノン"},
-  {id:"ura",name:"鬼ヶ式うら"},{id:"gon",name:"ゴン"},
-  {id:"killua",name:"キルア"},{id:"shadow",name:"シャドウ"},
-  {id:"ainz",name:"アインズ"},{id:"gustav",name:"グスタフ"},
-  {id:"ryuu",name:"リュウ"},{id:"violetta",name:"ヴィオレッタ"},
-  {id:"pierre",name:"ピエール77世"},{id:"izuku",name:"緑谷出久"},
-  {id:"popuko",name:"ポプ子&ピピ美"},
-];
+// element: d=火 b=水 e=木 f=無 / collab(string|null)でコラボ名を管理
+const NORMAL_ELEMENTS=new Set(["d","b","e","f"]);
 const EL_META={
-  d:{label:"火",cls:"fire"},b:{label:"水",cls:"water"},
-  e:{label:"木",cls:"wood"},f:{label:"無",cls:"none"},
-  s:{label:"コラボ",cls:"collab"},a:{label:"コラボ",cls:"collab"},
-  c:{label:"コラボ",cls:"collab"},g:{label:"コラボ",cls:"collab"},
-  h:{label:"コラボ",cls:"collab"},k:{label:"コラボ",cls:"collab"},n:{label:"コラボ",cls:"collab"},
+  d:{label:"火",cls:"fire"},
+  b:{label:"水",cls:"water"},
+  e:{label:"木",cls:"wood"},
+  f:{label:"無",cls:"none"},
 };
+const EL_META_COLLAB={label:"コラボ",cls:"collab"};
 const RAR_META={ur:{label:"UR",cls:"ur"},sr:{label:"SR",cls:"sr"},r:{label:"R",cls:"r"}};
-const ELEM_EMOJI={d:"🔴",b:"🔵",e:"🟢",f:"⚫",s:"🟣",a:"🟣",c:"🟣",g:"🟣",h:"🟣",k:"🟣",n:"🟣"};
+const ELEM_EMOJI={d:"🔴",b:"🔵",e:"🟢",f:"⚫"};
 
 let HEROES=[], CARDS=[], decks=[];
 
 async function loadData(){
-  try{ const r=await fetch("heroes.json"); HEROES=r.ok?await r.json():FALLBACK_HEROES; }
-  catch(e){ HEROES=FALLBACK_HEROES; }
+  let heroOk=false, cardOk=false;
+  try{
+    const r=await fetch("heroes.json");
+    if(r.ok){ HEROES=await r.json(); heroOk=true; }
+  }catch(e){}
   try{
     const r=await fetch("cards.json");
-    if(r.ok){ const j=await r.json(); CARDS=j.cards||[]; }
-    else buildFallbackCards();
-  }catch(e){ buildFallbackCards(); }
+    if(r.ok){ const j=await r.json(); CARDS=j.cards||[]; cardOk=true; }
+  }catch(e){}
+
+  if(!heroOk||!cardOk){
+    const missing=[];
+    if(!heroOk) missing.push("heroes.json");
+    if(!cardOk) missing.push("cards.json");
+    document.getElementById("top-count").innerHTML=
+      `<span style="color:var(--ng)">⚠ ${missing.join("・")} が読み込めませんでした。<br>同じフォルダに配置してください。</span>`;
+  }
+
   try{ const raw=localStorage.getItem("cq_decks"); if(raw)decks=JSON.parse(raw); }catch(e){}
   refreshTop();
 }
-function buildFallbackCards(){
-  for(const p of ["d","b","e","f"]){
-    for(let i=1;i<=20;i++) CARDS.push({id:`${p}_ur${i}`,element:p,rarity:"ur"});
-    for(let i=1;i<=10;i++) CARDS.push({id:`${p}_sr${i}`,element:p,rarity:"sr"});
-    for(let i=1;i<=5;i++)  CARDS.push({id:`${p}_r${i}`,element:p,rarity:"r"});
-  }
-  for(const p of ["s","a","c"])
-    for(let i=1;i<=5;i++) CARDS.push({id:`${p}_ur${i}`,element:p,rarity:"ur"});
-}
+
 function saveDecks(){ try{localStorage.setItem("cq_decks",JSON.stringify(decks));}catch(e){} }
+
+// カード情報を返す。collabフィールドを正しく扱う
 function cardInfo(id){
-  const f=CARDS.find(c=>c.id===id); if(f)return f;
+  const f=CARDS.find(c=>c.id===id);
+  if(f) return f;
+  // JSONにない場合はIDから推測（collab=nullとして扱う）
   const m=id.match(/^([a-z]+)_(ur|sr|r)\d+$/);
-  return m?{id,element:m[1],rarity:m[2]}:{id,element:"f",rarity:"r"};
+  if(m) return {id, name:id, element:m[1], rarity:m[2], collab: NORMAL_ELEMENTS.has(m[1])?null:"不明"};
+  return {id, name:id, element:"f", rarity:"r", collab:null};
 }
+
+// カードの表示用属性メタを返す（collabフィールド優先）
+function cardElMeta(card){
+  if(card.collab) return EL_META_COLLAB;
+  return EL_META[card.element]||EL_META_COLLAB;
+}
+
+// カードの絵文字（collab判定）
+function cardEmoji(card){
+  if(card.collab) return "🟣";
+  return ELEM_EMOJI[card.element]||"⬜";
+}
+
 function heroName(id){ const h=HEROES.find(h=>h.id===id); return h?h.name:id; }
-function elM(el){ return EL_META[el]||{label:el,cls:"none"}; }
-function rarM(r){ return RAR_META[r]||{label:r,cls:"r"}; }
+
+// cards.jsonに登録されているコラボ名一覧を動的取得
+function getCollabNames(){
+  const names=new Set();
+  CARDS.forEach(c=>{ if(c.collab) names.add(c.collab); });
+  return [...names].sort();
+}
+
 
 /* ===== 画面遷移 ===== */
 function go(id){
@@ -380,10 +382,11 @@ function refreshSolo(){
 
 /* ===== カードタイル ===== */
 function renderCardTile(cid){
-  const c=cardInfo(cid),em=elM(c.element),rm=rarM(c.rarity);
+  const c=cardInfo(cid), em=cardElMeta(c), rm=RAR_META[c.rarity]||{label:c.rarity,cls:"r"};
+  const subLabel=c.collab ? c.collab : em.label;
   return `<div class="ct ${em.cls}">
-    <div class="ct-id">${c.id}</div>
-    <div class="ct-el">${ELEM_EMOJI[c.element]||"⬜"} ${em.label}</div>
+    <div class="ct-id">${c.name&&c.name!==c.id ? c.name : c.id}</div>
+    <div class="ct-el">${cardEmoji(c)} ${subLabel}</div>
     <div class="ct-rar ${rm.cls}">${rm.label}</div>
   </div>`;
 }
@@ -563,14 +566,23 @@ function initManage(){
 }
 
 /* カードフィルター複数AND */
-const FILTER_DEFS=[
-  {k:"ur",type:"rarity",l:"UR"},{k:"sr",type:"rarity",l:"SR"},{k:"r",type:"rarity",l:"R"},
-  {k:"d",type:"element",l:"🔴 火"},{k:"b",type:"element",l:"🔵 水"},
-  {k:"e",type:"element",l:"🟢 木"},{k:"f",type:"element",l:"⚫ 無"},
-  {k:"collab",type:"element",l:"🟣 コラボ"},
-];
+// FILTER_DEFSはloadData後に動的生成（コラボ名フィルターをcards.jsonから取得）
+let FILTER_DEFS=[];
+
+function buildFilterDefs(){
+  const base=[
+    {k:"ur",type:"rarity",l:"UR"},{k:"sr",type:"rarity",l:"SR"},{k:"r",type:"rarity",l:"R"},
+    {k:"d",type:"element",l:"🔴 火"},{k:"b",type:"element",l:"🔵 水"},
+    {k:"e",type:"element",l:"🟢 木"},{k:"f",type:"element",l:"⚫ 無"},
+    {k:"collab",type:"collab",l:"🟣 コラボ（全て）"},
+  ];
+  const collabNames=getCollabNames();
+  const collabFilters=collabNames.map(n=>({k:`collab:${n}`,type:"collabName",l:`🟣 ${n}`}));
+  FILTER_DEFS=[...base,...collabFilters];
+}
 
 function buildFilterBtns(){
+  buildFilterDefs();
   document.getElementById("picker-filters").innerHTML=
     FILTER_DEFS.map(f=>`<button class="filt" data-k="${f.k}" onclick="toggleFilter('${f.k}')">${f.l}</button>`).join("")
     +`<button class="filt-reset" onclick="resetFilters()">リセット</button>`;
@@ -605,9 +617,19 @@ function applyFilters(list){
   if(activeFilters.size===0) return list;
   return list.filter(c=>{
     for(const k of activeFilters){
-      if(k==="ur"||k==="sr"||k==="r"){ if(c.rarity!==k) return false; }
-      else if(k==="collab"){ if(["d","b","e","f"].includes(c.element)) return false; }
-      else { if(c.element!==k) return false; }
+      if(k==="ur"||k==="sr"||k==="r"){
+        if(c.rarity!==k) return false;
+      } else if(k==="collab"){
+        // collab フィールドが null または未設定なら除外
+        if(!c.collab) return false;
+      } else if(k.startsWith("collab:")){
+        // 特定コラボ名で絞り込み
+        const name=k.slice(7);
+        if(c.collab!==name) return false;
+      } else {
+        // 通常属性（d/b/e/f）
+        if(c.element!==k) return false;
+      }
     }
     return true;
   });
@@ -626,11 +648,13 @@ function renderPickerGrid(){
   document.getElementById("picker-count").textContent=
     `${filtered.length}件${filtered.length>=150?" (150件まで表示)":""}`;
   g.innerHTML=filtered.map(card=>{
-    const em=elM(card.element),rm=rarM(card.rarity);
+    const em=cardElMeta(card), rm=RAR_META[card.rarity]||{label:card.rarity,cls:"r"};
+    const displayName=card.name&&card.name!==card.id ? card.name : card.id;
+    const subLabel=card.collab||em.label;
     return `<div class="pick-card" onclick="selectCard('${card.id}')">
-      <div class="pc-el">${ELEM_EMOJI[card.element]||"⬜"}</div>
-      <div class="pc-id">${card.id}</div>
-      <div class="pc-rar ${rm.cls}">${rm.label}</div>
+      <div class="pc-el">${cardEmoji(card)}</div>
+      <div class="pc-id">${displayName}</div>
+      <div class="pc-rar ${rm.cls}">${rm.label} ${subLabel}</div>
     </div>`;
   }).join("");
 }
@@ -643,14 +667,15 @@ function selectCard(cardId){
 }
 
 function updateSlotEl(i,card){
-  const el=document.getElementById(`ms${i}`),rm=rarM(card.rarity);
+  const el=document.getElementById(`ms${i}`), rm=RAR_META[card.rarity]||{label:card.rarity,cls:"r"};
   el.className="slot has";
   el.querySelector(".s-add").style.display="none";
   let idEl=el.querySelector(".s-id"),elEl=el.querySelector(".s-el");
   if(!idEl){idEl=document.createElement("div");idEl.className="s-id";el.appendChild(idEl);}
   if(!elEl){elEl=document.createElement("div");elEl.className="s-el";el.appendChild(elEl);}
-  idEl.textContent=card.id;
-  elEl.textContent=`${ELEM_EMOJI[card.element]||""} ${rm.label}`;
+  const displayName=card.name&&card.name!==card.id ? card.name : card.id;
+  idEl.textContent=displayName;
+  elEl.textContent=`${cardEmoji(card)} ${rm.label}`;
 }
 
 function resetSlotEl(i){

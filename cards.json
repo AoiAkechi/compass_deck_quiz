@@ -1,176 +1,1091 @@
 {
-  "_comment": "prefix: d=火, b=水, e=木, f=無 / rarity: ur, sr, r / collab prefix: s,a,c,g,h,k,n など",
-  "_howto_add": "idはやぎシミュのカードID(例: d_ur1)、nameは任意の表示名、heroIdはdeckに紐づくキャラID",
-  "elements": {
-    "d": { "label": "火", "color": "#e05a3a" },
-    "b": { "label": "水", "color": "#3a8be0" },
-    "e": { "label": "木", "color": "#3ac46a" },
-    "f": { "label": "無", "color": "#888780" }
-  },
-  "rarities": {
-    "ur": { "label": "UR", "color": "#c8860a" },
-    "sr": { "label": "SR", "color": "#7c6fcd" },
-    "r":  { "label": "R",  "color": "#3a8be0" }
-  },
+  "_comment": "element: d=火 b=水 e=木 f=無 / rarity: ur sr r / collab: コラボ名(string)または null",
+  "_howto_add": "通常カード例: {\"id\":\"d_ur21\",\"name\":\"カード名\",\"element\":\"d\",\"rarity\":\"ur\",\"collab\":null} / コラボ例: {\"id\":\"s_ur6\",\"name\":\"レムUR\",\"element\":\"s\",\"rarity\":\"ur\",\"collab\":\"Re:ゼロ\"}",
   "cards": [
-    { "id": "d_ur1",  "element": "d", "rarity": "ur" },
-    { "id": "d_ur2",  "element": "d", "rarity": "ur" },
-    { "id": "d_ur3",  "element": "d", "rarity": "ur" },
-    { "id": "d_ur4",  "element": "d", "rarity": "ur" },
-    { "id": "d_ur5",  "element": "d", "rarity": "ur" },
-    { "id": "d_ur6",  "element": "d", "rarity": "ur" },
-    { "id": "d_ur7",  "element": "d", "rarity": "ur" },
-    { "id": "d_ur8",  "element": "d", "rarity": "ur" },
-    { "id": "d_ur9",  "element": "d", "rarity": "ur" },
-    { "id": "d_ur10", "element": "d", "rarity": "ur" },
-    { "id": "d_ur11", "element": "d", "rarity": "ur" },
-    { "id": "d_ur12", "element": "d", "rarity": "ur" },
-    { "id": "d_ur13", "element": "d", "rarity": "ur" },
-    { "id": "d_ur14", "element": "d", "rarity": "ur" },
-    { "id": "d_ur15", "element": "d", "rarity": "ur" },
-    { "id": "d_ur16", "element": "d", "rarity": "ur" },
-    { "id": "d_ur17", "element": "d", "rarity": "ur" },
-    { "id": "d_ur18", "element": "d", "rarity": "ur" },
-    { "id": "d_ur19", "element": "d", "rarity": "ur" },
-    { "id": "d_ur20", "element": "d", "rarity": "ur" },
-    { "id": "d_sr1",  "element": "d", "rarity": "sr" },
-    { "id": "d_sr2",  "element": "d", "rarity": "sr" },
-    { "id": "d_sr3",  "element": "d", "rarity": "sr" },
-    { "id": "d_sr4",  "element": "d", "rarity": "sr" },
-    { "id": "d_sr5",  "element": "d", "rarity": "sr" },
-    { "id": "d_sr6",  "element": "d", "rarity": "sr" },
-    { "id": "d_sr7",  "element": "d", "rarity": "sr" },
-    { "id": "d_sr8",  "element": "d", "rarity": "sr" },
-    { "id": "d_sr9",  "element": "d", "rarity": "sr" },
-    { "id": "d_sr10", "element": "d", "rarity": "sr" },
-    { "id": "d_r1",   "element": "d", "rarity": "r" },
-    { "id": "d_r2",   "element": "d", "rarity": "r" },
-    { "id": "d_r3",   "element": "d", "rarity": "r" },
-    { "id": "d_r4",   "element": "d", "rarity": "r" },
-    { "id": "d_r5",   "element": "d", "rarity": "r" },
-
-    { "id": "b_ur1",  "element": "b", "rarity": "ur" },
-    { "id": "b_ur2",  "element": "b", "rarity": "ur" },
-    { "id": "b_ur3",  "element": "b", "rarity": "ur" },
-    { "id": "b_ur4",  "element": "b", "rarity": "ur" },
-    { "id": "b_ur5",  "element": "b", "rarity": "ur" },
-    { "id": "b_ur6",  "element": "b", "rarity": "ur" },
-    { "id": "b_ur7",  "element": "b", "rarity": "ur" },
-    { "id": "b_ur8",  "element": "b", "rarity": "ur" },
-    { "id": "b_ur9",  "element": "b", "rarity": "ur" },
-    { "id": "b_ur10", "element": "b", "rarity": "ur" },
-    { "id": "b_ur11", "element": "b", "rarity": "ur" },
-    { "id": "b_ur12", "element": "b", "rarity": "ur" },
-    { "id": "b_ur13", "element": "b", "rarity": "ur" },
-    { "id": "b_ur14", "element": "b", "rarity": "ur" },
-    { "id": "b_ur15", "element": "b", "rarity": "ur" },
-    { "id": "b_ur16", "element": "b", "rarity": "ur" },
-    { "id": "b_ur17", "element": "b", "rarity": "ur" },
-    { "id": "b_ur18", "element": "b", "rarity": "ur" },
-    { "id": "b_ur19", "element": "b", "rarity": "ur" },
-    { "id": "b_ur20", "element": "b", "rarity": "ur" },
-    { "id": "b_sr1",  "element": "b", "rarity": "sr" },
-    { "id": "b_sr2",  "element": "b", "rarity": "sr" },
-    { "id": "b_sr3",  "element": "b", "rarity": "sr" },
-    { "id": "b_sr4",  "element": "b", "rarity": "sr" },
-    { "id": "b_sr5",  "element": "b", "rarity": "sr" },
-    { "id": "b_sr6",  "element": "b", "rarity": "sr" },
-    { "id": "b_sr7",  "element": "b", "rarity": "sr" },
-    { "id": "b_sr8",  "element": "b", "rarity": "sr" },
-    { "id": "b_sr9",  "element": "b", "rarity": "sr" },
-    { "id": "b_sr10", "element": "b", "rarity": "sr" },
-    { "id": "b_r1",   "element": "b", "rarity": "r" },
-    { "id": "b_r2",   "element": "b", "rarity": "r" },
-    { "id": "b_r3",   "element": "b", "rarity": "r" },
-    { "id": "b_r4",   "element": "b", "rarity": "r" },
-    { "id": "b_r5",   "element": "b", "rarity": "r" },
-
-    { "id": "e_ur1",  "element": "e", "rarity": "ur" },
-    { "id": "e_ur2",  "element": "e", "rarity": "ur" },
-    { "id": "e_ur3",  "element": "e", "rarity": "ur" },
-    { "id": "e_ur4",  "element": "e", "rarity": "ur" },
-    { "id": "e_ur5",  "element": "e", "rarity": "ur" },
-    { "id": "e_ur6",  "element": "e", "rarity": "ur" },
-    { "id": "e_ur7",  "element": "e", "rarity": "ur" },
-    { "id": "e_ur8",  "element": "e", "rarity": "ur" },
-    { "id": "e_ur9",  "element": "e", "rarity": "ur" },
-    { "id": "e_ur10", "element": "e", "rarity": "ur" },
-    { "id": "e_ur11", "element": "e", "rarity": "ur" },
-    { "id": "e_ur12", "element": "e", "rarity": "ur" },
-    { "id": "e_ur13", "element": "e", "rarity": "ur" },
-    { "id": "e_ur14", "element": "e", "rarity": "ur" },
-    { "id": "e_ur15", "element": "e", "rarity": "ur" },
-    { "id": "e_ur16", "element": "e", "rarity": "ur" },
-    { "id": "e_ur17", "element": "e", "rarity": "ur" },
-    { "id": "e_ur18", "element": "e", "rarity": "ur" },
-    { "id": "e_ur19", "element": "e", "rarity": "ur" },
-    { "id": "e_ur20", "element": "e", "rarity": "ur" },
-    { "id": "e_sr1",  "element": "e", "rarity": "sr" },
-    { "id": "e_sr2",  "element": "e", "rarity": "sr" },
-    { "id": "e_sr3",  "element": "e", "rarity": "sr" },
-    { "id": "e_sr4",  "element": "e", "rarity": "sr" },
-    { "id": "e_sr5",  "element": "e", "rarity": "sr" },
-    { "id": "e_sr6",  "element": "e", "rarity": "sr" },
-    { "id": "e_sr7",  "element": "e", "rarity": "sr" },
-    { "id": "e_sr8",  "element": "e", "rarity": "sr" },
-    { "id": "e_sr9",  "element": "e", "rarity": "sr" },
-    { "id": "e_sr10", "element": "e", "rarity": "sr" },
-    { "id": "e_r1",   "element": "e", "rarity": "r" },
-    { "id": "e_r2",   "element": "e", "rarity": "r" },
-    { "id": "e_r3",   "element": "e", "rarity": "r" },
-    { "id": "e_r4",   "element": "e", "rarity": "r" },
-    { "id": "e_r5",   "element": "e", "rarity": "r" },
-
-    { "id": "f_ur1",  "element": "f", "rarity": "ur" },
-    { "id": "f_ur2",  "element": "f", "rarity": "ur" },
-    { "id": "f_ur3",  "element": "f", "rarity": "ur" },
-    { "id": "f_ur4",  "element": "f", "rarity": "ur" },
-    { "id": "f_ur5",  "element": "f", "rarity": "ur" },
-    { "id": "f_ur6",  "element": "f", "rarity": "ur" },
-    { "id": "f_ur7",  "element": "f", "rarity": "ur" },
-    { "id": "f_ur8",  "element": "f", "rarity": "ur" },
-    { "id": "f_ur9",  "element": "f", "rarity": "ur" },
-    { "id": "f_ur10", "element": "f", "rarity": "ur" },
-    { "id": "f_ur11", "element": "f", "rarity": "ur" },
-    { "id": "f_ur12", "element": "f", "rarity": "ur" },
-    { "id": "f_ur13", "element": "f", "rarity": "ur" },
-    { "id": "f_ur14", "element": "f", "rarity": "ur" },
-    { "id": "f_ur15", "element": "f", "rarity": "ur" },
-    { "id": "f_ur16", "element": "f", "rarity": "ur" },
-    { "id": "f_ur17", "element": "f", "rarity": "ur" },
-    { "id": "f_ur18", "element": "f", "rarity": "ur" },
-    { "id": "f_ur19", "element": "f", "rarity": "ur" },
-    { "id": "f_ur20", "element": "f", "rarity": "ur" },
-    { "id": "f_sr1",  "element": "f", "rarity": "sr" },
-    { "id": "f_sr2",  "element": "f", "rarity": "sr" },
-    { "id": "f_sr3",  "element": "f", "rarity": "sr" },
-    { "id": "f_sr4",  "element": "f", "rarity": "sr" },
-    { "id": "f_sr5",  "element": "f", "rarity": "sr" },
-    { "id": "f_sr6",  "element": "f", "rarity": "sr" },
-    { "id": "f_sr7",  "element": "f", "rarity": "sr" },
-    { "id": "f_sr8",  "element": "f", "rarity": "sr" },
-    { "id": "f_sr9",  "element": "f", "rarity": "sr" },
-    { "id": "f_sr10", "element": "f", "rarity": "sr" },
-    { "id": "f_r1",   "element": "f", "rarity": "r" },
-    { "id": "f_r2",   "element": "f", "rarity": "r" },
-    { "id": "f_r3",   "element": "f", "rarity": "r" },
-    { "id": "f_r4",   "element": "f", "rarity": "r" },
-    { "id": "f_r5",   "element": "f", "rarity": "r" },
-
-    { "id": "s_ur1",  "element": "s", "rarity": "ur", "note": "コラボ" },
-    { "id": "s_ur2",  "element": "s", "rarity": "ur", "note": "コラボ" },
-    { "id": "s_ur3",  "element": "s", "rarity": "ur", "note": "コラボ" },
-    { "id": "s_ur4",  "element": "s", "rarity": "ur", "note": "コラボ" },
-    { "id": "s_ur5",  "element": "s", "rarity": "ur", "note": "コラボ" },
-    { "id": "a_ur1",  "element": "a", "rarity": "ur", "note": "コラボ" },
-    { "id": "a_ur2",  "element": "a", "rarity": "ur", "note": "コラボ" },
-    { "id": "a_ur3",  "element": "a", "rarity": "ur", "note": "コラボ" },
-    { "id": "a_ur4",  "element": "a", "rarity": "ur", "note": "コラボ" },
-    { "id": "a_ur5",  "element": "a", "rarity": "ur", "note": "コラボ" },
-    { "id": "c_ur1",  "element": "c", "rarity": "ur", "note": "コラボ" },
-    { "id": "c_ur2",  "element": "c", "rarity": "ur", "note": "コラボ" },
-    { "id": "c_ur3",  "element": "c", "rarity": "ur", "note": "コラボ" },
-    { "id": "c_ur4",  "element": "c", "rarity": "ur", "note": "コラボ" },
-    { "id": "c_ur5",  "element": "c", "rarity": "ur", "note": "コラボ" }
+    {
+      "id": "d_ur1",
+      "name": "d_ur1",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_ur2",
+      "name": "d_ur2",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_ur3",
+      "name": "d_ur3",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_ur4",
+      "name": "d_ur4",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_ur5",
+      "name": "d_ur5",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_ur6",
+      "name": "d_ur6",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_ur7",
+      "name": "d_ur7",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_ur8",
+      "name": "d_ur8",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_ur9",
+      "name": "d_ur9",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_ur10",
+      "name": "d_ur10",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_ur11",
+      "name": "d_ur11",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_ur12",
+      "name": "d_ur12",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_ur13",
+      "name": "d_ur13",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_ur14",
+      "name": "d_ur14",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_ur15",
+      "name": "d_ur15",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_ur16",
+      "name": "d_ur16",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_ur17",
+      "name": "d_ur17",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_ur18",
+      "name": "d_ur18",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_ur19",
+      "name": "d_ur19",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_ur20",
+      "name": "d_ur20",
+      "element": "d",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "d_sr1",
+      "name": "d_sr1",
+      "element": "d",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "d_sr2",
+      "name": "d_sr2",
+      "element": "d",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "d_sr3",
+      "name": "d_sr3",
+      "element": "d",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "d_sr4",
+      "name": "d_sr4",
+      "element": "d",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "d_sr5",
+      "name": "d_sr5",
+      "element": "d",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "d_sr6",
+      "name": "d_sr6",
+      "element": "d",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "d_sr7",
+      "name": "d_sr7",
+      "element": "d",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "d_sr8",
+      "name": "d_sr8",
+      "element": "d",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "d_sr9",
+      "name": "d_sr9",
+      "element": "d",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "d_sr10",
+      "name": "d_sr10",
+      "element": "d",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "d_r1",
+      "name": "d_r1",
+      "element": "d",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "d_r2",
+      "name": "d_r2",
+      "element": "d",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "d_r3",
+      "name": "d_r3",
+      "element": "d",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "d_r4",
+      "name": "d_r4",
+      "element": "d",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "d_r5",
+      "name": "d_r5",
+      "element": "d",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "b_ur1",
+      "name": "b_ur1",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_ur2",
+      "name": "b_ur2",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_ur3",
+      "name": "b_ur3",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_ur4",
+      "name": "b_ur4",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_ur5",
+      "name": "b_ur5",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_ur6",
+      "name": "b_ur6",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_ur7",
+      "name": "b_ur7",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_ur8",
+      "name": "b_ur8",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_ur9",
+      "name": "b_ur9",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_ur10",
+      "name": "b_ur10",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_ur11",
+      "name": "b_ur11",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_ur12",
+      "name": "b_ur12",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_ur13",
+      "name": "b_ur13",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_ur14",
+      "name": "b_ur14",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_ur15",
+      "name": "b_ur15",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_ur16",
+      "name": "b_ur16",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_ur17",
+      "name": "b_ur17",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_ur18",
+      "name": "b_ur18",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_ur19",
+      "name": "b_ur19",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_ur20",
+      "name": "b_ur20",
+      "element": "b",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "b_sr1",
+      "name": "b_sr1",
+      "element": "b",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "b_sr2",
+      "name": "b_sr2",
+      "element": "b",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "b_sr3",
+      "name": "b_sr3",
+      "element": "b",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "b_sr4",
+      "name": "b_sr4",
+      "element": "b",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "b_sr5",
+      "name": "b_sr5",
+      "element": "b",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "b_sr6",
+      "name": "b_sr6",
+      "element": "b",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "b_sr7",
+      "name": "b_sr7",
+      "element": "b",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "b_sr8",
+      "name": "b_sr8",
+      "element": "b",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "b_sr9",
+      "name": "b_sr9",
+      "element": "b",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "b_sr10",
+      "name": "b_sr10",
+      "element": "b",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "b_r1",
+      "name": "b_r1",
+      "element": "b",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "b_r2",
+      "name": "b_r2",
+      "element": "b",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "b_r3",
+      "name": "b_r3",
+      "element": "b",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "b_r4",
+      "name": "b_r4",
+      "element": "b",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "b_r5",
+      "name": "b_r5",
+      "element": "b",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "e_ur1",
+      "name": "e_ur1",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_ur2",
+      "name": "e_ur2",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_ur3",
+      "name": "e_ur3",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_ur4",
+      "name": "e_ur4",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_ur5",
+      "name": "e_ur5",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_ur6",
+      "name": "e_ur6",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_ur7",
+      "name": "e_ur7",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_ur8",
+      "name": "e_ur8",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_ur9",
+      "name": "e_ur9",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_ur10",
+      "name": "e_ur10",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_ur11",
+      "name": "e_ur11",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_ur12",
+      "name": "e_ur12",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_ur13",
+      "name": "e_ur13",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_ur14",
+      "name": "e_ur14",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_ur15",
+      "name": "e_ur15",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_ur16",
+      "name": "e_ur16",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_ur17",
+      "name": "e_ur17",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_ur18",
+      "name": "e_ur18",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_ur19",
+      "name": "e_ur19",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_ur20",
+      "name": "e_ur20",
+      "element": "e",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "e_sr1",
+      "name": "e_sr1",
+      "element": "e",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "e_sr2",
+      "name": "e_sr2",
+      "element": "e",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "e_sr3",
+      "name": "e_sr3",
+      "element": "e",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "e_sr4",
+      "name": "e_sr4",
+      "element": "e",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "e_sr5",
+      "name": "e_sr5",
+      "element": "e",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "e_sr6",
+      "name": "e_sr6",
+      "element": "e",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "e_sr7",
+      "name": "e_sr7",
+      "element": "e",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "e_sr8",
+      "name": "e_sr8",
+      "element": "e",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "e_sr9",
+      "name": "e_sr9",
+      "element": "e",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "e_sr10",
+      "name": "e_sr10",
+      "element": "e",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "e_r1",
+      "name": "e_r1",
+      "element": "e",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "e_r2",
+      "name": "e_r2",
+      "element": "e",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "e_r3",
+      "name": "e_r3",
+      "element": "e",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "e_r4",
+      "name": "e_r4",
+      "element": "e",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "e_r5",
+      "name": "e_r5",
+      "element": "e",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "f_ur1",
+      "name": "f_ur1",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_ur2",
+      "name": "f_ur2",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_ur3",
+      "name": "f_ur3",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_ur4",
+      "name": "f_ur4",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_ur5",
+      "name": "f_ur5",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_ur6",
+      "name": "f_ur6",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_ur7",
+      "name": "f_ur7",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_ur8",
+      "name": "f_ur8",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_ur9",
+      "name": "f_ur9",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_ur10",
+      "name": "f_ur10",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_ur11",
+      "name": "f_ur11",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_ur12",
+      "name": "f_ur12",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_ur13",
+      "name": "f_ur13",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_ur14",
+      "name": "f_ur14",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_ur15",
+      "name": "f_ur15",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_ur16",
+      "name": "f_ur16",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_ur17",
+      "name": "f_ur17",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_ur18",
+      "name": "f_ur18",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_ur19",
+      "name": "f_ur19",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_ur20",
+      "name": "f_ur20",
+      "element": "f",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "f_sr1",
+      "name": "f_sr1",
+      "element": "f",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "f_sr2",
+      "name": "f_sr2",
+      "element": "f",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "f_sr3",
+      "name": "f_sr3",
+      "element": "f",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "f_sr4",
+      "name": "f_sr4",
+      "element": "f",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "f_sr5",
+      "name": "f_sr5",
+      "element": "f",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "f_sr6",
+      "name": "f_sr6",
+      "element": "f",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "f_sr7",
+      "name": "f_sr7",
+      "element": "f",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "f_sr8",
+      "name": "f_sr8",
+      "element": "f",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "f_sr9",
+      "name": "f_sr9",
+      "element": "f",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "f_sr10",
+      "name": "f_sr10",
+      "element": "f",
+      "rarity": "sr",
+      "collab": null
+    },
+    {
+      "id": "f_r1",
+      "name": "f_r1",
+      "element": "f",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "f_r2",
+      "name": "f_r2",
+      "element": "f",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "f_r3",
+      "name": "f_r3",
+      "element": "f",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "f_r4",
+      "name": "f_r4",
+      "element": "f",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "f_r5",
+      "name": "f_r5",
+      "element": "f",
+      "rarity": "r",
+      "collab": null
+    },
+    {
+      "id": "s_ur1",
+      "name": "s_ur1",
+      "element": "s",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "s_ur2",
+      "name": "s_ur2",
+      "element": "s",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "s_ur3",
+      "name": "s_ur3",
+      "element": "s",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "s_ur4",
+      "name": "s_ur4",
+      "element": "s",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "s_ur5",
+      "name": "s_ur5",
+      "element": "s",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "a_ur1",
+      "name": "a_ur1",
+      "element": "a",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "a_ur2",
+      "name": "a_ur2",
+      "element": "a",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "a_ur3",
+      "name": "a_ur3",
+      "element": "a",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "a_ur4",
+      "name": "a_ur4",
+      "element": "a",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "a_ur5",
+      "name": "a_ur5",
+      "element": "a",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "c_ur1",
+      "name": "c_ur1",
+      "element": "c",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "c_ur2",
+      "name": "c_ur2",
+      "element": "c",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "c_ur3",
+      "name": "c_ur3",
+      "element": "c",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "c_ur4",
+      "name": "c_ur4",
+      "element": "c",
+      "rarity": "ur",
+      "collab": null
+    },
+    {
+      "id": "c_ur5",
+      "name": "c_ur5",
+      "element": "c",
+      "rarity": "ur",
+      "collab": null
+    }
   ]
 }
