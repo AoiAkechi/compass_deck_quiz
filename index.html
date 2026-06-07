@@ -130,6 +130,19 @@ input:focus{border-color:var(--accent)}
 .deck-item:last-child{border-bottom:none}
 .deck-cards{display:flex;gap:3px;margin-top:4px;flex-wrap:wrap}
 .deck-card-chip{font-size:9px;padding:2px 5px;border-radius:4px;background:var(--bg3);border:1px solid var(--border);color:var(--text2)}
+
+/* ユーザー設定モーダル */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;width:min(320px,90vw)}
+.modal-box h3{margin-bottom:8px;font-size:16px}
+/* 合言葉表示 */
+.passphrase-box{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:12px;text-align:center;margin-bottom:10px}
+.passphrase-word{font-size:28px;font-weight:700;letter-spacing:.15em;color:var(--accent)}
+.passphrase-hint{font-size:11px;color:var(--text3);margin-top:4px}
+/* ドラッグ対応 */
+.pick-card.drag-over{border-color:var(--accent);background:rgba(79,142,247,.15)}
+.slot.drag-over{border-color:var(--accent);border-style:solid;background:rgba(79,142,247,.1)}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -142,6 +155,10 @@ input:focus{border-color:var(--accent)}
     <div style="font-size:40px;margin-bottom:12px">🧭</div>
     <h1 style="margin-bottom:6px">デッキ当てクイズ</h1>
     <p class="sub">4枚のカードを見てキャラを当てよう</p>
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px">
+      <span id="top-username" style="font-size:13px;color:var(--text2)"></span>
+      <button class="btn-sm" onclick="openNameModal()" style="font-size:11px">✏️ 名前変更</button>
+    </div>
     <button class="btn btn-p" onclick="go('s-solo')">ソロで練習</button>
     <button class="btn btn-s" onclick="go('s-room')">みんなで対戦（P2P）</button>
   </div>
@@ -195,19 +212,24 @@ input:focus{border-color:var(--accent)}
 <div id="s-room" class="screen">
   <div class="card">
     <h2>みんなで対戦</h2>
-    <p class="sub">P2P接続 — 部屋IDをLINEで共有して遊ぶ</p>
-    <div class="lbl">あなたの名前</div>
-    <input id="my-name" value="プレイヤー1" maxlength="16" style="margin-bottom:12px">
+    <p class="sub">P2P接続 — 合言葉で部屋に集合</p>
+    <div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:10px;margin-bottom:12px">
+      <span style="font-size:20px">👤</span>
+      <span id="room-username-display" style="font-size:14px;font-weight:600;color:var(--text)"></span>
+      <button class="btn-sm" onclick="openNameModal()" style="margin-left:auto;font-size:11px">変更</button>
+    </div>
     <div class="div"></div>
     <h3>🎤 司会者として部屋を作る</h3>
-    <button class="btn btn-p" onclick="createRoom()">部屋を作る</button>
+    <p style="font-size:12px;color:var(--text2);margin:4px 0 6px">合言葉を決めて参加者に伝えてください</p>
+    <input id="room-passphrase" placeholder="合言葉（例: neko, compass123）" maxlength="20">
+    <button class="btn btn-p" onclick="createRoom()" style="margin-top:8px">部屋を作る</button>
     <div class="div"></div>
     <h3>🙋 参加者として入る</h3>
     <div style="display:flex;gap:6px;margin-top:6px">
-      <input id="join-id" placeholder="部屋IDを貼り付け" style="flex:1;margin-top:0">
+      <input id="join-id" placeholder="合言葉を入力" style="flex:1;margin-top:0">
       <button class="btn-sm" onclick="joinRoom()" style="padding:9px 14px;white-space:nowrap">参加</button>
     </div>
-    <button class="btn btn-s" onclick="go('s-top')">もどる</button>
+    <button class="btn btn-s" onclick="go('s-top')" style="margin-top:10px">もどる</button>
   </div>
 </div>
 
@@ -219,11 +241,12 @@ input:focus{border-color:var(--accent)}
       <span class="badge b-ok">接続中</span>
     </div>
     <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:10px;margin-bottom:12px">
-      <div class="lbl">部屋ID（参加者に共有）</div>
-      <div style="display:flex;gap:6px;align-items:center;margin-top:4px">
-        <code id="room-id" style="flex:1;font-size:12px;word-break:break-all;color:var(--text)"></code>
-        <button class="btn-sm" onclick="copyId()">コピー</button>
+      <div class="lbl">合言葉（参加者に共有）</div>
+      <div class="passphrase-box">
+        <div class="passphrase-word" id="room-passphrase-display"></div>
+        <div class="passphrase-hint">この合言葉をLINEなどで共有してください</div>
       </div>
+      <button class="btn-sm" onclick="copyPassphrase()" style="width:100%">📋 合言葉をコピー</button>
     </div>
     <div class="lbl">参加者 (<span id="peer-count">0</span>人)</div>
     <div id="peer-list" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;min-height:22px"></div>
@@ -317,6 +340,16 @@ input:focus{border-color:var(--accent)}
   </div>
 </div>
 
+
+<!-- ユーザー名設定モーダル -->
+<div class="modal-overlay" id="name-modal" onclick="handleModalClick(event)">
+  <div class="modal-box">
+    <h3>👤 ニックネーム設定</h3>
+    <p class="sub" style="margin-bottom:10px">対戦で表示される名前です</p>
+    <input id="modal-name-input" placeholder="ニックネームを入力" maxlength="16" style="margin-top:0">
+    <button class="btn btn-p" onclick="saveUserName()" style="margin-top:10px">保存</button>
+  </div>
+</div>
 </div>
 <script>
 /* ===== データ ===== */
@@ -333,6 +366,72 @@ const ELEM_EMOJI={fire:"🔴",water:"🔵",wood:"🟢",none:"⚫"};
 const RANK_ORDER={F:0,E:1,D:2,C:3,B:4,A:5,S:6};
 
 let HEROES=[], CARDS=[], decks=[];
+
+
+
+/* ===== ドラッグ＆ドロップ ===== */
+let dragCardId=null;
+
+function onPickCardDragStart(e,cardId){
+  dragCardId=cardId;
+  e.dataTransfer.effectAllowed="copy";
+}
+
+function initSlotDrop(slotEl, onDropFn){
+  slotEl.addEventListener("dragover",e=>{
+    e.preventDefault(); e.dataTransfer.dropEffect="copy";
+    slotEl.classList.add("drag-over");
+  });
+  slotEl.addEventListener("dragleave",()=>slotEl.classList.remove("drag-over"));
+  slotEl.addEventListener("drop",e=>{
+    e.preventDefault(); slotEl.classList.remove("drag-over");
+    if(dragCardId) onDropFn(dragCardId);
+  });
+}
+
+function setupSlotDrops(prefix, slotCount, onDrop){
+  for(let i=0;i<slotCount;i++){
+    const el=document.getElementById(`${prefix}${i}`);
+    if(el) initSlotDrop(el,(cid)=>onDrop(i,cid));
+  }
+}
+
+/* ===== ユーザー名管理 ===== */
+function loadUserName(){
+  try{ userName=localStorage.getItem("cq_username")||""; }catch(e){}
+  if(!userName){ openNameModal(); }
+  else { applyUserName(); }
+}
+function applyUserName(){
+  const el=document.getElementById("top-username");
+  if(el) el.textContent="👤 "+userName;
+  const rud=document.getElementById("room-username-display");
+  if(rud) rud.textContent=userName;
+}
+function openNameModal(){
+  const inp=document.getElementById("modal-name-input");
+  if(inp) inp.value=userName;
+  document.getElementById("name-modal").classList.add("open");
+  setTimeout(()=>inp&&inp.focus(),100);
+}
+function handleModalClick(e){
+  if(e.target===document.getElementById("name-modal")) closeNameModal();
+}
+function closeNameModal(){
+  if(!userName) return; // 未設定なら閉じない
+  document.getElementById("name-modal").classList.remove("open");
+}
+function saveUserName(){
+  const v=document.getElementById("modal-name-input").value.trim();
+  if(!v){ alert("名前を入力してください"); return; }
+  userName=v;
+  try{ localStorage.setItem("cq_username",userName); }catch(e){}
+  document.getElementById("name-modal").classList.remove("open");
+  applyUserName();
+}
+document.addEventListener("keydown",e=>{
+  if(e.key==="Enter"&&document.getElementById("name-modal").classList.contains("open")) saveUserName();
+});
 
 async function loadData(){
   let heroOk=false, cardOk=false;
@@ -354,6 +453,7 @@ async function loadData(){
   }
 
   try{ const raw=localStorage.getItem("cq_decks"); if(raw)decks=JSON.parse(raw); }catch(e){}
+  loadUserName();
   refreshTop();
 }
 
@@ -396,6 +496,7 @@ function go(id){
   if(id==="s-top")    refreshTop();
   if(id==="s-solo")   refreshSolo();
   if(id==="s-manage") initManage();
+  if(id==="s-room"){ const rud=document.getElementById("room-username-display"); if(rud)rud.textContent=userName; }
 }
 function refreshTop(){
   document.getElementById("top-count").textContent=`${decks.length}件のデッキが登録されています`;
@@ -599,6 +700,10 @@ function initManage(){
 
   buildFilterBtns();
   renderMgList();
+  // ドラッグ＆ドロップ設定（管理画面スロット）
+  setupSlotDrops("ms",4,(i,cid)=>{
+    const card=cardInfo(cid); mgCards[i]=card; updateSlotEl(i,card);
+  });
 }
 
 /* カードフィルター複数AND */
@@ -720,7 +825,7 @@ function buildPickerHTML(filtered, onClickFn){
     }
     const em=cardElMeta(card), rm=RAR_META[card.rarity]||{label:card.rarity,cls:"r"};
     const displayName=card.name&&card.name!==card.id?card.name:card.id;
-    out+=`<div class="pick-card" onclick="${onClickFn}('${card.id}')">
+    out+=`<div class="pick-card" draggable="true" onclick="${onClickFn}('${card.id}')" ondragstart="onPickCardDragStart(event,'${card.id}')">
       <div class="pc-el">${cardEmoji(card)}</div>
       <div class="pc-id">${displayName}</div>
       <div class="pc-rar ${rm.cls}">${rm.label} ${em.label}</div>
@@ -794,13 +899,16 @@ function deleteDeck(id){ decks=decks.filter(d=>d.id!==id); saveDecks(); renderMg
 /* ===== P2P ===== */
 let peer=null,hostConn=null,playerConns={};
 let scores={},hostCurDeck=null,selectedHostId=null;
+let userName="";
 
 function createRoom(){
-  const myName=document.getElementById("my-name").value.trim()||"司会者";
+  const myName=userName||"司会者";
+  const rawPP=(document.getElementById("room-passphrase").value.trim()||"").toLowerCase().replace(/\s+/g,"");
+  if(!rawPP){ alert("合言葉を入力してください"); return; }
   scores={}; scores[myName]=0; closePeer();
-  peer=new Peer(undefined,{debug:0});
-  peer.on("open",id=>{
-    document.getElementById("room-id").textContent=id;
+  peer=new Peer("cq-room-"+rawPP,{debug:0});
+  peer.on("open",()=>{
+    document.getElementById("room-passphrase-display").textContent=rawPP;
     document.getElementById("peer-count").textContent="0";
     document.getElementById("peer-list").innerHTML="";
     document.getElementById("host-log").innerHTML='<p style="color:var(--text3)">まだ回答がありません</p>';
@@ -816,13 +924,13 @@ function createRoom(){
 }
 
 function joinRoom(){
-  const rid=document.getElementById("join-id").value.trim();
-  const myName=document.getElementById("my-name").value.trim()||"プレイヤー";
-  if(!rid){ alert("部屋IDを入力してください"); return; }
+  const rawPP=(document.getElementById("join-id").value.trim()||"").toLowerCase().replace(/\s+/g,"");
+  if(!rawPP){ alert("合言葉を入力してください"); return; }
+  const myName=userName||"プレイヤー";
   closePeer();
   peer=new Peer(undefined,{debug:0});
   peer.on("open",()=>{
-    hostConn=peer.connect(rid);
+    hostConn=peer.connect("cq-room-"+rawPP);
     hostConn.on("open",()=>{
       hostConn.send({type:"join",name:myName});
       document.getElementById("pl-badge").textContent="接続済み";
@@ -918,6 +1026,10 @@ function initHostDeckBuilder(){
   [0,1,2,3].forEach(i=>resetHostSlot(i));
   document.getElementById("host-picker-area").style.display="none";
   buildHostFilterBtns();
+  // ドラッグ＆ドロップ設定（司会者スロット）
+  setupSlotDrops("hs",4,(i,cid)=>{
+    const card=cardInfo(cid); hostCards[i]=card; updateHostSlot(i,card);
+  });
   renderHeroPicker("host-hero-picker",(hid)=>{
     hostSelectedHero=hid;
     document.querySelectorAll("#host-hero-picker-list .hero-list-item").forEach(el=>{
@@ -1049,6 +1161,15 @@ function addLog(msg){ const el=document.getElementById("host-log"),p=document.cr
 function copyId(){
   navigator.clipboard.writeText(document.getElementById("room-id").textContent).then(()=>{
     const b=event.target,o=b.textContent; b.textContent="コピー済み ✓"; setTimeout(()=>b.textContent=o,2000);
+  });
+}
+function copyPassphrase(){
+  const pp=document.getElementById("room-passphrase-display").textContent;
+  if(!pp) return;
+  navigator.clipboard.writeText(pp).then(()=>{
+    const btn=event.target; const orig=btn.innerHTML;
+    btn.innerHTML="✓ コピー済み";
+    setTimeout(()=>btn.innerHTML=orig,2000);
   });
 }
 function closePeer(){ if(peer){try{peer.destroy();}catch(e){}} peer=null; hostConn=null; playerConns={}; }
