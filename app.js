@@ -473,7 +473,9 @@ function buildPickerHTML(filtered, onClickFn){
     const em=cardElMeta(card), rm=RAR_META[card.rarity]||{label:card.rarity,cls:"r"};
     const displayName=card.name&&card.name!==card.id?card.name:card.id;
     out+=`<div class="pick-card" draggable="true" onclick="${onClickFn}('${card.id}')" ondragstart="onPickCardDragStart(event,'${card.id}')">
-      <div class="pc-el">${cardEmoji(card)}</div>
+      <img class="pc-img" src="cards/${card.id}.jpg" alt="${displayName}"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <div class="pc-noimg" style="display:none;font-size:16px;line-height:1;text-align:center">${cardEmoji(card)}</div>
       <div class="pc-id">${displayName}</div>
       <div class="pc-rar ${rm.cls}">${rm.label} ${em.label}</div>
     </div>`;
