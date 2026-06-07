@@ -54,6 +54,13 @@ input:focus{border-color:var(--accent)}
 .ct.collab{border-color:rgba(176,111,216,.4);background:rgba(176,111,216,.08)}
 .ct.empty{border-style:dashed;color:var(--text3)}
 .ct-rar.ur{color:var(--ur)}.ct-rar.sr{color:var(--sr)}.ct-rar.r{color:var(--r)}
+/* カード画像対応 */
+.ct{position:relative;overflow:hidden}
+.ct-img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:calc(var(--radius) - 1px)}
+.ct-overlay{position:absolute;bottom:0;left:0;right:0;padding:3px 5px;background:linear-gradient(transparent,rgba(0,0,0,.82));border-radius:0 0 calc(var(--radius) - 1px) calc(var(--radius) - 1px);pointer-events:none}
+.ct-overlay .ct-id{font-size:9px;color:#fff;line-height:1.3;word-break:break-all}
+.ct-overlay .ct-rar{font-size:9px;font-weight:700}
+.ct-noimg{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;padding:4px}
 
 /* ヒーロー検索＋リスト */
 .hero-search-wrap{position:relative;margin-top:8px}
@@ -399,12 +406,21 @@ function refreshSolo(){
 /* ===== カードタイル ===== */
 function renderCardTile(cid){
   const c=cardInfo(cid), em=cardElMeta(c), rm=RAR_META[c.rarity]||{label:c.rarity,cls:"r"};
-  // コラボ名はサブラベルに小さく表示、属性絵文字はcolorベース
-  const collabLabel = c.collab ? ` <span style="font-size:9px;opacity:.7">${c.collab}</span>` : "";
+  const displayName=c.name&&c.name!==c.id ? c.name : c.id;
+  const collabLabel = c.collab ? ` <span style="font-size:8px;opacity:.75">${c.collab}</span>` : "";
+  const imgPath=`images/${c.id}.jpg`;
   return `<div class="ct ${em.cls}">
-    <div class="ct-id">${c.name&&c.name!==c.id ? c.name : c.id}</div>
-    <div class="ct-el">${cardEmoji(c)} ${em.label}${collabLabel}</div>
-    <div class="ct-rar ${rm.cls}">${rm.label}</div>
+    <img class="ct-img" src="${imgPath}" alt="${displayName}"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="ct-noimg" style="display:none">
+      <div class="ct-id">${displayName}</div>
+      <div class="ct-el">${cardEmoji(c)} ${em.label}${collabLabel}</div>
+      <div class="ct-rar ${rm.cls}">${rm.label}</div>
+    </div>
+    <div class="ct-overlay">
+      <div class="ct-id">${displayName}</div>
+      <div class="ct-rar ${rm.cls}">${rm.label} ${em.label}${collabLabel}</div>
+    </div>
   </div>`;
 }
 function renderCards(cid,ids){
