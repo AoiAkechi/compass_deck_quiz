@@ -218,9 +218,26 @@ input:focus{border-color:var(--accent)}
     <div class="lbl">参加者 (<span id="peer-count">0</span>人)</div>
     <div id="peer-list" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;min-height:22px"></div>
     <div class="div"></div>
-    <div class="lbl">出題するデッキを選択</div>
-    <div id="host-decks" style="max-height:160px;overflow-y:auto;margin-bottom:10px"></div>
-    <button class="btn btn-p" id="host-send" onclick="hostSend()" disabled>このデッキを出題 →</button>
+    <div class="lbl">キャラクター選択</div>
+    <div id="host-hero-picker"></div>
+    <div class="lbl" style="margin-top:10px">カード（4枚選択）</div>
+    <div class="slots4" id="host-slots">
+      <div class="slot" id="hs0" onclick="openHostPicker(0)"><span class="s-num">1</span><span class="s-add">＋</span><button class="s-del" onclick="clearHostSlot(event,0)">✕</button></div>
+      <div class="slot" id="hs1" onclick="openHostPicker(1)"><span class="s-num">2</span><span class="s-add">＋</span><button class="s-del" onclick="clearHostSlot(event,1)">✕</button></div>
+      <div class="slot" id="hs2" onclick="openHostPicker(2)"><span class="s-num">3</span><span class="s-add">＋</span><button class="s-del" onclick="clearHostSlot(event,2)">✕</button></div>
+      <div class="slot" id="hs3" onclick="openHostPicker(3)"><span class="s-num">4</span><span class="s-add">＋</span><button class="s-del" onclick="clearHostSlot(event,3)">✕</button></div>
+    </div>
+    <div id="host-picker-area" style="display:none">
+      <div class="pick-label" id="host-pick-label"></div>
+      <div class="picker-wrap">
+        <div class="picker-filters" id="host-picker-filters"></div>
+        <div class="collab-expand-area" id="host-collab-expand-area" style="display:none;flex-wrap:wrap;gap:5px;padding:6px 8px;border-bottom:1px solid var(--border)"></div>
+        <div class="filter-hint" id="host-filter-hint"></div>
+        <div class="picker-count" id="host-picker-count"></div>
+        <div class="picker-grid" id="host-picker-grid"></div>
+      </div>
+    </div>
+    <button class="btn btn-p" id="host-send" onclick="hostSend()">このデッキを出題 →</button>
     <div class="div"></div>
     <div class="lbl">回答ログ</div>
     <div id="host-log" class="log"><p style="color:var(--text3)">まだ回答がありません</p></div>
@@ -272,6 +289,7 @@ input:focus{border-color:var(--accent)}
       <div class="pick-label" id="pick-label"></div>
       <div class="picker-wrap">
         <div class="picker-filters" id="picker-filters"></div>
+        <div class="collab-expand-area" id="collab-expand-area" style="display:none;flex-wrap:wrap;gap:5px;padding:6px 8px;border-bottom:1px solid var(--border)"></div>
         <div class="filter-hint" id="filter-hint"></div>
         <div class="picker-count" id="picker-count"></div>
         <div class="picker-grid" id="picker-grid"></div>
@@ -343,13 +361,11 @@ function cardInfo(id){
 
 // カードの表示用属性メタを返す（collabフィールド優先）
 function cardElMeta(card){
-  if(card.collab) return EL_META_COLLAB;
-  return EL_META[card.element]||{label:card.element,cls:"none"};
+  // collabでもcolorベースの属性を返す
+  return EL_META[card.element]||{label:card.element||"不明",cls:"none"};
 }
 
-// カードの絵文字（collab判定）
 function cardEmoji(card){
-  if(card.collab) return "🟣";
   return ELEM_EMOJI[card.element]||"⬜";
 }
 
@@ -383,10 +399,11 @@ function refreshSolo(){
 /* ===== カードタイル ===== */
 function renderCardTile(cid){
   const c=cardInfo(cid), em=cardElMeta(c), rm=RAR_META[c.rarity]||{label:c.rarity,cls:"r"};
-  const subLabel=c.collab ? c.collab : em.label;
+  // コラボ名はサブラベルに小さく表示、属性絵文字はcolorベース
+  const collabLabel = c.collab ? ` <span style="font-size:9px;opacity:.7">${c.collab}</span>` : "";
   return `<div class="ct ${em.cls}">
     <div class="ct-id">${c.name&&c.name!==c.id ? c.name : c.id}</div>
-    <div class="ct-el">${cardEmoji(c)} ${subLabel}</div>
+    <div class="ct-el">${cardEmoji(c)} ${em.label}${collabLabel}</div>
     <div class="ct-rar ${rm.cls}">${rm.label}</div>
   </div>`;
 }
@@ -574,19 +591,35 @@ function buildFilterDefs(){
     {k:"ur",type:"rarity",l:"UR"},{k:"sr",type:"rarity",l:"SR"},{k:"r",type:"rarity",l:"R"},
     {k:"fire",type:"element",l:"🔴 火"},{k:"water",type:"element",l:"🔵 水"},
     {k:"wood",type:"element",l:"🟢 木"},{k:"none",type:"element",l:"⚫ 無"},
-    {k:"collab",type:"collab",l:"🟣 コラボ（全て）"},
   ];
-  const collabNames=getCollabNames();
-  const collabFilters=collabNames.map(n=>({k:`collab:${n}`,type:"collabName",l:`🟣 ${n}`}));
-  FILTER_DEFS=[...base,...collabFilters];
+  FILTER_DEFS=base;
 }
 
 function buildFilterBtns(){
   buildFilterDefs();
+  const collabNames=getCollabNames();
+  const collabExpanded=document.getElementById("collab-expand-area");
+  // 基本フィルター
   document.getElementById("picker-filters").innerHTML=
     FILTER_DEFS.map(f=>`<button class="filt" data-k="${f.k}" onclick="toggleFilter('${f.k}')">${f.l}</button>`).join("")
+    +`<button class="filt filt-collab-toggle" onclick="toggleCollabExpand()">🟣 コラボ ▽</button>`
     +`<button class="filt-reset" onclick="resetFilters()">リセット</button>`;
+  // コラボ展開エリアを構築
+  if(collabExpanded){
+    collabExpanded.innerHTML=collabNames.map(n=>
+      `<button class="filt filt-collab" data-k="collab:${n}" onclick="toggleFilter('collab:${n}')">${n}</button>`
+    ).join("");
+  }
   updateFilterHint();
+}
+
+function toggleCollabExpand(){
+  const area=document.getElementById("collab-expand-area");
+  const btn=document.querySelector(".filt-collab-toggle");
+  if(!area) return;
+  const open=area.style.display==="flex";
+  area.style.display=open?"none":"flex";
+  btn.textContent=open?"🟣 コラボ ▽":"🟣 コラボ △";
 }
 
 function toggleFilter(k){
@@ -609,7 +642,11 @@ function resetFilters(){
 function updateFilterHint(){
   const h=document.getElementById("filter-hint");
   if(activeFilters.size===0){ h.textContent=""; return; }
-  const labels=[...activeFilters].map(k=>FILTER_DEFS.find(f=>f.k===k)?.l||k);
+  const labels=[...activeFilters].map(k=>{
+    if(k==="collab") return "コラボ全て";
+    if(k.startsWith("collab:")) return k.slice(7);
+    return FILTER_DEFS.find(f=>f.k===k)?.l||k;
+  });
   h.textContent=`フィルター: ${labels.join(" AND ")}`;
 }
 
@@ -624,6 +661,9 @@ function applyFilters(list){
         if(!c.collab) return false;
       } else if(k.startsWith("collab:")){
         // 特定コラボ名で絞り込み
+        const name=k.slice(7);
+        if(c.collab!==name) return false;
+      } else if(k.startsWith("collab:")){
         const name=k.slice(7);
         if(c.collab!==name) return false;
       } else {
@@ -657,11 +697,10 @@ function renderPickerGrid(){
   g.innerHTML=filtered.map(card=>{
     const em=cardElMeta(card), rm=RAR_META[card.rarity]||{label:card.rarity,cls:"r"};
     const displayName=card.name&&card.name!==card.id ? card.name : card.id;
-    const subLabel=card.collab||em.label;
     return `<div class="pick-card" onclick="selectCard('${card.id}')">
       <div class="pc-el">${cardEmoji(card)}</div>
       <div class="pc-id">${displayName}</div>
-      <div class="pc-rar ${rm.cls}">${rm.label} ${subLabel}</div>
+      <div class="pc-rar ${rm.cls}">${rm.label} ${em.label}</div>
     </div>`;
   }).join("");
 }
@@ -734,7 +773,7 @@ function createRoom(){
     document.getElementById("peer-count").textContent="0";
     document.getElementById("peer-list").innerHTML="";
     document.getElementById("host-log").innerHTML='<p style="color:var(--text3)">まだ回答がありません</p>';
-    renderHostDecks(); go("s-host");
+    initHostDeckBuilder(); go("s-host");
   });
   peer.on("connection",conn=>{
     playerConns[conn.peer]=conn;
@@ -839,28 +878,141 @@ function renderScores(cid,sc){
     +sorted.map(([n,p],i)=>`<div class="score-row"><span>${i===0?"🥇":i===1?"🥈":i===2?"🥉":"　"} ${n}</span><span class="score-pts">${p}pt</span></div>`).join("");
 }
 
-function renderHostDecks(){
-  const el=document.getElementById("host-decks");
-  if(!decks.length){ el.innerHTML='<p style="font-size:13px;color:var(--text3)">デッキがありません</p>'; return; }
-  el.innerHTML=decks.map(d=>`<div class="score-row" id="hd-${d.id}" style="cursor:pointer" onclick="selHostDeck(${d.id})">
-    <span style="font-size:13px">${heroName(d.heroId)} — ${d.name}</span><span style="color:var(--text3)">›</span>
-  </div>`).join("");
-  document.getElementById("host-send").disabled=true;
+// ホスト用リアルタイムデッキ編成
+let hostCards=[null,null,null,null], hostPickerSlot=-1, hostPickerFilter="all";
+let hostActiveFilters=new Set(), hostSelectedHero=null;
+
+function initHostDeckBuilder(){
+  hostCards=[null,null,null,null]; hostSelectedHero=null;
+  [0,1,2,3].forEach(i=>resetHostSlot(i));
+  document.getElementById("host-picker-area").style.display="none";
+  buildHostFilterBtns();
+  renderHeroPicker("host-hero-picker",(hid)=>{
+    hostSelectedHero=hid;
+    document.querySelectorAll("#host-hero-picker-list .hero-list-item").forEach(el=>{
+      el.classList.toggle("selected",el.dataset.hid===hid);
+    });
+    const inp=document.getElementById("host-hero-picker-input");
+    inp.value=heroName(hid);
+    document.getElementById("host-hero-picker-clear").classList.add("show");
+  },{});
 }
-function selHostDeck(id){
-  selectedHostId=id;
-  document.getElementById("host-send").disabled=false;
-  document.querySelectorAll("#host-decks .score-row").forEach(r=>r.style.background="");
-  const row=document.getElementById(`hd-${id}`);
-  if(row) row.style.background="rgba(79,142,247,.1)";
+
+function buildHostFilterBtns(){
+  const collabNames=getCollabNames();
+  const base=[
+    {k:"ur",l:"UR"},{k:"sr",l:"SR"},{k:"r",l:"R"},
+    {k:"fire",l:"🔴 火"},{k:"water",l:"🔵 水"},{k:"wood",l:"🟢 木"},{k:"none",l:"⚫ 無"},
+  ];
+  document.getElementById("host-picker-filters").innerHTML=
+    base.map(f=>`<button class="filt" data-k="${f.k}" onclick="toggleHostFilter('${f.k}')">${f.l}</button>`).join("")
+    +`<button class="filt filt-collab-toggle" onclick="toggleHostCollabExpand()">🟣 コラボ ▽</button>`
+    +`<button class="filt-reset" onclick="resetHostFilters()">リセット</button>`;
+  const area=document.getElementById("host-collab-expand-area");
+  if(area) area.innerHTML=collabNames.map(n=>
+    `<button class="filt filt-collab" data-k="collab:${n}" onclick="toggleHostFilter('collab:${n}')">${n}</button>`
+  ).join("");
 }
+
+function toggleHostFilter(k){
+  if(hostActiveFilters.has(k)) hostActiveFilters.delete(k);
+  else hostActiveFilters.add(k);
+  document.querySelectorAll("#host-picker-filters .filt, #host-collab-expand-area .filt").forEach(b=>{
+    b.classList.toggle("on", hostActiveFilters.has(b.dataset.k));
+  });
+  const labels=[...hostActiveFilters].map(k=>k.startsWith("collab:")?k.slice(7):k);
+  document.getElementById("host-filter-hint").textContent=labels.length?`フィルター: ${labels.join(" AND ")}`:"";
+  renderHostPickerGrid();
+}
+function resetHostFilters(){
+  hostActiveFilters.clear();
+  document.querySelectorAll("#host-picker-filters .filt, #host-collab-expand-area .filt").forEach(b=>b.classList.remove("on"));
+  document.getElementById("host-filter-hint").textContent="";
+  renderHostPickerGrid();
+}
+function toggleHostCollabExpand(){
+  const area=document.getElementById("host-collab-expand-area");
+  const btn=document.querySelector("#host-picker-filters .filt-collab-toggle");
+  if(!area) return;
+  const open=area.style.display==="flex";
+  area.style.display=open?"none":"flex";
+  if(btn) btn.textContent=open?"🟣 コラボ ▽":"🟣 コラボ △";
+}
+
+function openHostPicker(slot){
+  hostPickerSlot=slot;
+  document.getElementById("host-pick-label").textContent=`スロット${slot+1} のカードを選択`;
+  document.getElementById("host-picker-area").style.display="block";
+  renderHostPickerGrid();
+}
+
+function renderHostPickerGrid(){
+  const g=document.getElementById("host-picker-grid");
+  const sorted=[...CARDS].sort((a,b)=>{
+    if(a.rank&&b.rank) return (RANK_ORDER[a.rank]||0)-(RANK_ORDER[b.rank]||0);
+    if(a.rank&&!b.rank) return -1;
+    if(!a.rank&&b.rank) return 1;
+    return (a.collab||"").localeCompare(b.collab||"");
+  });
+  const filtered=applyHostFilters(sorted).slice(0,150);
+  document.getElementById("host-picker-count").textContent=`${filtered.length}件${filtered.length>=150?" (150件まで表示)":""}`;
+  g.innerHTML=filtered.map(card=>{
+    const em=cardElMeta(card), rm=RAR_META[card.rarity]||{label:card.rarity,cls:"r"};
+    const displayName=card.name&&card.name!==card.id?card.name:card.id;
+    return `<div class="pick-card" onclick="selectHostCard('${card.id}')">
+      <div class="pc-el">${cardEmoji(card)}</div>
+      <div class="pc-id">${displayName}</div>
+      <div class="pc-rar ${rm.cls}">${rm.label} ${em.label}</div>
+    </div>`;
+  }).join("");
+}
+
+function applyHostFilters(list){
+  if(hostActiveFilters.size===0) return list;
+  return list.filter(c=>{
+    for(const k of hostActiveFilters){
+      if(k==="ur"||k==="sr"||k==="r"){ if(c.rarity!==k) return false; }
+      else if(k==="collab"){ if(!c.collab) return false; }
+      else if(k.startsWith("collab:")){ if(c.collab!==k.slice(7)) return false; }
+      else { if(c.element!==k) return false; }
+    }
+    return true;
+  });
+}
+
+function selectHostCard(cardId){
+  const card=cardInfo(cardId);
+  hostCards[hostPickerSlot]=card;
+  updateHostSlot(hostPickerSlot,card);
+  document.getElementById("host-picker-area").style.display="none";
+}
+
+function updateHostSlot(i,card){
+  const el=document.getElementById(`hs${i}`),rm=RAR_META[card.rarity]||{label:card.rarity,cls:"r"};
+  el.className="slot has";
+  el.querySelector(".s-add").style.display="none";
+  let idEl=el.querySelector(".s-id"),elEl=el.querySelector(".s-el");
+  if(!idEl){idEl=document.createElement("div");idEl.className="s-id";el.appendChild(idEl);}
+  if(!elEl){elEl=document.createElement("div");elEl.className="s-el";el.appendChild(elEl);}
+  idEl.textContent=card.name&&card.name!==card.id?card.name:card.id;
+  elEl.textContent=`${cardEmoji(card)} ${rm.label}`;
+}
+function resetHostSlot(i){
+  const el=document.getElementById(`hs${i}`);
+  if(!el) return;
+  el.className="slot"; el.querySelector(".s-add").style.display="";
+  el.querySelectorAll(".s-id,.s-el").forEach(e=>e.remove());
+}
+function clearHostSlot(e,i){ e.stopPropagation(); hostCards[i]=null; resetHostSlot(i); }
 function hostSend(){
-  const deck=decks.find(d=>d.id===selectedHostId); if(!deck) return;
-  hostCurDeck=deck;
-  Object.values(playerConns).forEach(c=>c.send({type:"question",cards:deck.cards,heroId:deck.heroId}));
+  if(!hostSelectedHero){ alert("キャラを選択してください"); return; }
+  if(hostCards.filter(Boolean).length<4){ alert("4枚すべてのカードを選択してください"); return; }
+  const cardIds=hostCards.map(c=>c.id);
+  hostCurDeck={heroId:hostSelectedHero, cards:cardIds};
+  Object.values(playerConns).forEach(c=>c.send({type:"question",cards:cardIds,heroId:hostSelectedHero}));
   document.getElementById("host-reveal").style.display="block";
   document.getElementById("host-log").innerHTML='<p style="color:var(--text3)">回答待ち...</p>';
-  addLog(`📤 出題：${heroName(deck.heroId)}「${deck.name}」`);
+  addLog(`📤 出題：${heroName(hostSelectedHero)}`);
 }
 function hostReveal(){
   if(!hostCurDeck) return;
