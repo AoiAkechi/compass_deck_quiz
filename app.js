@@ -495,37 +495,22 @@ function selectCard(cardId){
   document.getElementById("picker-area").style.display="none";
 }
 
-/* スロット内カード表示用HTML */
-function slotCardHTML(card){
-  const em=cardElMeta(card), rm=RAR_META[card.rarity]||{label:card.rarity,cls:"r"};
-  const displayName=card.name&&card.name!==card.id?card.name:card.id;
-  const imgPath=`cards/${card.id}.jpg`;
-  return `<img class="slot-card-img" src="${imgPath}" alt="${displayName}"
-    onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-  <div class="slot-card-noimg" style="display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;padding:4px;text-align:center">
-    <div style="font-size:9px;color:var(--text2);word-break:break-all;line-height:1.3">${displayName}</div>
-    <div style="font-size:9px;font-weight:700" class="${rm.cls}">${cardEmoji(card)} ${rm.label}</div>
-  </div>
-  <div class="slot-card-overlay">
-    <div class="slot-card-name">${displayName}</div>
-    <div class="slot-card-rar ${rm.cls}">${rm.label} ${em.label}</div>
-  </div>`;
-}
-
 function updateSlotEl(i,card){
   const el=document.getElementById(`ms${i}`);
   el.className="slot has";
   el.querySelector(".s-add").style.display="none";
-  // 古い画像・テキストを削除
-  el.querySelectorAll(".s-id,.s-el,.slot-card-img,.slot-card-overlay").forEach(e=>e.remove());
-  // 画像タイルを挿入
-  el.insertAdjacentHTML("beforeend", slotCardHTML(card));
+  el.querySelectorAll(".slot-ct").forEach(e=>e.remove());
+  // renderCardTileと同じ構造をslot内に挿入
+  const wrap=document.createElement("div");
+  wrap.className="slot-ct";
+  wrap.innerHTML=renderCardTile(card.id);
+  el.appendChild(wrap);
 }
 
 function resetSlotEl(i){
   const el=document.getElementById(`ms${i}`);
   el.className="slot"; el.querySelector(".s-add").style.display="";
-  el.querySelectorAll(".s-id,.s-el,.slot-card-img,.slot-card-noimg,.slot-card-overlay").forEach(e=>e.remove());
+  el.querySelectorAll(".slot-ct").forEach(e=>e.remove());
 }
 function clearSlot(e,i){ e.stopPropagation(); mgCards[i]=null; resetSlotEl(i); }
 
@@ -782,14 +767,17 @@ function updateHostSlot(i,card){
   const el=document.getElementById(`hs${i}`);
   el.className="slot has";
   el.querySelector(".s-add").style.display="none";
-  el.querySelectorAll(".s-id,.s-el,.slot-card-img,.slot-card-overlay").forEach(e=>e.remove());
-  el.insertAdjacentHTML("beforeend", slotCardHTML(card));
+  el.querySelectorAll(".slot-ct").forEach(e=>e.remove());
+  const wrap=document.createElement("div");
+  wrap.className="slot-ct";
+  wrap.innerHTML=renderCardTile(card.id);
+  el.appendChild(wrap);
 }
 function resetHostSlot(i){
   const el=document.getElementById(`hs${i}`);
   if(!el) return;
   el.className="slot"; el.querySelector(".s-add").style.display="";
-  el.querySelectorAll(".s-id,.s-el,.slot-card-img,.slot-card-noimg,.slot-card-overlay").forEach(e=>e.remove());
+  el.querySelectorAll(".slot-ct").forEach(e=>e.remove());
 }
 function clearHostSlot(e,i){ e.stopPropagation(); hostCards[i]=null; resetHostSlot(i); }
 function hostSend(){
