@@ -108,6 +108,9 @@ input:focus{border-color:var(--accent)}
 .filt.on{background:rgba(79,142,247,.15);color:var(--accent);border-color:var(--accent2)}
 .filt-reset{font-size:10px;padding:3px 8px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;font-family:inherit;margin-left:auto}
 .filt-reset:hover{color:var(--ng);border-color:var(--ng)}
+.card-sep{grid-column:1/-1;display:flex;align-items:center;gap:6px;padding:4px 0;margin-top:2px}
+.card-sep-line{flex:1;height:1px;background:var(--border)}
+.card-sep-label{font-size:9px;font-weight:600;color:var(--text3);white-space:nowrap;letter-spacing:.06em;text-transform:uppercase}
 .filter-hint{padding:4px 8px 0;font-size:10px;color:var(--text3)}
 .picker-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:8px;max-height:200px;overflow-y:auto}
 .pick-card{border:1px solid var(--border);border-radius:6px;padding:6px 4px;text-align:center;cursor:pointer;background:var(--bg3);transition:all .1s}
@@ -698,27 +701,39 @@ function openPicker(slot){
   renderPickerGrid();
 }
 
-function renderPickerGrid(){
-  const g=document.getElementById("picker-grid");
-  // ランク順（F→S）→コラボ順にソート
-  const sorted=[...CARDS].sort((a,b)=>{
+function sortedCards(){
+  return [...CARDS].sort((a,b)=>{
     if(a.rank&&b.rank) return (RANK_ORDER[a.rank]||0)-(RANK_ORDER[b.rank]||0);
     if(a.rank&&!b.rank) return -1;
     if(!a.rank&&b.rank) return 1;
     return (a.collab||"").localeCompare(b.collab||"");
   });
-  const filtered=applyFilters(sorted).slice(0,150);
-  document.getElementById("picker-count").textContent=
-    `${filtered.length}件${filtered.length>=150?" (150件まで表示)":""}`;
-  g.innerHTML=filtered.map(card=>{
+}
+
+function buildPickerHTML(filtered, onClickFn){
+  let out="", lastGroup="";
+  for(const card of filtered){
+    const group=card.rank ? `${card.rank}ランク` : (card.collab||"コラボ");
+    if(group!==lastGroup){
+      out+=`<div class="card-sep"><div class="card-sep-line"></div><div class="card-sep-label">${group}</div><div class="card-sep-line"></div></div>`;
+      lastGroup=group;
+    }
     const em=cardElMeta(card), rm=RAR_META[card.rarity]||{label:card.rarity,cls:"r"};
-    const displayName=card.name&&card.name!==card.id ? card.name : card.id;
-    return `<div class="pick-card" onclick="selectCard('${card.id}')">
+    const displayName=card.name&&card.name!==card.id?card.name:card.id;
+    out+=`<div class="pick-card" onclick="${onClickFn}('${card.id}')">
       <div class="pc-el">${cardEmoji(card)}</div>
       <div class="pc-id">${displayName}</div>
       <div class="pc-rar ${rm.cls}">${rm.label} ${em.label}</div>
     </div>`;
-  }).join("");
+  }
+  return out;
+}
+
+function renderPickerGrid(){
+  const g=document.getElementById("picker-grid");
+  const filtered=applyFilters(sortedCards()).slice(0,200);
+  document.getElementById("picker-count").textContent=`${filtered.length}件${filtered.length>=200?" (200件まで表示)":""}`;
+  g.innerHTML=buildPickerHTML(filtered,"selectCard");
 }
 
 function selectCard(cardId){
@@ -964,23 +979,9 @@ function openHostPicker(slot){
 
 function renderHostPickerGrid(){
   const g=document.getElementById("host-picker-grid");
-  const sorted=[...CARDS].sort((a,b)=>{
-    if(a.rank&&b.rank) return (RANK_ORDER[a.rank]||0)-(RANK_ORDER[b.rank]||0);
-    if(a.rank&&!b.rank) return -1;
-    if(!a.rank&&b.rank) return 1;
-    return (a.collab||"").localeCompare(b.collab||"");
-  });
-  const filtered=applyHostFilters(sorted).slice(0,150);
-  document.getElementById("host-picker-count").textContent=`${filtered.length}件${filtered.length>=150?" (150件まで表示)":""}`;
-  g.innerHTML=filtered.map(card=>{
-    const em=cardElMeta(card), rm=RAR_META[card.rarity]||{label:card.rarity,cls:"r"};
-    const displayName=card.name&&card.name!==card.id?card.name:card.id;
-    return `<div class="pick-card" onclick="selectHostCard('${card.id}')">
-      <div class="pc-el">${cardEmoji(card)}</div>
-      <div class="pc-id">${displayName}</div>
-      <div class="pc-rar ${rm.cls}">${rm.label} ${em.label}</div>
-    </div>`;
-  }).join("");
+  const filtered=applyHostFilters(sortedCards()).slice(0,200);
+  document.getElementById("host-picker-count").textContent=`${filtered.length}件${filtered.length>=200?" (200件まで表示)":""}`;
+  g.innerHTML=buildPickerHTML(filtered,"selectHostCard");
 }
 
 function applyHostFilters(list){
