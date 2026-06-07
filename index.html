@@ -292,17 +292,17 @@ input:focus{border-color:var(--accent)}
 </div>
 <script>
 /* ===== データ ===== */
-// element: d=火 b=水 e=木 f=無 / collab(string|null)でコラボ名を管理
-const NORMAL_ELEMENTS=new Set(["d","b","e","f"]);
+// element: fire/water/wood/none (cards.jsonのcolorから変換済み) / collab(string|null)
 const EL_META={
-  d:{label:"火",cls:"fire"},
-  b:{label:"水",cls:"water"},
-  e:{label:"木",cls:"wood"},
-  f:{label:"無",cls:"none"},
+  fire:{label:"火",cls:"fire"},
+  water:{label:"水",cls:"water"},
+  wood:{label:"木",cls:"wood"},
+  none:{label:"無",cls:"none"},
 };
 const EL_META_COLLAB={label:"コラボ",cls:"collab"};
 const RAR_META={ur:{label:"UR",cls:"ur"},sr:{label:"SR",cls:"sr"},r:{label:"R",cls:"r"}};
-const ELEM_EMOJI={d:"🔴",b:"🔵",e:"🟢",f:"⚫"};
+const ELEM_EMOJI={fire:"🔴",water:"🔵",wood:"🟢",none:"⚫"};
+const RANK_ORDER={F:0,E:1,D:2,C:3,B:4,A:5,S:6};
 
 let HEROES=[], CARDS=[], decks=[];
 
@@ -337,14 +337,14 @@ function cardInfo(id){
   if(f) return f;
   // JSONにない場合はIDから推測（collab=nullとして扱う）
   const m=id.match(/^([a-z]+)_(ur|sr|r)\d+$/);
-  if(m) return {id, name:id, element:m[1], rarity:m[2], collab: NORMAL_ELEMENTS.has(m[1])?null:"不明"};
+  if(m) return {id, name:id, element:"none", rarity:m[2], collab:null};
   return {id, name:id, element:"f", rarity:"r", collab:null};
 }
 
 // カードの表示用属性メタを返す（collabフィールド優先）
 function cardElMeta(card){
   if(card.collab) return EL_META_COLLAB;
-  return EL_META[card.element]||EL_META_COLLAB;
+  return EL_META[card.element]||{label:card.element,cls:"none"};
 }
 
 // カードの絵文字（collab判定）
@@ -572,8 +572,8 @@ let FILTER_DEFS=[];
 function buildFilterDefs(){
   const base=[
     {k:"ur",type:"rarity",l:"UR"},{k:"sr",type:"rarity",l:"SR"},{k:"r",type:"rarity",l:"R"},
-    {k:"d",type:"element",l:"🔴 火"},{k:"b",type:"element",l:"🔵 水"},
-    {k:"e",type:"element",l:"🟢 木"},{k:"f",type:"element",l:"⚫ 無"},
+    {k:"fire",type:"element",l:"🔴 火"},{k:"water",type:"element",l:"🔵 水"},
+    {k:"wood",type:"element",l:"🟢 木"},{k:"none",type:"element",l:"⚫ 無"},
     {k:"collab",type:"collab",l:"🟣 コラボ（全て）"},
   ];
   const collabNames=getCollabNames();
@@ -627,7 +627,7 @@ function applyFilters(list){
         const name=k.slice(7);
         if(c.collab!==name) return false;
       } else {
-        // 通常属性（d/b/e/f）
+        // 通常属性（fire/water/wood/none）
         if(c.element!==k) return false;
       }
     }
@@ -644,7 +644,14 @@ function openPicker(slot){
 
 function renderPickerGrid(){
   const g=document.getElementById("picker-grid");
-  const filtered=applyFilters(CARDS).slice(0,150);
+  // ランク順（F→S）→コラボ順にソート
+  const sorted=[...CARDS].sort((a,b)=>{
+    if(a.rank&&b.rank) return (RANK_ORDER[a.rank]||0)-(RANK_ORDER[b.rank]||0);
+    if(a.rank&&!b.rank) return -1;
+    if(!a.rank&&b.rank) return 1;
+    return (a.collab||"").localeCompare(b.collab||"");
+  });
+  const filtered=applyFilters(sorted).slice(0,150);
   document.getElementById("picker-count").textContent=
     `${filtered.length}件${filtered.length>=150?" (150件まで表示)":""}`;
   g.innerHTML=filtered.map(card=>{
