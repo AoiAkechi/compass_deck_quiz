@@ -512,7 +512,7 @@ function renderCardTile(cid){
   const c=cardInfo(cid), em=cardElMeta(c), rm=RAR_META[c.rarity]||{label:c.rarity,cls:"r"};
   const displayName=c.name&&c.name!==c.id ? c.name : c.id;
   const collabLabel = c.collab ? ` <span style="font-size:8px;opacity:.75">${c.collab}</span>` : "";
-  const imgPath=`images/${c.id}.jpg`;
+  const imgPath=`cards/${c.id}.jpg`;
   return `<div class="ct ${em.cls}">
     <img class="ct-img" src="${imgPath}" alt="${displayName}"
       onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
