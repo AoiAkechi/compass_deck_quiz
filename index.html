@@ -21,7 +21,7 @@
       <button class="btn-sm" onclick="openNameModal()" style="font-size:11px">✏️ 名前変更</button>
     </div>
     <button class="btn btn-p" onclick="go('s-solo')">ソロで練習</button>
-    <button class="btn btn-s" onclick="go('s-room')">みんなで対戦（P2P）</button>
+    <button class="btn btn-s" onclick="go('s-room')">みんなで対戦</button>
   </div>
   <div class="card">
     <div class="lbl">登録済みデッキ</div>
@@ -73,7 +73,7 @@
 <div id="s-room" class="screen">
   <div class="card">
     <h2>みんなで対戦</h2>
-    <p class="sub">P2P接続 — 合言葉で部屋に集合</p>
+    <p class="sub">合言葉で部屋に集合</p>
     <div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:10px;margin-bottom:12px">
       <span style="font-size:20px">👤</span>
       <span id="room-username-display" style="font-size:14px;font-weight:600;color:var(--text)"></span>
@@ -82,7 +82,7 @@
     <div class="div"></div>
     <h3>🎤 司会者として部屋を作る</h3>
     <p style="font-size:12px;color:var(--text2);margin:4px 0 6px">合言葉を決めて参加者に伝えてください</p>
-    <input id="room-passphrase" placeholder="合言葉（例: neko, compass123）" maxlength="20">
+    <input id="room-passphrase" placeholder="合言葉（例:compass）" maxlength="20">
     <button class="btn btn-p" onclick="createRoom()" style="margin-top:8px">部屋を作る</button>
     <div class="div"></div>
     <h3>🙋 参加者として入る</h3>
@@ -105,7 +105,7 @@
       <div class="lbl">合言葉（参加者に共有）</div>
       <div class="passphrase-box">
         <div class="passphrase-word" id="room-passphrase-display"></div>
-        <div class="passphrase-hint">この合言葉をLINEなどで共有してください</div>
+        <div class="passphrase-hint">この合言葉をdiscordなどで共有してください</div>
       </div>
       <button class="btn-sm" onclick="copyPassphrase()" style="width:100%">📋 合言葉をコピー</button>
     </div>
@@ -191,7 +191,7 @@
     </div>
 
     <div class="lbl" style="margin-top:4px">デッキ名</div>
-    <input id="mg-name" placeholder="例：ジャスティス攻め">
+    <input id="mg-name" placeholder="例：妨害アタリ">
     <button class="btn btn-p" onclick="mgSave()">保存</button>
 
     <div class="div"></div>
