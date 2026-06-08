@@ -192,22 +192,41 @@ function renderHeroPicker(containerId, onSelect, opts={}){
       <input class="hero-search-input" id="${containerId}-input" placeholder="キャラ名を検索..." autocomplete="off">
       <button class="hero-search-clear" id="${containerId}-clear" onclick="clearHeroSearch('${containerId}')">✕</button>
     </div>
-    <div class="hero-list" id="${containerId}-list"></div>`;
+    <div class="hero-list" id="${containerId}-list" style="display:none"></div>`;
 
   const input=document.getElementById(`${containerId}-input`);
+  const list=document.getElementById(`${containerId}-list`);
+
+  // フォーカス時にリスト表示
+  input.onfocus=()=>{
+    list.style.display="block";
+    updateHeroList(containerId,input.value,onSelect,opts);
+  };
   input.oninput=()=>{
     const v=input.value;
     document.getElementById(`${containerId}-clear`).classList.toggle("show",v.length>0);
+    list.style.display="block";
     updateHeroList(containerId,v,onSelect,opts);
   };
-  updateHeroList(containerId,"",onSelect,opts);
+  // 外側クリックでリストを閉じる
+  document.addEventListener("click",(e)=>{
+    if(!wrap.contains(e.target)) list.style.display="none";
+  },{capture:true});
 }
 
 function clearHeroSearch(containerId){
   const input=document.getElementById(`${containerId}-input`);
+  const list=document.getElementById(`${containerId}-list`);
+  // onSelectを保持したままリセット（空のコールバックで上書きしない）
+  const savedOnSelect=list._onSelect||null;
+  const savedOpts=list._opts||{};
   input.value="";
   document.getElementById(`${containerId}-clear`).classList.remove("show");
-  updateHeroList(containerId,"",()=>{},{}); // リセット表示
+  // 選択済みキャラもリセット
+  if(containerId==="mg-hero-picker") mgSelectedHero=null;
+  if(containerId==="host-hero-picker") hostSelectedHero=null;
+  updateHeroList(containerId,"",savedOnSelect,savedOpts);
+  list.style.display="block";
   input.focus();
 }
 
@@ -234,8 +253,9 @@ function updateHeroList(containerId, query, onSelect, opts={}){
     </div>`;
   }).join("");
 
-  // コールバックをdataに保存
+  // コールバックとoptsを保存
   list._onSelect=onSelect;
+  list._opts=opts;
 }
 
 function heroListClick(containerId,hid){
@@ -423,25 +443,20 @@ function updateFilterHint(){
 
 function applyFilters(list){
   if(activeFilters.size===0) return list;
+  // レアリティ・属性・コラボを分類
+  const rarFilters=[...activeFilters].filter(k=>k==="ur"||k==="sr"||k==="r");
+  const elFilters=[...activeFilters].filter(k=>k==="fire"||k==="water"||k==="wood"||k==="none");
+  const collabAll=activeFilters.has("collab");
+  const collabNames=[...activeFilters].filter(k=>k.startsWith("collab:")).map(k=>k.slice(7));
   return list.filter(c=>{
-    for(const k of activeFilters){
-      if(k==="ur"||k==="sr"||k==="r"){
-        if(c.rarity!==k) return false;
-      } else if(k==="collab"){
-        // collab フィールドが null または未設定なら除外
-        if(!c.collab) return false;
-      } else if(k.startsWith("collab:")){
-        // 特定コラボ名で絞り込み
-        const name=k.slice(7);
-        if(c.collab!==name) return false;
-      } else if(k.startsWith("collab:")){
-        const name=k.slice(7);
-        if(c.collab!==name) return false;
-      } else {
-        // 通常属性（fire/water/wood/none）
-        if(c.element!==k) return false;
-      }
-    }
+    // レアリティ: AND（複数選択時はいずれかに一致）
+    if(rarFilters.length>0 && !rarFilters.includes(c.rarity)) return false;
+    // 属性: OR（いずれかに一致すればOK）
+    if(elFilters.length>0 && !elFilters.includes(c.element)) return false;
+    // コラボ全体
+    if(collabAll && !c.collab) return false;
+    // 特定コラボ: OR
+    if(collabNames.length>0 && !collabNames.includes(c.collab)) return false;
     return true;
   });
 }
@@ -474,8 +489,8 @@ function buildPickerHTML(filtered, onClickFn){
     const displayName=card.name&&card.name!==card.id?card.name:card.id;
     out+=`<div class="pick-card" draggable="true" onclick="${onClickFn}('${card.id}')" ondragstart="onPickCardDragStart(event,'${card.id}')">
       <img class="pc-img" src="cards/${card.id}.jpg" alt="${displayName}"
-        onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-      <div class="pc-noimg" style="display:none;font-size:16px;line-height:1;text-align:center">${cardEmoji(card)}</div>
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="pc-noimg" style="display:none;width:100%;aspect-ratio:0.72;align-items:center;justify-content:center;font-size:20px;background:var(--bg3)">${cardEmoji(card)}</div>
       <div class="pc-id">${displayName}</div>
       <div class="pc-rar ${rm.cls}">${rm.label} ${em.label}</div>
     </div>`;
@@ -747,13 +762,15 @@ function renderHostPickerGrid(){
 
 function applyHostFilters(list){
   if(hostActiveFilters.size===0) return list;
+  const rarFilters=[...hostActiveFilters].filter(k=>k==="ur"||k==="sr"||k==="r");
+  const elFilters=[...hostActiveFilters].filter(k=>k==="fire"||k==="water"||k==="wood"||k==="none");
+  const collabAll=hostActiveFilters.has("collab");
+  const collabNames=[...hostActiveFilters].filter(k=>k.startsWith("collab:")).map(k=>k.slice(7));
   return list.filter(c=>{
-    for(const k of hostActiveFilters){
-      if(k==="ur"||k==="sr"||k==="r"){ if(c.rarity!==k) return false; }
-      else if(k==="collab"){ if(!c.collab) return false; }
-      else if(k.startsWith("collab:")){ if(c.collab!==k.slice(7)) return false; }
-      else { if(c.element!==k) return false; }
-    }
+    if(rarFilters.length>0 && !rarFilters.includes(c.rarity)) return false;
+    if(elFilters.length>0 && !elFilters.includes(c.element)) return false;
+    if(collabAll && !c.collab) return false;
+    if(collabNames.length>0 && !collabNames.includes(c.collab)) return false;
     return true;
   });
 }
