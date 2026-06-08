@@ -1,7 +1,4 @@
-// firebase-sync.js — 通常scriptとして読み込む（type="module"不要）
-
 (async () => {
-  // Firebase を動的インポート
   const { initializeApp } = await import("https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js");
   const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js");
 
@@ -17,25 +14,26 @@
   const firebaseApp = initializeApp(firebaseConfig);
   const db = getFirestore(firebaseApp);
 
-  // app.js の mgSave をラップ（元の処理を実行してから Firestore に送信）
   const _originalMgSave = window.mgSave;
 
   window.mgSave = async function () {
-    // バリデーション（app.js と同じ条件）
     const hero = window.mgSelectedHero;
     const cards = window.mgCards || [];
     const deckName = document.getElementById("mg-name")?.value?.trim();
 
-    // 条件を満たさない場合は元の処理だけ実行（alertを出すため）
+    console.log("[firebase-sync] mgSave 呼ばれた");
+    console.log("[firebase-sync] hero:", hero);
+    console.log("[firebase-sync] cards:", cards);
+    console.log("[firebase-sync] deckName:", deckName);
+
     if (!hero || cards.filter(Boolean).length < 4 || !deckName) {
+      console.warn("[firebase-sync] バリデーション失敗のためスキップ");
       _originalMgSave();
       return;
     }
 
-    // 元の保存処理を実行
     _originalMgSave();
 
-    // Firestore に送信
     try {
       const userName = localStorage.getItem("cq_username") || "名無し";
       const heroData = (window.HEROES || []).find(h => h.id === hero);
@@ -46,6 +44,8 @@
         name: c.name || c.id,
         image: `images/${c.id}.jpg`
       }));
+
+      console.log("[firebase-sync] Firestore送信中...", { userName, heroName, deckName, cardList });
 
       await addDoc(collection(db, "decks"), {
         userName,
