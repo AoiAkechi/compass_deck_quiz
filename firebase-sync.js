@@ -17,40 +17,52 @@
   const _originalMgSave = window.mgSave;
 
   window.mgSave = async function () {
-    const hero = window.mgSelectedHero;
-    const cards = window.mgCards || [];
+    // バリデーション — DOM から直接読み取る（let変数はwindowに出ないため）
+    const heroInput = document.getElementById("mg-hero-picker-input");
+    const heroItem = document.querySelector("#mg-hero-picker-list .hero-list-item.selected");
+    const heroId = heroItem?.dataset?.hid || null;
+    const heroName = heroInput?.value?.trim() || null;
+
     const deckName = document.getElementById("mg-name")?.value?.trim();
 
-    console.log("[firebase-sync] mgSave 呼ばれた");
-    console.log("[firebase-sync] hero:", hero);
-    console.log("[firebase-sync] cards:", cards);
-    console.log("[firebase-sync] deckName:", deckName);
+    // スロットに入っているカードIDをDOMから取得
+    const cardIds = [0,1,2,3].map(i => {
+      const slot = document.getElementById(`ms${i}`);
+      if (!slot?.classList.contains("has")) return null;
+      // ct-overlay内のct-idテキストではなくdata属性から取る
+      const ctImg = slot.querySelector(".ct-img");
+      if (ctImg) {
+        const src = ctImg.getAttribute("src") || "";
+        const match = src.match(/images\/(.+)\.jpg/);
+        return match ? match[1] : null;
+      }
+      return null;
+    });
 
-    if (!hero || cards.filter(Boolean).length < 4 || !deckName) {
-      console.warn("[firebase-sync] バリデーション失敗のためスキップ");
+    const validCards = cardIds.filter(Boolean);
+
+    // バリデーション失敗なら元の処理（alert）だけ実行
+    if (!heroId || validCards.length < 4 || !deckName) {
       _originalMgSave();
       return;
     }
 
+    // 元の保存処理を実行
     _originalMgSave();
 
+    // Firestore に送信
     try {
       const userName = localStorage.getItem("cq_username") || "名無し";
-      const heroData = (window.HEROES || []).find(h => h.id === hero);
-      const heroName = heroData?.name || hero;
 
-      const cardList = cards.filter(Boolean).map(c => ({
-        id: c.id,
-        name: c.name || c.id,
-        image: `images/${c.id}.jpg`
+      const cardList = validCards.map(id => ({
+        id,
+        image: `images/${id}.jpg`
       }));
-
-      console.log("[firebase-sync] Firestore送信中...", { userName, heroName, deckName, cardList });
 
       await addDoc(collection(db, "decks"), {
         userName,
         deckName,
-        heroId: hero,
+        heroId,
         heroName,
         cards: cardList,
         createdAt: serverTimestamp()
