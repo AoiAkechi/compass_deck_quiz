@@ -1,37 +1,41 @@
-// firebase-sync.js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+// firebase-sync.js — 通常scriptとして読み込む（type="module"不要）
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCPqieL2u8-u85yLGsILCl-UZvoHOe0kkc",
-  authDomain: "compass-deck-quiz.firebaseapp.com",
-  projectId: "compass-deck-quiz",
-  storageBucket: "compass-deck-quiz.firebasestorage.app",
-  messagingSenderId: "181144518371",
-  appId: "1:181144518371:web:e0ba03752a82c937f74fd6"
-};
+(async () => {
+  // Firebase を動的インポート
+  const { initializeApp } = await import("https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js");
+  const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js");
 
-const firebaseApp = initializeApp(firebaseConfig);
-const db = getFirestore(firebaseApp);
+  const firebaseConfig = {
+    apiKey: "AIzaSyCPqieL2u8-u85yLGsILCl-UZvoHOe0kkc",
+    authDomain: "compass-deck-quiz.firebaseapp.com",
+    projectId: "compass-deck-quiz",
+    storageBucket: "compass-deck-quiz.firebasestorage.app",
+    messagingSenderId: "181144518371",
+    appId: "1:181144518371:web:e0ba03752a82c937f74fd6"
+  };
 
-document.addEventListener("DOMContentLoaded", () => {
-  const saveBtn = document.querySelector("#s-manage .btn-p");
-  if (!saveBtn) { console.warn("[firebase-sync] 保存ボタンが見つかりません"); return; }
+  const firebaseApp = initializeApp(firebaseConfig);
+  const db = getFirestore(firebaseApp);
 
-  saveBtn.addEventListener("click", async () => {
-    // デバッグ用：変数の中身を確認
-    console.log("[firebase-sync] hero:", window.mgSelectedHero);
-    console.log("[firebase-sync] cards:", window.mgCards);
-    console.log("[firebase-sync] HEROES:", window.HEROES?.length);
+  // app.js の mgSave をラップ（元の処理を実行してから Firestore に送信）
+  const _originalMgSave = window.mgSave;
 
+  window.mgSave = async function () {
+    // バリデーション（app.js と同じ条件）
     const hero = window.mgSelectedHero;
     const cards = window.mgCards || [];
     const deckName = document.getElementById("mg-name")?.value?.trim();
 
-    if (!hero) { console.warn("[firebase-sync] ヒーロー未選択のためスキップ"); return; }
-    if (cards.filter(Boolean).length < 4) { console.warn("[firebase-sync] カード4枚未満のためスキップ"); return; }
-    if (!deckName) { console.warn("[firebase-sync] デッキ名未入力のためスキップ"); return; }
+    // 条件を満たさない場合は元の処理だけ実行（alertを出すため）
+    if (!hero || cards.filter(Boolean).length < 4 || !deckName) {
+      _originalMgSave();
+      return;
+    }
 
+    // 元の保存処理を実行
+    _originalMgSave();
+
+    // Firestore に送信
     try {
       const userName = localStorage.getItem("cq_username") || "名無し";
       const heroData = (window.HEROES || []).find(h => h.id === hero);
@@ -52,9 +56,11 @@ document.addEventListener("DOMContentLoaded", () => {
         createdAt: serverTimestamp()
       });
 
-      console.log("[firebase-sync] 保存完了:", deckName, "/", heroName);
+      console.log("[firebase-sync] 保存完了:", heroName, "/", deckName);
     } catch (e) {
       console.error("[firebase-sync] 保存エラー:", e);
     }
-  });
-});
+  };
+
+  console.log("[firebase-sync] 初期化完了");
+})();
