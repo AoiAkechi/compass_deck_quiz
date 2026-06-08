@@ -80,6 +80,63 @@ document.addEventListener("keydown",e=>{
   if(e.key==="Enter"&&document.getElementById("name-modal").classList.contains("open")) saveUserName();
 });
 
+
+/* ===== タッチドラッグ対応 ===== */
+let touchDragCard=null, touchDragEl=null, touchClone=null;
+
+function initTouchDrag(){
+  document.addEventListener("touchstart",e=>{
+    const pc=e.target.closest(".pick-card");
+    if(!pc) return;
+    touchDragCard=pc.dataset.cid||pc.getAttribute("onclick")?.match(/'([^']+)'/)?.[1];
+    if(!touchDragCard) return;
+    touchDragEl=pc;
+    // クローン作成
+    touchClone=pc.cloneNode(true);
+    touchClone.style.cssText=`position:fixed;opacity:0.8;pointer-events:none;z-index:9999;width:${pc.offsetWidth}px;transform:scale(1.05)`;
+    document.body.appendChild(touchClone);
+    moveTouchClone(e.touches[0]);
+  },{passive:true});
+
+  document.addEventListener("touchmove",e=>{
+    if(!touchDragCard||!touchClone) return;
+    moveTouchClone(e.touches[0]);
+    // ドロップ先ハイライト
+    document.querySelectorAll(".slot").forEach(s=>s.classList.remove("drag-over"));
+    const el=document.elementFromPoint(e.touches[0].clientX,e.touches[0].clientY);
+    const slot=el?.closest(".slot");
+    if(slot) slot.classList.add("drag-over");
+  },{passive:true});
+
+  document.addEventListener("touchend",e=>{
+    if(!touchDragCard) return;
+    if(touchClone){ touchClone.remove(); touchClone=null; }
+    document.querySelectorAll(".slot").forEach(s=>s.classList.remove("drag-over"));
+    const touch=e.changedTouches[0];
+    const el=document.elementFromPoint(touch.clientX,touch.clientY);
+    const slot=el?.closest(".slot[id]");
+    if(slot){
+      const id=slot.id;
+      if(id.startsWith("ms")){
+        const i=parseInt(id.slice(2));
+        const card=cardInfo(touchDragCard);
+        mgCards[i]=card; updateSlotEl(i,card);
+      } else if(id.startsWith("hs")){
+        const i=parseInt(id.slice(2));
+        const card=cardInfo(touchDragCard);
+        hostCards[i]=card; updateHostSlot(i,card);
+      }
+    }
+    touchDragCard=null; touchDragEl=null;
+  });
+}
+
+function moveTouchClone(touch){
+  if(!touchClone) return;
+  touchClone.style.left=(touch.clientX-touchClone.offsetWidth/2)+"px";
+  touchClone.style.top=(touch.clientY-touchClone.offsetHeight/2)+"px";
+}
+
 async function loadData(){
   let heroOk=false, cardOk=false;
   try{
@@ -101,6 +158,7 @@ async function loadData(){
 
   try{ const raw=localStorage.getItem("cq_decks"); if(raw)decks=JSON.parse(raw); }catch(e){}
   loadUserName();
+  initTouchDrag();
   refreshTop();
 }
 
@@ -130,9 +188,10 @@ function heroName(id){ const h=HEROES.find(h=>h.id===id); return h?h.name:id; }
 
 // cards.jsonに登録されているコラボ名一覧を動的取得
 function getCollabNames(){
+  // cards.jsonの登場順を維持（Setは挿入順を保つ）
   const names=new Set();
   CARDS.forEach(c=>{ if(c.collab) names.add(c.collab); });
-  return [...names].sort();
+  return [...names]; // .sort()しない
 }
 
 
@@ -483,7 +542,7 @@ function buildPickerHTML(filtered, onClickFn){
     }
     const em=cardElMeta(card), rm=RAR_META[card.rarity]||{label:card.rarity,cls:"r"};
     const displayName=card.name&&card.name!==card.id?card.name:card.id;
-    out+=`<div class="pick-card" draggable="true" onclick="${onClickFn}('${card.id}')" ondragstart="onPickCardDragStart(event,'${card.id}')">
+    out+=`<div class="pick-card" draggable="true" data-cid="${card.id}" onclick="${onClickFn}('${card.id}')" ondragstart="onPickCardDragStart(event,'${card.id}')">
       <img class="pc-img" src="cards/${card.id}.jpg" alt="${displayName}"
         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
       <div class="pc-noimg" style="display:none;width:100%;aspect-ratio:0.72;align-items:center;justify-content:center;font-size:20px;background:var(--bg3)">${cardEmoji(card)}</div>
@@ -505,7 +564,14 @@ function selectCard(cardId){
   const card=cardInfo(cardId);
   mgCards[pickerSlot]=card;
   updateSlotEl(pickerSlot,card);
-  document.getElementById("picker-area").style.display="none";
+  // 次の空きスロットへ自動移動、全部埋まったら閉じる
+  const next=[0,1,2,3].find(i=>i>pickerSlot && !mgCards[i]);
+  if(next!==undefined){
+    pickerSlot=next;
+    document.getElementById("pick-label").textContent=`スロット${next+1} のカードを選択`;
+  } else {
+    document.getElementById("picker-area").style.display="none";
+  }
 }
 
 function updateSlotEl(i,card){
@@ -575,7 +641,7 @@ function createRoom(){
     initHostDeckBuilder(); go("s-host");
   });
   peer.on("connection",conn=>{
-    playerConns[conn.peer]=conn;
+    playerConns[conn.peer]={conn, name:""};
     conn.on("open",()=>{ conn.send({type:"welcome",hostName:myName}); updatePeers(); });
     conn.on("data",d=>handleHost(d,conn));
     conn.on("close",()=>{ delete playerConns[conn.peer]; updatePeers(); });
@@ -607,6 +673,8 @@ function joinRoom(){
 
 function handleHost(data,conn){
   if(data.type==="join"){
+    // connにnameを紐付け
+    if(playerConns[conn.peer]) playerConns[conn.peer].name=data.name;
     if(!scores[data.name])scores[data.name]=0;
     addLog(`✅ ${data.name} が参加`); updatePeers(); bcastScores();
   }
@@ -617,7 +685,7 @@ function handleHost(data,conn){
     scores[data.name]+=pts;
     addLog(`${correct?"✓":"✗"} ${data.name}：${heroName(data.heroId)}${data.first&&correct?" 🏆+3":correct?" +1":""}`);
     bcastScores();
-    conn.send({type:"answer-result",correct,first:data.first,scores});
+    conn.send({type:"answer-result",correct,first:data.first,heroId:data.heroId,scores});
   }
 }
 
@@ -775,7 +843,13 @@ function selectHostCard(cardId){
   const card=cardInfo(cardId);
   hostCards[hostPickerSlot]=card;
   updateHostSlot(hostPickerSlot,card);
-  document.getElementById("host-picker-area").style.display="none";
+  const next=[0,1,2,3].find(i=>i>hostPickerSlot && !hostCards[i]);
+  if(next!==undefined){
+    hostPickerSlot=next;
+    document.getElementById("host-pick-label").textContent=`スロット${next+1} のカードを選択`;
+  } else {
+    document.getElementById("host-picker-area").style.display="none";
+  }
 }
 
 function updateHostSlot(i,card){
@@ -800,24 +874,25 @@ function hostSend(){
   if(hostCards.filter(Boolean).length<4){ alert("4枚すべてのカードを選択してください"); return; }
   const cardIds=hostCards.map(c=>c.id);
   hostCurDeck={heroId:hostSelectedHero, cards:cardIds};
-  Object.values(playerConns).forEach(c=>c.send({type:"question",cards:cardIds,heroId:hostSelectedHero}));
+  Object.values(playerConns).forEach(p=>p.conn.send({type:"question",cards:cardIds,heroId:hostSelectedHero}));
   document.getElementById("host-reveal").style.display="block";
   document.getElementById("host-log").innerHTML='<p style="color:var(--text3)">回答待ち...</p>';
   addLog(`📤 出題：${heroName(hostSelectedHero)}`);
 }
 function hostReveal(){
   if(!hostCurDeck) return;
-  Object.values(playerConns).forEach(c=>c.send({type:"reveal",heroId:hostCurDeck.heroId,scores}));
+  Object.values(playerConns).forEach(p=>p.conn.send({type:"reveal",heroId:hostCurDeck.heroId,scores}));
   document.getElementById("host-reveal").style.display="none";
   renderScores("host-scores",scores);
 }
-function bcastScores(){ Object.values(playerConns).forEach(c=>c.send({type:"scores",scores})); renderScores("host-scores",scores); }
+function bcastScores(){ Object.values(playerConns).forEach(p=>p.conn.send({type:"scores",scores})); renderScores("host-scores",scores); }
 function updatePeers(){
-  const cnt=Object.keys(playerConns).length;
+  const entries=Object.values(playerConns);
+  const cnt=entries.length;
   document.getElementById("peer-count").textContent=cnt;
   document.getElementById("peer-list").innerHTML=cnt===0
     ?'<span style="font-size:12px;color:var(--text3)">まだ誰もいません</span>'
-    :Object.keys(playerConns).map(id=>`<span class="peer-tag">${id.slice(0,8)}…</span>`).join("");
+    :entries.map(p=>`<span class="peer-tag">👤 ${p.name||"接続中…"}</span>`).join("");
 }
 function addLog(msg){ const el=document.getElementById("host-log"),p=document.createElement("p"); p.textContent=msg; el.insertBefore(p,el.firstChild); }
 function copyId(){
