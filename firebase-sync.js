@@ -16,26 +16,27 @@ const db = getFirestore(firebaseApp);
 
 document.addEventListener("DOMContentLoaded", () => {
   const saveBtn = document.querySelector("#s-manage .btn-p");
-  if (!saveBtn) return;
+  if (!saveBtn) { console.warn("[firebase-sync] 保存ボタンが見つかりません"); return; }
 
   saveBtn.addEventListener("click", async () => {
-    // app.js と同じバリデーション — 条件を満たさない場合は送信しない
+    // デバッグ用：変数の中身を確認
+    console.log("[firebase-sync] hero:", window.mgSelectedHero);
+    console.log("[firebase-sync] cards:", window.mgCards);
+    console.log("[firebase-sync] HEROES:", window.HEROES?.length);
+
     const hero = window.mgSelectedHero;
     const cards = window.mgCards || [];
     const deckName = document.getElementById("mg-name")?.value?.trim();
 
-    if (!hero) return;
-    if (cards.filter(Boolean).length < 4) return;
-    if (!deckName) return;
+    if (!hero) { console.warn("[firebase-sync] ヒーロー未選択のためスキップ"); return; }
+    if (cards.filter(Boolean).length < 4) { console.warn("[firebase-sync] カード4枚未満のためスキップ"); return; }
+    if (!deckName) { console.warn("[firebase-sync] デッキ名未入力のためスキップ"); return; }
 
     try {
       const userName = localStorage.getItem("cq_username") || "名無し";
-
-      // ヒーロー名を HEROES 配列から取得
       const heroData = (window.HEROES || []).find(h => h.id === hero);
       const heroName = heroData?.name || hero;
 
-      // カード情報（id + 画像パス）
       const cardList = cards.filter(Boolean).map(c => ({
         id: c.id,
         name: c.name || c.id,
