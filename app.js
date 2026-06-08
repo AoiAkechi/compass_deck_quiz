@@ -469,12 +469,8 @@ function openPicker(slot){
 }
 
 function sortedCards(){
-  return [...CARDS].sort((a,b)=>{
-    if(a.rank&&b.rank) return (RANK_ORDER[a.rank]||0)-(RANK_ORDER[b.rank]||0);
-    if(a.rank&&!b.rank) return -1;
-    if(!a.rank&&b.rank) return 1;
-    return (a.collab||"").localeCompare(b.collab||"");
-  });
+  // cards.jsonのインデックス順をそのまま使う（ソートしない）
+  return [...CARDS];
 }
 
 function buildPickerHTML(filtered, onClickFn){
