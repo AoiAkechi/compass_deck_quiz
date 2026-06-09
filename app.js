@@ -18,10 +18,20 @@ let HEROES=[], CARDS=[], decks=[];
 
 /* ===== ドラッグ＆ドロップ ===== */
 let dragCardId=null;
+let dragFromSlot=null; // {prefix, index} スロット間ドラッグ用
 
 function onPickCardDragStart(e,cardId){
   dragCardId=cardId;
+  dragFromSlot=null;
   e.dataTransfer.effectAllowed="copy";
+}
+
+function onSlotDragStart(e,prefix,index){
+  const cards=prefix==="ms"?mgCards:hostCards;
+  if(!cards[index]) return;
+  dragCardId=cards[index].id;
+  dragFromSlot={prefix,index};
+  e.dataTransfer.effectAllowed="move";
 }
 
 function initSlotDrop(slotEl, onDropFn){
@@ -39,7 +49,27 @@ function initSlotDrop(slotEl, onDropFn){
 function setupSlotDrops(prefix, slotCount, onDrop){
   for(let i=0;i<slotCount;i++){
     const el=document.getElementById(`${prefix}${i}`);
-    if(el) initSlotDrop(el,(cid)=>onDrop(i,cid));
+    if(!el) continue;
+    // スロット→スロット入れ替えのためdraggable設定
+    el.setAttribute("draggable","true");
+    el.addEventListener("dragstart",e=>{ if(e.target.closest(".s-del")) return; onSlotDragStart(e,prefix,i); });
+    initSlotDrop(el,(cid)=>{
+      // スロット間スワップ
+      if(dragFromSlot && dragFromSlot.prefix===prefix){
+        const fromIdx=dragFromSlot.index;
+        if(fromIdx===i) return;
+        const cards=prefix==="ms"?mgCards:hostCards;
+        const updateFn=prefix==="ms"?updateSlotEl:updateHostSlot;
+        const resetFn=prefix==="ms"?resetSlotEl:resetHostSlot;
+        const tmp=cards[i];
+        cards[i]=cards[fromIdx]; cards[fromIdx]=tmp;
+        if(cards[i]) updateFn(i,cards[i]); else resetFn(i);
+        if(cards[fromIdx]) updateFn(fromIdx,cards[fromIdx]); else resetFn(fromIdx);
+      } else {
+        onDrop(i,cid);
+      }
+      dragFromSlot=null;
+    });
   }
 }
 
@@ -84,17 +114,40 @@ document.addEventListener("keydown",e=>{
 /* ===== タッチドラッグ対応 ===== */
 let touchDragCard=null, touchDragEl=null, touchClone=null;
 let touchStartX=0, touchStartY=0, touchDragging=false;
+let touchFromSlot=null; // {prefix, index}
 const DRAG_THRESHOLD=8; // px動いたらドラッグ開始
 
 function initTouchDrag(){
   // touchstartはpassiveでOK（まだスクロール禁止しない）
   document.addEventListener("touchstart",e=>{
+    // スロット内カードからのドラッグ
+    const slot=e.target.closest(".slot[id]");
+    if(slot){
+      const id=slot.id;
+      let prefix=null,index=-1;
+      if(id.startsWith("ms")){ prefix="ms"; index=parseInt(id.slice(2)); }
+      else if(id.startsWith("hs")){ prefix="hs"; index=parseInt(id.slice(2)); }
+      if(prefix!==null){
+        const cards=prefix==="ms"?mgCards:hostCards;
+        if(cards[index]){
+          touchDragCard=cards[index].id;
+          touchDragEl=slot;
+          touchFromSlot={prefix,index};
+          touchDragging=false;
+          const t=e.touches[0];
+          touchStartX=t.clientX; touchStartY=t.clientY;
+          return;
+        }
+      }
+    }
+    // ピッカーカードからのドラッグ
     const pc=e.target.closest(".pick-card");
     if(!pc) return;
     const cid=pc.dataset.cid;
     if(!cid) return;
     touchDragCard=cid;
     touchDragEl=pc;
+    touchFromSlot=null;
     touchDragging=false;
     const t=e.touches[0];
     touchStartX=t.clientX;
@@ -164,16 +217,31 @@ function initTouchDrag(){
         const id=slot.id;
         if(id.startsWith("ms")){
           const i=parseInt(id.slice(2));
-          const card=cardInfo(touchDragCard);
-          mgCards[i]=card; updateSlotEl(i,card);
+          // スロット間スワップ
+          if(touchFromSlot && touchFromSlot.prefix==="ms" && touchFromSlot.index!==i){
+            const fromIdx=touchFromSlot.index;
+            const tmp=mgCards[i]; mgCards[i]=mgCards[fromIdx]; mgCards[fromIdx]=tmp;
+            if(mgCards[i]) updateSlotEl(i,mgCards[i]); else resetSlotEl(i);
+            if(mgCards[fromIdx]) updateSlotEl(fromIdx,mgCards[fromIdx]); else resetSlotEl(fromIdx);
+          } else if(!touchFromSlot) {
+            if(mgCards.some((c,j)=>c&&c.id===touchDragCard&&j!==i)){ alert("同じカードはすでに使用されています"); }
+            else { const card=cardInfo(touchDragCard); mgCards[i]=card; updateSlotEl(i,card); }
+          }
         } else if(id.startsWith("hs")){
           const i=parseInt(id.slice(2));
-          const card=cardInfo(touchDragCard);
-          hostCards[i]=card; updateHostSlot(i,card);
+          if(touchFromSlot && touchFromSlot.prefix==="hs" && touchFromSlot.index!==i){
+            const fromIdx=touchFromSlot.index;
+            const tmp=hostCards[i]; hostCards[i]=hostCards[fromIdx]; hostCards[fromIdx]=tmp;
+            if(hostCards[i]) updateHostSlot(i,hostCards[i]); else resetHostSlot(i);
+            if(hostCards[fromIdx]) updateHostSlot(fromIdx,hostCards[fromIdx]); else resetHostSlot(fromIdx);
+          } else if(!touchFromSlot) {
+            if(hostCards.some((c,j)=>c&&c.id===touchDragCard&&j!==i)){ alert("同じカードはすでに使用されています"); }
+            else { const card=cardInfo(touchDragCard); hostCards[i]=card; updateHostSlot(i,card); }
+          }
         }
       }
     }
-    touchDragCard=null; touchDragEl=null; touchDragging=false;
+    touchDragCard=null; touchDragEl=null; touchDragging=false; touchFromSlot=null;
   },{passive:true});
 }
 
@@ -362,6 +430,8 @@ function heroListClick(containerId,hid){
   const list=document.getElementById(`${containerId}-list`);
   const onSelect=list._onSelect;
   if(onSelect) onSelect(hid);
+  // 選択後にリストを閉じる
+  list.style.display="none";
 }
 
 /* ===== ソロモード ===== */
@@ -469,6 +539,7 @@ function initManage(){
   renderMgList();
   // ドラッグ＆ドロップ設定（管理画面スロット）
   setupSlotDrops("ms",4,(i,cid)=>{
+    if(mgCards.some((c,j)=>c&&c.id===cid&&j!==i)){ alert("同じカードはすでに使用されています"); return; }
     const card=cardInfo(cid); mgCards[i]=card; updateSlotEl(i,card);
   });
 }
@@ -482,6 +553,12 @@ function buildFilterDefs(){
     {k:"ur",type:"rarity",l:"UR"},{k:"sr",type:"rarity",l:"SR"},{k:"r",type:"rarity",l:"R"},
     {k:"fire",type:"element",l:"🔴 火"},{k:"water",type:"element",l:"🔵 水"},
     {k:"wood",type:"element",l:"🟢 木"},{k:"none",type:"element",l:"⚫ 無"},
+    {k:"type:強",type:"cardtype",l:"強"},{k:"type:近",type:"cardtype",l:"近"},
+    {k:"type:遠",type:"cardtype",l:"遠"},{k:"type:防",type:"cardtype",l:"防"},
+    {k:"type:移",type:"cardtype",l:"移"},{k:"type:癒",type:"cardtype",l:"癒"},
+    {k:"type:弱",type:"cardtype",l:"弱"},{k:"type:反",type:"cardtype",l:"反"},
+    {k:"type:周",type:"cardtype",l:"周"},{k:"type:連",type:"cardtype",l:"連"},
+    {k:"type:罠",type:"cardtype",l:"罠"},{k:"type:他",type:"cardtype",l:"他"},
   ];
   FILTER_DEFS=base;
 }
@@ -490,9 +567,16 @@ function buildFilterBtns(){
   buildFilterDefs();
   const collabNames=getCollabNames();
   const collabExpanded=document.getElementById("collab-expand-area");
-  // 基本フィルター
+  const rarFilters=FILTER_DEFS.filter(f=>f.type==="rarity");
+  const elFilters=FILTER_DEFS.filter(f=>f.type==="element");
+  const typeFilters=FILTER_DEFS.filter(f=>f.type==="cardtype");
+  // 基本フィルター（レアリティ・属性）
   document.getElementById("picker-filters").innerHTML=
-    FILTER_DEFS.map(f=>`<button class="filt" data-k="${f.k}" onclick="toggleFilter('${f.k}')">${f.l}</button>`).join("")
+    rarFilters.map(f=>`<button class="filt" data-k="${f.k}" onclick="toggleFilter('${f.k}')">${f.l}</button>`).join("")
+    +`<span style="width:1px;background:var(--border);align-self:stretch;margin:2px 2px"></span>`
+    +elFilters.map(f=>`<button class="filt" data-k="${f.k}" onclick="toggleFilter('${f.k}')">${f.l}</button>`).join("")
+    +`<span style="width:1px;background:var(--border);align-self:stretch;margin:2px 2px"></span>`
+    +typeFilters.map(f=>`<button class="filt" data-k="${f.k}" onclick="toggleFilter('${f.k}')">${f.l}</button>`).join("")
     +`<button class="filt filt-collab-toggle" onclick="toggleCollabExpand()">🟣 コラボ ▽</button>`
     +`<button class="filt-reset" onclick="resetFilters()">リセット</button>`;
   // コラボ展開エリアを構築
@@ -543,9 +627,10 @@ function updateFilterHint(){
 
 function applyFilters(list){
   if(activeFilters.size===0) return list;
-  // レアリティ・属性・コラボを分類
+  // レアリティ・属性・効果・コラボを分類
   const rarFilters=[...activeFilters].filter(k=>k==="ur"||k==="sr"||k==="r");
   const elFilters=[...activeFilters].filter(k=>k==="fire"||k==="water"||k==="wood"||k==="none");
+  const typeFilters=[...activeFilters].filter(k=>k.startsWith("type:")).map(k=>k.slice(5));
   const collabAll=activeFilters.has("collab");
   const collabNames=[...activeFilters].filter(k=>k.startsWith("collab:")).map(k=>k.slice(7));
   return list.filter(c=>{
@@ -553,6 +638,8 @@ function applyFilters(list){
     if(rarFilters.length>0 && !rarFilters.includes(c.rarity)) return false;
     // 属性: OR（いずれかに一致すればOK）
     if(elFilters.length>0 && !elFilters.includes(c.element)) return false;
+    // 効果: OR
+    if(typeFilters.length>0 && !typeFilters.includes(c.type)) return false;
     // コラボ全体
     if(collabAll && !c.collab) return false;
     // 特定コラボ: OR
@@ -562,6 +649,8 @@ function applyFilters(list){
 }
 
 function openPicker(slot){
+  // スロットにカードが入っていればクリアする
+  if(mgCards[slot]){ mgCards[slot]=null; resetSlotEl(slot); return; }
   pickerSlot=slot;
   document.getElementById("pick-label").textContent=`スロット${slot+1} のカードを選択`;
   document.getElementById("picker-area").style.display="block";
@@ -602,6 +691,8 @@ function renderPickerGrid(){
 }
 
 function selectCard(cardId){
+  // 既に他のスロットに入っているカードは選択不可
+  if(mgCards.some((c,i)=>c&&c.id===cardId&&i!==pickerSlot)){ alert("同じカードはすでに使用されています"); return; }
   const card=cardInfo(cardId);
   mgCards[pickerSlot]=card;
   updateSlotEl(pickerSlot,card);
@@ -650,14 +741,20 @@ function renderMgList(){
     return;
   }
   el.innerHTML=decks.map(d=>{
-    const chips=(d.cards||[]).map(cid=>`<span class="deck-card-chip">${cid}</span>`).join("");
-    return `<div class="deck-item">
-      <div style="flex:1;min-width:0">
-        <div style="font-size:13px;font-weight:600">${heroName(d.heroId)}</div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:4px">${d.name}</div>
-        <div class="deck-cards">${chips}</div>
+    const cardTiles=(d.cards||[]).map(cid=>
+      `<div style="width:calc(25% - 4px);flex-shrink:0;aspect-ratio:0.72;border-radius:6px;overflow:hidden;border:1px solid var(--border);position:relative;background:var(--bg3)">
+        ${renderCardTile(cid)}
+      </div>`
+    ).join("");
+    return `<div class="deck-item" style="flex-direction:column;gap:6px">
+      <div style="display:flex;justify-content:space-between;align-items:center;width:100%">
+        <div>
+          <div style="font-size:13px;font-weight:600">${heroName(d.heroId)}</div>
+          <div style="font-size:11px;color:var(--text2)">${d.name}</div>
+        </div>
+        <button class="btn-sm btn-danger" onclick="deleteDeck(${d.id})" style="flex-shrink:0">削除</button>
       </div>
-      <button class="btn-sm btn-danger" onclick="deleteDeck(${d.id})" style="flex-shrink:0">削除</button>
+      <div style="display:flex;gap:5px;width:100%">${cardTiles}</div>
     </div>`;
   }).join("");
 }
@@ -797,6 +894,7 @@ function initHostDeckBuilder(){
   buildHostFilterBtns();
   // ドラッグ＆ドロップ設定（司会者スロット）
   setupSlotDrops("hs",4,(i,cid)=>{
+    if(hostCards.some((c,j)=>c&&c.id===cid&&j!==i)){ alert("同じカードはすでに使用されています"); return; }
     const card=cardInfo(cid); hostCards[i]=card; updateHostSlot(i,card);
   });
   renderHeroPicker("host-hero-picker",(hid)=>{
@@ -812,12 +910,19 @@ function initHostDeckBuilder(){
 
 function buildHostFilterBtns(){
   const collabNames=getCollabNames();
+  const typeList=[
+    {k:"type:強",l:"強"},{k:"type:近",l:"近"},{k:"type:遠",l:"遠"},{k:"type:防",l:"防"},
+    {k:"type:移",l:"移"},{k:"type:癒",l:"癒"},{k:"type:弱",l:"弱"},{k:"type:反",l:"反"},
+    {k:"type:周",l:"周"},{k:"type:連",l:"連"},{k:"type:罠",l:"罠"},{k:"type:他",l:"他"},
+  ];
   const base=[
     {k:"ur",l:"UR"},{k:"sr",l:"SR"},{k:"r",l:"R"},
     {k:"fire",l:"🔴 火"},{k:"water",l:"🔵 水"},{k:"wood",l:"🟢 木"},{k:"none",l:"⚫ 無"},
   ];
   document.getElementById("host-picker-filters").innerHTML=
     base.map(f=>`<button class="filt" data-k="${f.k}" onclick="toggleHostFilter('${f.k}')">${f.l}</button>`).join("")
+    +`<span style="width:1px;background:var(--border);align-self:stretch;margin:2px 2px"></span>`
+    +typeList.map(f=>`<button class="filt" data-k="${f.k}" onclick="toggleHostFilter('${f.k}')">${f.l}</button>`).join("")
     +`<button class="filt filt-collab-toggle" onclick="toggleHostCollabExpand()">🟣 コラボ ▽</button>`
     +`<button class="filt-reset" onclick="resetHostFilters()">リセット</button>`;
   const area=document.getElementById("host-collab-expand-area");
@@ -852,6 +957,8 @@ function toggleHostCollabExpand(){
 }
 
 function openHostPicker(slot){
+  // スロットにカードが入っていればクリアする
+  if(hostCards[slot]){ hostCards[slot]=null; resetHostSlot(slot); return; }
   hostPickerSlot=slot;
   document.getElementById("host-pick-label").textContent=`スロット${slot+1} のカードを選択`;
   document.getElementById("host-picker-area").style.display="block";
@@ -869,11 +976,13 @@ function applyHostFilters(list){
   if(hostActiveFilters.size===0) return list;
   const rarFilters=[...hostActiveFilters].filter(k=>k==="ur"||k==="sr"||k==="r");
   const elFilters=[...hostActiveFilters].filter(k=>k==="fire"||k==="water"||k==="wood"||k==="none");
+  const typeFilters=[...hostActiveFilters].filter(k=>k.startsWith("type:")).map(k=>k.slice(5));
   const collabAll=hostActiveFilters.has("collab");
   const collabNames=[...hostActiveFilters].filter(k=>k.startsWith("collab:")).map(k=>k.slice(7));
   return list.filter(c=>{
     if(rarFilters.length>0 && !rarFilters.includes(c.rarity)) return false;
     if(elFilters.length>0 && !elFilters.includes(c.element)) return false;
+    if(typeFilters.length>0 && !typeFilters.includes(c.type)) return false;
     if(collabAll && !c.collab) return false;
     if(collabNames.length>0 && !collabNames.includes(c.collab)) return false;
     return true;
@@ -881,6 +990,8 @@ function applyHostFilters(list){
 }
 
 function selectHostCard(cardId){
+  // 既に他のスロットに入っているカードは選択不可
+  if(hostCards.some((c,i)=>c&&c.id===cardId&&i!==hostPickerSlot)){ alert("同じカードはすでに使用されています"); return; }
   const card=cardInfo(cardId);
   hostCards[hostPickerSlot]=card;
   updateHostSlot(hostPickerSlot,card);
