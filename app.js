@@ -770,7 +770,7 @@ let userName="";
 function ppToId(pp){
   // スペース除去・小文字化してからエンコード。%を-に置換してPeerJS IDに使える文字のみにする
   const normalized=pp.trim().toLowerCase().replace(/\s+/g,"");
-  return encodeURIComponent(normalized).replace(/%/g,"-").replace(/[^a-z0-9\-_]/gi,"");
+  return encodeURIComponent(normalized).replace(/%/g,"-").replace(/[^a-z0-9\-_]/gi,"").replace(/^-+/,"");
 }
 
 function createRoom(){
