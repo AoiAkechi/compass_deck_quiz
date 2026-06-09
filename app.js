@@ -828,29 +828,54 @@ function handleHost(data,conn){
 }
 
 let _plAnswered=false;
+let _plSelectedHid=null; // 選択中のキャラ（未確定）
+let _plCurrentData=null; // 出題データ保持
+let _plMyName="";
+
+function plSubmitAnswer(){
+  if(_plAnswered || !_plSelectedHid || !_plCurrentData) return;
+  _plAnswered=true; clearInterval(window._pTI);
+  const hid=_plSelectedHid;
+  const data=_plCurrentData;
+  const correct=data.heroId;
+  const isFirst=!data._ans; data._ans=true;
+  hostConn.send({type:"answer",heroId:hid,name:_plMyName,first:isFirst});
+  document.getElementById("pl-hero-picker-input").disabled=true;
+  document.getElementById("pl-answer-btn").style.display="none";
+  if(hid===correct){
+    document.getElementById("pl-flash").innerHTML=`<div class="flash first">⚡ 回答送信！正解かも…</div>`;
+    updateHeroList("pl-hero-picker","",()=>{},{disabled:true,correctId:correct});
+  } else {
+    document.getElementById("pl-flash").innerHTML=`<div class="flash ng">✗ 回答送信…</div>`;
+    updateHeroList("pl-hero-picker","",()=>{},{disabled:true,correctId:correct,wrongId:hid});
+  }
+}
+
 function handlePlayer(data,myName){
+  _plMyName=myName;
   if(data.type==="welcome") document.getElementById("pl-sub").textContent=`司会者: ${data.hostName}`;
   if(data.type==="question"){
-    _plAnswered=false; clearInterval(window._pTI);
+    _plAnswered=false; _plSelectedHid=null; _plCurrentData=data;
+    clearInterval(window._pTI);
     document.getElementById("pl-badge").textContent="出題中";
     document.getElementById("pl-badge").className="badge b-warn";
     document.getElementById("pl-flash").innerHTML="";
+    document.getElementById("pl-answer-btn").style.display="none";
     document.getElementById("pl-quiz").style.display="block";
     renderCards("pl-cards",data.cards);
 
     renderHeroPicker("pl-hero-picker",(hid)=>{
-      if(_plAnswered) return; _plAnswered=true; clearInterval(window._pTI);
-      const correct=data.heroId;
-      const isFirst=!data._ans; data._ans=true;
-      hostConn.send({type:"answer",heroId:hid,name:myName,first:isFirst});
-      document.getElementById("pl-hero-picker-input").disabled=true;
-      if(hid===correct){
-        document.getElementById("pl-flash").innerHTML=`<div class="flash first">⚡ 回答送信！正解かも…</div>`;
-        updateHeroList("pl-hero-picker","",()=>{},{disabled:true,correctId:correct});
-      } else {
-        document.getElementById("pl-flash").innerHTML=`<div class="flash ng">✗ 回答送信…</div>`;
-        updateHeroList("pl-hero-picker","",()=>{},{disabled:true,correctId:correct,wrongId:hid});
-      }
+      if(_plAnswered) return;
+      _plSelectedHid=hid;
+      // 選択状態を視覚的に反映
+      document.querySelectorAll("#pl-hero-picker-list .hero-list-item").forEach(el=>{
+        el.classList.toggle("selected",el.dataset.hid===hid);
+      });
+      const inp=document.getElementById("pl-hero-picker-input");
+      inp.value=heroName(hid);
+      document.getElementById("pl-hero-picker-clear").classList.add("show");
+      // 確定ボタンを表示
+      document.getElementById("pl-answer-btn").style.display="block";
     },{});
 
     let t=20; document.getElementById("p-timer").style.width="100%";
@@ -870,6 +895,7 @@ function handlePlayer(data,myName){
     clearInterval(window._pTI);
     document.getElementById("pl-flash").innerHTML=`<div class="flash ok">👁 正解：${heroName(data.heroId)}</div>`;
     updateHeroList("pl-hero-picker","",()=>{},{disabled:true,revealId:data.heroId});
+    document.getElementById("pl-answer-btn").style.display="none";
     document.getElementById("pl-badge").textContent="待機中"; document.getElementById("pl-badge").className="badge b-warn";
     if(data.scores) renderScores("pl-scores",data.scores);
   }
