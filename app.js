@@ -571,16 +571,17 @@ function buildFilterBtns(){
   const rarFilters=FILTER_DEFS.filter(f=>f.type==="rarity");
   const elFilters=FILTER_DEFS.filter(f=>f.type==="element");
   const typeFilters=FILTER_DEFS.filter(f=>f.type==="cardtype");
-  // 基本フィルター（レアリティ・属性）
   document.getElementById("picker-filters").innerHTML=
-    rarFilters.map(f=>`<button class="filt" data-k="${f.k}" onclick="toggleFilter('${f.k}')">${f.l}</button>`).join("")
-    +`<span style="width:1px;background:var(--border);align-self:stretch;margin:2px 2px"></span>`
+    `<div class="filt-row">`
+    +rarFilters.map(f=>`<button class="filt" data-k="${f.k}" onclick="toggleFilter('${f.k}')">${f.l}</button>`).join("")
+    +`</div><div class="filt-row">`
     +elFilters.map(f=>`<button class="filt" data-k="${f.k}" onclick="toggleFilter('${f.k}')">${f.l}</button>`).join("")
-    +`<span style="width:1px;background:var(--border);align-self:stretch;margin:2px 2px"></span>`
+    +`</div><div class="filt-row">`
     +typeFilters.map(f=>`<button class="filt" data-k="${f.k}" onclick="toggleFilter('${f.k}')">${f.l}</button>`).join("")
-    +`<button class="filt filt-collab-toggle" onclick="toggleCollabExpand()">🟣 コラボ ▽</button>`
-    +`<button class="filt-reset" onclick="resetFilters()">リセット</button>`;
-  // コラボ展開エリアを構築
+    +`</div><div class="filt-row">`
+    +`<button class="filt filt-collab-toggle" onclick="toggleCollabExpand()">コラボ ▽</button>`
+    +`<button class="filt-reset" onclick="resetFilters()">リセット</button>`
+    +`</div>`;
   if(collabExpanded){
     collabExpanded.innerHTML=collabNames.map(n=>
       `<button class="filt filt-collab" data-k="collab:${n}" onclick="toggleFilter('collab:${n}')">${n}</button>`
@@ -595,13 +596,13 @@ function toggleCollabExpand(){
   if(!area) return;
   const open=area.style.display==="flex";
   area.style.display=open?"none":"flex";
-  btn.textContent=open?"🟣 コラボ ▽":"🟣 コラボ △";
+  btn.textContent=open?"コラボ ▽":"コラボ △";
 }
 
 function toggleFilter(k){
   if(activeFilters.has(k)) activeFilters.delete(k);
   else activeFilters.add(k);
-  document.querySelectorAll("#picker-filters .filt").forEach(b=>{
+  document.querySelectorAll("#picker-filters .filt, #collab-expand-area .filt").forEach(b=>{
     b.classList.toggle("on",activeFilters.has(b.dataset.k));
   });
   updateFilterHint();
@@ -610,7 +611,7 @@ function toggleFilter(k){
 
 function resetFilters(){
   activeFilters.clear();
-  document.querySelectorAll("#picker-filters .filt").forEach(b=>b.classList.remove("on"));
+  document.querySelectorAll("#picker-filters .filt, #collab-expand-area .filt").forEach(b=>b.classList.remove("on"));
   updateFilterHint();
   renderPickerGrid();
 }
@@ -953,16 +954,19 @@ function buildHostFilterBtns(){
     {k:"type:移",l:"移"},{k:"type:癒",l:"癒"},{k:"type:弱",l:"弱"},{k:"type:反",l:"反"},
     {k:"type:周",l:"周"},{k:"type:連",l:"連"},{k:"type:罠",l:"罠"},{k:"type:他",l:"他"},
   ];
-  const base=[
-    {k:"ur",l:"UR"},{k:"sr",l:"SR"},{k:"r",l:"R"},
-    {k:"fire",l:"🔴 火"},{k:"water",l:"🔵 水"},{k:"wood",l:"🟢 木"},{k:"none",l:"⚫ 無"},
-  ];
+  const rarList=[{k:"ur",l:"UR"},{k:"sr",l:"SR"},{k:"r",l:"R"}];
+  const elList=[{k:"fire",l:"🔴 火"},{k:"water",l:"🔵 水"},{k:"wood",l:"🟢 木"},{k:"none",l:"⚫ 無"}];
   document.getElementById("host-picker-filters").innerHTML=
-    base.map(f=>`<button class="filt" data-k="${f.k}" onclick="toggleHostFilter('${f.k}')">${f.l}</button>`).join("")
-    +`<span style="width:1px;background:var(--border);align-self:stretch;margin:2px 2px"></span>`
+    `<div class="filt-row">`
+    +rarList.map(f=>`<button class="filt" data-k="${f.k}" onclick="toggleHostFilter('${f.k}')">${f.l}</button>`).join("")
+    +`</div><div class="filt-row">`
+    +elList.map(f=>`<button class="filt" data-k="${f.k}" onclick="toggleHostFilter('${f.k}')">${f.l}</button>`).join("")
+    +`</div><div class="filt-row">`
     +typeList.map(f=>`<button class="filt" data-k="${f.k}" onclick="toggleHostFilter('${f.k}')">${f.l}</button>`).join("")
-    +`<button class="filt filt-collab-toggle" onclick="toggleHostCollabExpand()">🟣 コラボ ▽</button>`
-    +`<button class="filt-reset" onclick="resetHostFilters()">リセット</button>`;
+    +`</div><div class="filt-row">`
+    +`<button class="filt filt-collab-toggle" onclick="toggleHostCollabExpand()">コラボ ▽</button>`
+    +`<button class="filt-reset" onclick="resetHostFilters()">リセット</button>`
+    +`</div>`;
   const area=document.getElementById("host-collab-expand-area");
   if(area) area.innerHTML=collabNames.map(n=>
     `<button class="filt filt-collab" data-k="collab:${n}" onclick="toggleHostFilter('collab:${n}')">${n}</button>`
@@ -991,7 +995,7 @@ function toggleHostCollabExpand(){
   if(!area) return;
   const open=area.style.display==="flex";
   area.style.display=open?"none":"flex";
-  if(btn) btn.textContent=open?"🟣 コラボ ▽":"🟣 コラボ △";
+  if(btn) btn.textContent=open?"コラボ ▽":"コラボ △";
 }
 
 function openHostPicker(slot){
