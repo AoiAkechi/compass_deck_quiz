@@ -1106,4 +1106,170 @@ function copyPassphrase(){
 function closePeer(){ if(peer){try{peer.destroy();}catch(e){}} peer=null; hostConn=null; playerConns={}; }
 function closeRoom(){ closePeer(); }
 
+/* ===== 問題リスト ===== */
+let questionLists = []; // ローカル保存のリスト一覧
+let currentListId = null; // 現在選択中のリストID（nullなら全デッキ）
+
+function saveQLists(){ try{localStorage.setItem("cq_qlists",JSON.stringify(questionLists));}catch(e){} }
+function loadQLists(){ try{ const r=localStorage.getItem("cq_qlists"); if(r) questionLists=JSON.parse(r); }catch(e){} }
+
+function go_qlist(){
+  loadQLists();
+  renderQListManage();
+  go("s-qlist");
+}
+
+function renderQListManage(){
+  // 利用可能デッキ一覧（チェックボックス付き）
+  const deckArea = document.getElementById("ql-deck-select");
+  if(decks.length===0){
+    deckArea.innerHTML='<p style="font-size:13px;color:var(--text3)">デッキが登録されていません</p>';
+  } else {
+    deckArea.innerHTML = decks.map(d=>`
+      <label class="ql-deck-row">
+        <input type="checkbox" class="ql-check" data-id="${d.id}">
+        <span class="ql-deck-name">${heroName(d.heroId)} — ${d.name}</span>
+      </label>`).join("");
+  }
+
+  // 保存済みリスト一覧
+  renderQListSaved();
+}
+
+function renderQListSaved(){
+  const el = document.getElementById("ql-saved-list");
+  if(questionLists.length===0){
+    el.innerHTML='<p style="font-size:13px;color:var(--text3)">まだリストがありません</p>';
+    return;
+  }
+  el.innerHTML = questionLists.map(ql=>`
+    <div class="ql-item">
+      <div class="ql-item-info">
+        <div class="ql-item-name">${ql.name}</div>
+        <div class="ql-item-meta">${ql.deckIds.length}問 · ${ql.author||"自分"}</div>
+      </div>
+      <div class="ql-item-actions">
+        <button class="btn-sm" onclick="startSoloFromList(${ql.localId})">ソロ</button>
+        <button class="btn-sm" onclick="useListForHost(${ql.localId})">対戦</button>
+        <button class="btn-sm" onclick="publishList(${ql.localId})">公開</button>
+        <button class="btn-sm btn-danger" onclick="deleteQList(${ql.localId})">削除</button>
+      </div>
+    </div>`).join("");
+}
+
+function qlSave(){
+  const name = document.getElementById("ql-name").value.trim();
+  if(!name){ alert("リスト名を入力してください"); return; }
+  const checked = [...document.querySelectorAll(".ql-check:checked")].map(c=>parseInt(c.dataset.id));
+  if(checked.length===0){ alert("デッキを1件以上選択してください"); return; }
+  const localId = Date.now();
+  questionLists.push({ localId, name, deckIds: checked, author: localStorage.getItem("cq_username")||"名無し" });
+  saveQLists();
+  document.getElementById("ql-name").value="";
+  document.querySelectorAll(".ql-check").forEach(c=>c.checked=false);
+  renderQListSaved();
+  alert(`「${name}」を保存しました`);
+}
+
+function deleteQList(localId){
+  questionLists = questionLists.filter(q=>q.localId!==localId);
+  saveQLists();
+  renderQListSaved();
+}
+
+// リストに含まれるデッキを解決して返す
+function resolveListDecks(localId){
+  const ql = questionLists.find(q=>q.localId===localId);
+  if(!ql) return [];
+  return decks.filter(d=>ql.deckIds.includes(d.id));
+}
+
+// リストからソロ開始
+function startSoloFromList(localId){
+  const listDecks = resolveListDecks(localId);
+  if(listDecks.length===0){ alert("リストに有効なデッキがありません"); return; }
+  // decksを一時的にリストのデッキで上書きしてソロ開始
+  const origDecks = decks;
+  decks = listDecks;
+  startSolo();
+  decks = origDecks;
+}
+
+// リストを司会者の出題候補として設定
+function useListForHost(localId){
+  const listDecks = resolveListDecks(localId);
+  if(listDecks.length===0){ alert("リストに有効なデッキがありません"); return; }
+  currentListId = localId;
+  const ql = questionLists.find(q=>q.localId===localId);
+  alert(`「${ql.name}」を対戦用リストにセットしました。\n部屋を作成してください。`);
+  go("s-room");
+}
+
+// Firebaseに公開
+async function publishList(localId){
+  const ql = questionLists.find(q=>q.localId===localId);
+  if(!ql){ alert("リストが見つかりません"); return; }
+  if(typeof window.fbPublishList!=="function"){ alert("Firebase未接続です"); return; }
+  const btn = event.target;
+  btn.disabled=true; btn.textContent="公開中…";
+  try {
+    const listId = await window.fbPublishList(ql.name, ql.deckIds);
+    btn.disabled=false; btn.textContent="公開";
+    // 共有IDをコピー
+    await navigator.clipboard.writeText(listId);
+    alert(`公開しました！\nリストID: ${listId}\n（クリップボードにコピーしました）`);
+  } catch(e) {
+    btn.disabled=false; btn.textContent="公開";
+    alert("公開に失敗しました: "+e.message);
+  }
+}
+
+// FirebaseからリストIDでインポート
+async function importListById(){
+  const listId = document.getElementById("ql-import-id").value.trim();
+  if(!listId){ alert("リストIDを入力してください"); return; }
+  if(typeof window.fbFetchList!=="function"){ alert("Firebase未接続です"); return; }
+  const btn = document.getElementById("ql-import-btn");
+  btn.disabled=true; btn.textContent="取得中…";
+  try {
+    const data = await window.fbFetchList(listId);
+    if(!data){ btn.disabled=false; btn.textContent="インポート"; alert("リストが見つかりませんでした"); return; }
+
+    // Firebaseのデッキデータをローカルのdecksに追加（重複チェック付き）
+    let addedCount=0;
+    const newDeckIds=[];
+    for(const fd of data.decks){
+      // 同じheroId+同じカード4枚のデッキが既にあればスキップ
+      const exists=decks.some(d=>d.heroId===fd.heroId&&JSON.stringify(d.cards)===JSON.stringify(fd.cards));
+      if(!exists){
+        const newId=Date.now()+addedCount;
+        decks.push({id:newId, heroId:fd.heroId, cards:fd.cards, name:fd.name||fd.heroName});
+        newDeckIds.push(newId);
+        addedCount++;
+      } else {
+        // 既存デッキのIDを取得
+        const ex=decks.find(d=>d.heroId===fd.heroId&&JSON.stringify(d.cards)===JSON.stringify(fd.cards));
+        if(ex) newDeckIds.push(ex.id);
+      }
+    }
+    if(addedCount>0){ saveDecks(); }
+
+    // リストとして保存
+    const localId=Date.now();
+    const listName=`${data.listName}（${data.userName}）`;
+    questionLists.push({ localId, name:listName, deckIds:newDeckIds, author:data.userName });
+    saveQLists();
+
+    btn.disabled=false; btn.textContent="インポート";
+    document.getElementById("ql-import-id").value="";
+    renderQListManage();
+    refreshTop();
+    alert(`「${data.listName}」をインポートしました（${addedCount}件のデッキを追加）`);
+  } catch(e){
+    btn.disabled=false; btn.textContent="インポート";
+    alert("インポートに失敗しました: "+e.message);
+  }
+}
+
 loadData();
+loadQLists();

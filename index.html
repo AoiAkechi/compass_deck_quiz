@@ -27,6 +27,7 @@
     <div class="lbl">登録済みデッキ</div>
     <div id="top-count" style="font-size:13px;color:var(--text2);margin-bottom:10px">読み込み中...</div>
     <button class="btn btn-s" onclick="go('s-manage')">デッキを管理 / 追加</button>
+    <button class="btn btn-s" onclick="go_qlist()">問題リストを管理</button>
   </div>
 </div>
 
@@ -203,8 +204,36 @@
 </div>
 
 
-<!-- ユーザー名設定モーダル -->
-<div class="modal-overlay" id="name-modal" onclick="handleModalClick(event)">
+<!-- 問題リスト管理 -->
+<div id="s-qlist" class="screen">
+  <div class="card">
+    <h2>問題リスト</h2>
+    <p class="sub">デッキをまとめてリスト化し、ソロ・対戦で使用できます</p>
+
+    <div class="lbl">リストに含めるデッキを選択</div>
+    <div id="ql-deck-select" style="max-height:200px;overflow-y:auto;border:1.5px solid var(--border);border-radius:var(--radius);padding:6px 8px;margin-bottom:8px;background:var(--bg3)"></div>
+
+    <div class="lbl">リスト名</div>
+    <input id="ql-name" placeholder="例：火属性デッキセット">
+    <button class="btn btn-p" onclick="qlSave()">リストを保存</button>
+
+    <div class="div"></div>
+    <div class="lbl">保存済みリスト</div>
+    <div id="ql-saved-list" style="margin-bottom:8px"></div>
+
+    <div class="div"></div>
+    <div class="lbl">公開リストをインポート</div>
+    <p class="sub" style="margin-bottom:6px">リストIDを入力して他のユーザーのリストを取り込めます</p>
+    <div style="display:flex;gap:6px">
+      <input id="ql-import-id" placeholder="リストIDを入力" style="flex:1;margin-top:0">
+      <button class="btn-sm" id="ql-import-btn" onclick="importListById()" style="padding:9px 14px;white-space:nowrap">インポート</button>
+    </div>
+
+    <button class="btn btn-s" onclick="go('s-top')" style="margin-top:16px">もどる</button>
+  </div>
+</div>
+
+</div><div class="modal-overlay" id="name-modal" onclick="handleModalClick(event)">
   <div class="modal-box">
     <h3>ニックネーム設定</h3>
     <p class="sub" style="margin-bottom:10px">対戦で表示される名前です</p>
