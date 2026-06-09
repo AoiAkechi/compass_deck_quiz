@@ -501,9 +501,10 @@ function soloNext(){
     document.getElementById("res-score").textContent=`${soloScore} / ${soloOrder.length}`;
     document.getElementById("res-sub").textContent=`正答率 ${pct}%`;
     let emoji="😔",title="もう少し練習しよう！";
-    if(pct>=80){emoji="🏆";title="コンパス博士！";}
-    else if(pct>=60){emoji="👍";title="なかなかいい感じ！";}
-    else if(pct>=40){emoji="🙂";title="半分以上正解！";}
+    if(pct==100){title="100点";}
+    else if(pct>=80){title="8割正解";}
+    else if(pct>=60){title="6割正解";}
+    else if(pct>=40){title="4割正解";}
     document.getElementById("res-emoji").textContent=emoji;
     document.getElementById("res-title").textContent=title;
     go("s-result"); return;
