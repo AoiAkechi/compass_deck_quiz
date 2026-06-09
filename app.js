@@ -83,59 +83,100 @@ document.addEventListener("keydown",e=>{
 
 /* ===== タッチドラッグ対応 ===== */
 let touchDragCard=null, touchDragEl=null, touchClone=null;
+let touchStartX=0, touchStartY=0, touchDragging=false;
+const DRAG_THRESHOLD=8; // px動いたらドラッグ開始
 
 function initTouchDrag(){
+  // touchstartはpassiveでOK（まだスクロール禁止しない）
   document.addEventListener("touchstart",e=>{
     const pc=e.target.closest(".pick-card");
     if(!pc) return;
-    touchDragCard=pc.dataset.cid||pc.getAttribute("onclick")?.match(/'([^']+)'/)?.[1];
-    if(!touchDragCard) return;
+    const cid=pc.dataset.cid;
+    if(!cid) return;
+    touchDragCard=cid;
     touchDragEl=pc;
-    // クローン作成
-    touchClone=pc.cloneNode(true);
-    touchClone.style.cssText=`position:fixed;opacity:0.8;pointer-events:none;z-index:9999;width:${pc.offsetWidth}px;transform:scale(1.05)`;
-    document.body.appendChild(touchClone);
-    moveTouchClone(e.touches[0]);
+    touchDragging=false;
+    const t=e.touches[0];
+    touchStartX=t.clientX;
+    touchStartY=t.clientY;
   },{passive:true});
 
+  // touchmoveはnon-passiveでpreventDefault可能に
   document.addEventListener("touchmove",e=>{
-    if(!touchDragCard||!touchClone) return;
-    moveTouchClone(e.touches[0]);
+    if(!touchDragCard) return;
+    const t=e.touches[0];
+    const dx=t.clientX-touchStartX;
+    const dy=t.clientY-touchStartY;
+
+    if(!touchDragging){
+      // 閾値を超えたらドラッグ開始
+      if(Math.sqrt(dx*dx+dy*dy)<DRAG_THRESHOLD) return;
+      touchDragging=true;
+      // クローン作成
+      const rect=touchDragEl.getBoundingClientRect();
+      touchClone=touchDragEl.cloneNode(true);
+      touchClone.style.cssText=[
+        "position:fixed",
+        "opacity:0.85",
+        "pointer-events:none",
+        "z-index:9999",
+        `width:${rect.width}px`,
+        `height:${rect.height}px`,
+        "transform:scale(1.08)",
+        "transition:none",
+        `left:${rect.left}px`,
+        `top:${rect.top}px`,
+      ].join(";");
+      document.body.appendChild(touchClone);
+    }
+
+    // ドラッグ中はスクロール禁止
+    e.preventDefault();
+
+    if(!touchClone) return;
+    // 指の位置にクローンを追従（指の中心に合わせる）
+    const rect=touchClone.getBoundingClientRect();
+    touchClone.style.left=(t.clientX - rect.width/2)+"px";
+    touchClone.style.top= (t.clientY - rect.height/2)+"px";
+
     // ドロップ先ハイライト
     document.querySelectorAll(".slot").forEach(s=>s.classList.remove("drag-over"));
-    const el=document.elementFromPoint(e.touches[0].clientX,e.touches[0].clientY);
-    const slot=el?.closest(".slot");
+    // クローンを一時非表示にしてelementFromPointを正確に取得
+    touchClone.style.display="none";
+    const below=document.elementFromPoint(t.clientX,t.clientY);
+    touchClone.style.display="";
+    const slot=below?.closest(".slot");
     if(slot) slot.classList.add("drag-over");
-  },{passive:true});
+  },{passive:false}); // non-passive必須
 
   document.addEventListener("touchend",e=>{
-    if(!touchDragCard) return;
-    if(touchClone){ touchClone.remove(); touchClone=null; }
     document.querySelectorAll(".slot").forEach(s=>s.classList.remove("drag-over"));
-    const touch=e.changedTouches[0];
-    const el=document.elementFromPoint(touch.clientX,touch.clientY);
-    const slot=el?.closest(".slot[id]");
-    if(slot){
-      const id=slot.id;
-      if(id.startsWith("ms")){
-        const i=parseInt(id.slice(2));
-        const card=cardInfo(touchDragCard);
-        mgCards[i]=card; updateSlotEl(i,card);
-      } else if(id.startsWith("hs")){
-        const i=parseInt(id.slice(2));
-        const card=cardInfo(touchDragCard);
-        hostCards[i]=card; updateHostSlot(i,card);
+    if(touchClone){ touchClone.remove(); touchClone=null; }
+
+    if(!touchDragCard){ touchDragging=false; return; }
+
+    if(touchDragging){
+      // ドロップ処理
+      const touch=e.changedTouches[0];
+      const el=document.elementFromPoint(touch.clientX,touch.clientY);
+      const slot=el?.closest(".slot[id]");
+      if(slot){
+        const id=slot.id;
+        if(id.startsWith("ms")){
+          const i=parseInt(id.slice(2));
+          const card=cardInfo(touchDragCard);
+          mgCards[i]=card; updateSlotEl(i,card);
+        } else if(id.startsWith("hs")){
+          const i=parseInt(id.slice(2));
+          const card=cardInfo(touchDragCard);
+          hostCards[i]=card; updateHostSlot(i,card);
+        }
       }
     }
-    touchDragCard=null; touchDragEl=null;
-  });
+    touchDragCard=null; touchDragEl=null; touchDragging=false;
+  },{passive:true});
 }
 
-function moveTouchClone(touch){
-  if(!touchClone) return;
-  touchClone.style.left=(touch.clientX-touchClone.offsetWidth/2)+"px";
-  touchClone.style.top=(touch.clientY-touchClone.offsetHeight/2)+"px";
-}
 
 async function loadData(){
   let heroOk=false, cardOk=false;
