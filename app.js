@@ -81,7 +81,7 @@ function loadUserName(){
 }
 function applyUserName(){
   const el=document.getElementById("top-username");
-  if(el) el.textContent="👤 "+userName;
+  if(el) el.textContent=userName;
   const rud=document.getElementById("room-username-display");
   if(rud) rud.textContent=userName;
 }
@@ -466,10 +466,10 @@ function showQ(){
     if(hid===correct){
       soloScore++;
       document.getElementById("sscore").textContent=soloScore;
-      flash.innerHTML=`<div class="flash ok">✓ 正解！ ${name}</div>`;
+      flash.innerHTML=`<div class="flash ok">正解　${name}</div>`;
       updateHeroList("sq-hero-picker","",()=>{},{disabled:true,correctId:correct});
     } else {
-      flash.innerHTML=`<div class="flash ng">✗ 不正解。正解は「${name}」</div>`;
+      flash.innerHTML=`<div class="flash ng">不正解　正解は「${name}」</div>`;
       updateHeroList("sq-hero-picker","",()=>{},{disabled:true,correctId:correct,wrongId:hid});
     }
     document.getElementById("sq-hero-picker-input").disabled=true;
@@ -484,7 +484,7 @@ function showQ(){
       if(!soloAnswered){
         soloAnswered=true;
         const correct=soloCorrectId;
-        document.getElementById("sq-flash").innerHTML=`<div class="flash ng">⏱ 時間切れ。正解は「${heroName(correct)}」</div>`;
+        document.getElementById("sq-flash").innerHTML=`<div class="flash ng">時間切れ　正解は「${heroName(correct)}」</div>`;
         updateHeroList("sq-hero-picker","",()=>{},{disabled:true,revealId:correct});
         document.getElementById("sq-hero-picker-input").disabled=true;
         document.getElementById("sq-next").style.display="block";
@@ -500,11 +500,11 @@ function soloNext(){
     const pct=Math.round(soloScore/soloOrder.length*100);
     document.getElementById("res-score").textContent=`${soloScore} / ${soloOrder.length}`;
     document.getElementById("res-sub").textContent=`正答率 ${pct}%`;
-    let emoji="😔",title="もう少し練習しよう！";
-    if(pct==100){title="100点";}
-    else if(pct>=80){title="8割正解";}
-    else if(pct>=60){title="6割正解";}
-    else if(pct>=40){title="4割正解";}
+    let emoji="",title="";
+    if(pct>=80){emoji="";title="全問正解まであと少し";}
+    else if(pct>=60){emoji="";title="半分以上正解";}
+    else if(pct>=40){emoji="";title="半分以上正解";}
+    else{emoji="";title="もう一度挑戦してみよう";}
     document.getElementById("res-emoji").textContent=emoji;
     document.getElementById("res-title").textContent=title;
     go("s-result"); return;
@@ -766,12 +766,21 @@ let peer=null,hostConn=null,playerConns={};
 let scores={},hostCurDeck=null,selectedHostId=null;
 let userName="";
 
+// 合言葉をPeerJS IDに使える文字列に変換（日本語対応）
+function ppToId(pp){
+  // スペース除去・小文字化してからエンコード。%を-に置換してPeerJS IDに使える文字のみにする
+  const normalized=pp.trim().toLowerCase().replace(/\s+/g,"");
+  return encodeURIComponent(normalized).replace(/%/g,"-").replace(/[^a-z0-9\-_]/gi,"");
+}
+
 function createRoom(){
   const myName=userName||"司会者";
-  const rawPP=(document.getElementById("room-passphrase").value.trim()||"").toLowerCase().replace(/\s+/g,"");
+  const rawPP=document.getElementById("room-passphrase").value.trim();
   if(!rawPP){ alert("合言葉を入力してください"); return; }
+  const peerId=ppToId(rawPP);
+  if(!peerId){ alert("使用できない文字が含まれています"); return; }
   scores={}; scores[myName]=0; closePeer();
-  peer=new Peer("cq-room-"+rawPP,{debug:0});
+  peer=new Peer("cq-room-"+peerId,{debug:0});
   peer.on("open",()=>{
     document.getElementById("room-passphrase-display").textContent=rawPP;
     document.getElementById("peer-count").textContent="0";
@@ -789,13 +798,15 @@ function createRoom(){
 }
 
 function joinRoom(){
-  const rawPP=(document.getElementById("join-id").value.trim()||"").toLowerCase().replace(/\s+/g,"");
+  const rawPP=document.getElementById("join-id").value.trim();
   if(!rawPP){ alert("合言葉を入力してください"); return; }
+  const peerId=ppToId(rawPP);
+  if(!peerId){ alert("使用できない文字が含まれています"); return; }
   const myName=userName||"プレイヤー";
   closePeer();
   peer=new Peer(undefined,{debug:0});
   peer.on("open",()=>{
-    hostConn=peer.connect("cq-room-"+rawPP);
+    hostConn=peer.connect("cq-room-"+peerId);
     hostConn.on("open",()=>{
       hostConn.send({type:"join",name:myName});
       document.getElementById("pl-badge").textContent="接続済み";
@@ -815,14 +826,14 @@ function handleHost(data,conn){
     // connにnameを紐付け
     if(playerConns[conn.peer]) playerConns[conn.peer].name=data.name;
     if(!scores[data.name])scores[data.name]=0;
-    addLog(`✅ ${data.name} が参加`); updatePeers(); bcastScores();
+    addLog(`${data.name} が参加`); updatePeers(); bcastScores();
   }
   if(data.type==="answer"){
     const correct=hostCurDeck&&data.heroId===hostCurDeck.heroId;
     const pts=correct&&data.first?3:correct?1:0;
     if(!scores[data.name])scores[data.name]=0;
     scores[data.name]+=pts;
-    addLog(`${correct?"✓":"✗"} ${data.name}：${heroName(data.heroId)}${data.first&&correct?" 🏆+3":correct?" +1":""}`);
+    addLog(`${correct?"○":"×"} ${data.name}：${heroName(data.heroId)}${data.first&&correct?" 早押し+3":correct?" +1":""}`);
     bcastScores();
     conn.send({type:"answer-result",correct,first:data.first,heroId:data.heroId,scores});
   }
@@ -844,10 +855,10 @@ function plSubmitAnswer(){
   document.getElementById("pl-hero-picker-input").disabled=true;
   document.getElementById("pl-answer-btn").style.display="none";
   if(hid===correct){
-    document.getElementById("pl-flash").innerHTML=`<div class="flash first">⚡ 回答送信！正解かも…</div>`;
+    document.getElementById("pl-flash").innerHTML=`<div class="flash first">回答を送信しました</div>`;
     updateHeroList("pl-hero-picker","",()=>{},{disabled:true,correctId:correct});
   } else {
-    document.getElementById("pl-flash").innerHTML=`<div class="flash ng">✗ 回答送信…</div>`;
+    document.getElementById("pl-flash").innerHTML=`<div class="flash ng">回答を送信しました</div>`;
     updateHeroList("pl-hero-picker","",()=>{},{disabled:true,correctId:correct,wrongId:hid});
   }
 }
@@ -887,14 +898,14 @@ function handlePlayer(data,myName){
   }
   if(data.type==="answer-result"){
     const f=document.getElementById("pl-flash");
-    if(data.correct&&data.first) f.innerHTML=`<div class="flash first">🏆 1番乗り正解！ +3pt</div>`;
-    else if(data.correct)        f.innerHTML=`<div class="flash ok">✓ 正解！ +1pt</div>`;
-    else                         f.innerHTML=`<div class="flash ng">✗ 不正解</div>`;
+    if(data.correct&&data.first) f.innerHTML=`<div class="flash first">早押し正解　+3pt</div>`;
+    else if(data.correct)        f.innerHTML=`<div class="flash ok">正解　+1pt</div>`;
+    else                         f.innerHTML=`<div class="flash ng">不正解</div>`;
     if(data.scores) renderScores("pl-scores",data.scores);
   }
   if(data.type==="reveal"){
     clearInterval(window._pTI);
-    document.getElementById("pl-flash").innerHTML=`<div class="flash ok">👁 正解：${heroName(data.heroId)}</div>`;
+    document.getElementById("pl-flash").innerHTML=`<div class="flash ok">正解：${heroName(data.heroId)}</div>`;
     updateHeroList("pl-hero-picker","",()=>{},{disabled:true,revealId:data.heroId});
     document.getElementById("pl-answer-btn").style.display="none";
     document.getElementById("pl-badge").textContent="待機中"; document.getElementById("pl-badge").className="badge b-warn";
@@ -907,7 +918,7 @@ function renderScores(cid,sc){
   if(!sc) return;
   const sorted=Object.entries(sc).sort((a,b)=>b[1]-a[1]);
   document.getElementById(cid).innerHTML=`<div class="lbl" style="margin-top:10px">スコア</div>`
-    +sorted.map(([n,p],i)=>`<div class="score-row"><span>${i===0?"🥇":i===1?"🥈":i===2?"🥉":"　"} ${n}</span><span class="score-pts">${p}pt</span></div>`).join("");
+    +sorted.map(([n,p],i)=>`<div class="score-row"><span>${i===0?"1位":i===1?"2位":i===2?"3位":`${i+1}位`} ${n}</span><span class="score-pts">${p}pt</span></div>`).join("");
 }
 
 // ホスト用リアルタイムデッキ編成
@@ -1056,7 +1067,7 @@ function hostSend(){
   Object.values(playerConns).forEach(p=>p.conn.send({type:"question",cards:cardIds,heroId:hostSelectedHero}));
   document.getElementById("host-reveal").style.display="block";
   document.getElementById("host-log").innerHTML='<p style="color:var(--text3)">回答待ち...</p>';
-  addLog(`📤 出題：${heroName(hostSelectedHero)}`);
+  addLog(`出題：${heroName(hostSelectedHero)}`);
 }
 function hostReveal(){
   if(!hostCurDeck) return;
@@ -1071,7 +1082,7 @@ function updatePeers(){
   document.getElementById("peer-count").textContent=cnt;
   document.getElementById("peer-list").innerHTML=cnt===0
     ?'<span style="font-size:12px;color:var(--text3)">まだ誰もいません</span>'
-    :entries.map(p=>`<span class="peer-tag">👤 ${p.name||"接続中…"}</span>`).join("");
+    :entries.map(p=>`<span class="peer-tag">${p.name||"接続中…"}</span>`).join("");
 }
 function addLog(msg){ const el=document.getElementById("host-log"),p=document.createElement("p"); p.textContent=msg; el.insertBefore(p,el.firstChild); }
 function copyId(){

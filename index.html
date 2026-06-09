@@ -13,12 +13,12 @@
 <!-- トップ -->
 <div id="s-top" class="screen active">
   <div class="card" style="text-align:center;padding:32px 20px">
-    <div style="font-size:40px;margin-bottom:12px">🧭</div>
+    <div style="font-size:40px;margin-bottom:12px"></div>
     <h1 style="margin-bottom:6px">デッキ当てクイズ</h1>
     <p class="sub">4枚のカードを見てキャラを当てよう</p>
     <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px">
       <span id="top-username" style="font-size:13px;color:var(--text2)"></span>
-      <button class="btn-sm" onclick="openNameModal()" style="font-size:11px">✏️ 名前変更</button>
+      <button class="btn-sm" onclick="openNameModal()" style="font-size:11px">名前変更</button>
     </div>
     <button class="btn btn-p" onclick="go('s-solo')">ソロで練習</button>
     <button class="btn btn-s" onclick="go('s-room')">みんなで対戦</button>
@@ -60,7 +60,7 @@
 <!-- 結果 -->
 <div id="s-result" class="screen">
   <div class="card" style="text-align:center;padding:32px 20px">
-    <div id="res-emoji" style="font-size:48px;margin-bottom:10px">🎉</div>
+    <div id="res-emoji" style="font-size:48px;margin-bottom:10px"></div>
     <h2 id="res-title"></h2>
     <p class="sub" id="res-sub"></p>
     <div id="res-score" style="font-size:44px;font-weight:700;color:var(--accent);margin:16px 0"></div>
@@ -75,17 +75,17 @@
     <h2>みんなで対戦</h2>
     <p class="sub">合言葉で部屋に集合</p>
     <div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:10px;margin-bottom:12px">
-      <span style="font-size:20px">👤</span>
+      <span style="font-size:20px"></span>
       <span id="room-username-display" style="font-size:14px;font-weight:600;color:var(--text)"></span>
       <button class="btn-sm" onclick="openNameModal()" style="margin-left:auto;font-size:11px">変更</button>
     </div>
     <div class="div"></div>
-    <h3>🎤 司会者として部屋を作る</h3>
+    <h3>司会者として部屋を作る</h3>
     <p style="font-size:12px;color:var(--text2);margin:4px 0 6px">合言葉を決めて参加者に伝えてください</p>
     <input id="room-passphrase" placeholder="合言葉（例:compass）" maxlength="20">
     <button class="btn btn-p" onclick="createRoom()" style="margin-top:8px">部屋を作る</button>
     <div class="div"></div>
-    <h3> 参加者として入る</h3>
+    <h3>参加者として入る</h3>
     <div style="display:flex;gap:6px;margin-top:6px">
       <input id="join-id" placeholder="合言葉を入力" style="flex:1;margin-top:0">
       <button class="btn-sm" onclick="joinRoom()" style="padding:9px 14px;white-space:nowrap">参加</button>
@@ -107,7 +107,7 @@
         <div class="passphrase-word" id="room-passphrase-display"></div>
         <div class="passphrase-hint">この合言葉をdiscordなどで共有してください</div>
       </div>
-      <button class="btn-sm" onclick="copyPassphrase()" style="width:100%">📋 合言葉をコピー</button>
+      <button class="btn-sm" onclick="copyPassphrase()" style="width:100%">合言葉をコピー</button>
     </div>
     <div class="lbl">参加者 (<span id="peer-count">0</span>人)</div>
     <div id="peer-list" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;min-height:22px"></div>
@@ -136,7 +136,7 @@
     <div class="lbl">回答ログ</div>
     <div id="host-log" class="log"><p style="color:var(--text3)">まだ回答がありません</p></div>
     <div id="host-scores" style="margin-top:10px"></div>
-    <button class="btn btn-s" id="host-reveal" onclick="hostReveal()" style="display:none;margin-top:8px">✅ 正解を発表</button>
+    <button class="btn btn-s" id="host-reveal" onclick="hostReveal()" style="display:none;margin-top:8px">正解を発表</button>
     <button class="btn btn-s" onclick="closeRoom();go('s-top')" style="margin-top:6px">退出</button>
   </div>
 </div>
@@ -206,7 +206,7 @@
 <!-- ユーザー名設定モーダル -->
 <div class="modal-overlay" id="name-modal" onclick="handleModalClick(event)">
   <div class="modal-box">
-    <h3>👤 ニックネーム設定</h3>
+    <h3>ニックネーム設定</h3>
     <p class="sub" style="margin-bottom:10px">対戦で表示される名前です</p>
     <input id="modal-name-input" placeholder="ニックネームを入力" maxlength="16" style="margin-top:0">
     <button class="btn btn-p" onclick="saveUserName()" style="margin-top:10px">保存</button>
