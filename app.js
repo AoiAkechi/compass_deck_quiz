@@ -780,7 +780,7 @@ function createRoom(){
   if(!rawPP){ alert("合言葉を入力してください"); return; }
   const peerId=ppToId(rawPP);
   if(!peerId){ alert("使用できない文字が含まれています"); return; }
-  scores={}; scores[myName]=0; closePeer();
+  scores={}; closePeer();
   peer=new Peer("cq-room-"+peerId,{debug:0});
   peer.on("open",()=>{
     document.getElementById("room-passphrase-display").textContent=rawPP;
@@ -894,7 +894,19 @@ function handlePlayer(data,myName){
     let t=20; document.getElementById("p-timer").style.width="100%";
     window._pTI=setInterval(()=>{
       t-=0.1; document.getElementById("p-timer").style.width=Math.max(0,t/20*100)+"%";
-      if(t<=0) clearInterval(window._pTI);
+      if(t<=0){
+        clearInterval(window._pTI);
+        // 時間切れ：未回答なら選択中のキャラで送信、未選択なら空送信
+        if(!_plAnswered){
+          if(_plSelectedHid){
+            plSubmitAnswer();
+          } else {
+            _plAnswered=true;
+            document.getElementById("pl-answer-btn").style.display="none";
+            document.getElementById("pl-flash").innerHTML=`<div class="flash ng">時間切れ</div>`;
+          }
+        }
+      }
     },100);
   }
   if(data.type==="answer-result"){
@@ -911,6 +923,15 @@ function handlePlayer(data,myName){
     document.getElementById("pl-answer-btn").style.display="none";
     document.getElementById("pl-badge").textContent="待機中"; document.getElementById("pl-badge").className="badge b-warn";
     if(data.scores) renderScores("pl-scores",data.scores);
+  }
+  if(data.type==="reset"){
+    // 次の問題に備えてUIをリセット
+    _plAnswered=false; _plSelectedHid=null; _plCurrentData=null;
+    document.getElementById("pl-quiz").style.display="none";
+    document.getElementById("pl-flash").innerHTML="";
+    document.getElementById("pl-answer-btn").style.display="none";
+    document.getElementById("pl-badge").textContent="待機中"; document.getElementById("pl-badge").className="badge b-warn";
+    document.getElementById("p-timer").style.width="100%";
   }
   if(data.type==="scores") renderScores("pl-scores",data.scores);
 }
@@ -1072,12 +1093,35 @@ function hostSend(){
   document.getElementById("host-reveal").style.display="block";
   document.getElementById("host-log").innerHTML='<p style="color:var(--text3)">回答待ち...</p>';
   addLog(`出題：${heroName(hostSelectedHero)}`);
+
+  // サーバー側タイマー：20秒後に自動で正解発表
+  clearTimeout(window._hostTimer);
+  window._hostTimer=setTimeout(()=>{ hostReveal(); },20000);
 }
+
+const REVEAL_RESET_DELAY=5000; // 正解発表から何ms後にリセットするか
+
 function hostReveal(){
+  clearTimeout(window._hostTimer);
   if(!hostCurDeck) return;
   Object.values(playerConns).forEach(p=>p.conn.send({type:"reveal",heroId:hostCurDeck.heroId,scores}));
   document.getElementById("host-reveal").style.display="none";
   renderScores("host-scores",scores);
+
+  // 一定時間後にリセット
+  setTimeout(()=>{
+    hostCurDeck=null;
+    // スロットとヒーローをリセット
+    hostCards=[null,null,null,null]; hostSelectedHero=null;
+    [0,1,2,3].forEach(i=>resetHostSlot(i));
+    const inp=document.getElementById("host-hero-picker-input");
+    if(inp){ inp.value=""; inp.disabled=false; }
+    const clr=document.getElementById("host-hero-picker-clear");
+    if(clr) clr.classList.remove("show");
+    updateHeroList("host-hero-picker","",()=>{},{});
+    // 参加者にリセットを通知
+    Object.values(playerConns).forEach(p=>p.conn.send({type:"reset"}));
+  }, REVEAL_RESET_DELAY);
 }
 function bcastScores(){ Object.values(playerConns).forEach(p=>p.conn.send({type:"scores",scores})); renderScores("host-scores",scores); }
 function updatePeers(){
