@@ -1040,6 +1040,8 @@ function plSubmitAnswer(){
     updateHeroList("pl-hero-picker","",()=>{},{disabled:true,correctId:correct,wrongId:hid});
   }
 }
+
+function renderLobbyRules(rules){
   const el=document.getElementById("ploby-rules");
   if(!el) return;
   el.innerHTML=`
