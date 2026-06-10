@@ -1044,6 +1044,7 @@ function plSubmitAnswer(){
 function renderLobbyRules(rules){
   const el=document.getElementById("ploby-rules");
   if(!el) return;
+  rules = rules ||{};
   el.innerHTML=`
     <div>制限時間：${rules.time||20}秒</div>
     <div>正解ポイント：${rules.pts||1}pt</div>
