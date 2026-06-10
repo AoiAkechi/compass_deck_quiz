@@ -31,7 +31,8 @@ h3{font-size:14px;font-weight:700;margin-bottom:8px}
 .btn:active{transform:scale(.97)}
 .btn:disabled{opacity:.3;cursor:not-allowed;transform:none}
 .btn-p{background:var(--accent);color:#fff;box-shadow:0 3px 12px rgba(232,150,10,.3)}
-.btn-p:hover{background:#f0a010;box-shadow:0 5px 18px rgba(232,150,10,.45)}.btn-s{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
+.btn-p:hover{background:#f0a010;box-shadow:0 5px 18px rgba(232,150,10,.45)}
+.btn-sending{background:var(--text3);color:#fff;cursor:not-allowed;box-shadow:none}.btn-s{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
 .btn-s:hover{border-color:var(--text3);background:#222c3e}
 .btn-sm{padding:5px 12px;font-size:12px;font-weight:700;background:var(--bg3);color:var(--text2);border:1px solid var(--border);border-radius:20px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .1s}
 .btn-sm:hover{color:var(--text);border-color:var(--accent);color:var(--accent)}

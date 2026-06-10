@@ -56,20 +56,27 @@ function hostStartGame() {
   bcast({ type:"game-start", rules:gameRules });
 
   if (hostParticipates) {
-    // ホストもスコアに追加してプレイヤー画面へ
     const myName = userName || "司会者";
     if (!scores[myName]) scores[myName] = 0;
-    // ホスト用の擬似hostConnを作成（自分自身にメッセージを送る仕組み）
     _plMyName = myName;
     _hostParticipating = true;
-    document.getElementById("pl-sub").textContent    = "司会者の出題を待っています";
-    document.getElementById("pl-flash").innerHTML    = "";
+
+    // デッキセレクトを生成
+    const sel = document.getElementById("pl-host-deck-select");
+    if (sel) {
+      sel.innerHTML = '<option value="">-- デッキを選んでください --</option>' +
+        decks.map(d => `<option value="${d.id}">${heroName(d.heroId)} — ${d.name}</option>`).join("");
+    }
+    document.getElementById("pl-host-deck").style.display = "block";
+
+    document.getElementById("pl-sub").textContent         = "司会者の出題を待っています";
+    document.getElementById("pl-flash").innerHTML         = "";
     setBadge(document.getElementById("pl-badge"), "待機中", "b-warn");
-    document.getElementById("pl-quiz").style.display = "block";
+    document.getElementById("pl-quiz").style.display      = "block";
     renderCards("pl-cards", [null, null, null, null]);
-    document.getElementById("pl-hero-picker").innerHTML    = "";
+    document.getElementById("pl-hero-picker").innerHTML   = "";
     document.getElementById("pl-answer-btn").style.display = "none";
-    document.getElementById("p-timer").style.width         = "0%";
+    document.getElementById("p-timer").style.width        = "0%";
     go("s-player");
   } else {
     _hostParticipating = false;
@@ -426,15 +433,42 @@ function selectHostCard(cardId) {
 }
 
 function hostSend() {
+  // ホスト参加中はデッキセレクトから選択
+  if (_hostParticipating) {
+    const sel = document.getElementById("pl-host-deck-select");
+    const did = sel ? parseInt(sel.value) : NaN;
+    if (!did) { alert("デッキを選択してください"); return; }
+    const deck = decks.find(d => d.id === did);
+    if (!deck) { alert("デッキが見つかりません"); return; }
+    // hostCards / hostSelectedHero をデッキから設定
+    hostSelectedHero = deck.heroId;
+    hostCards = deck.cards.map(id => cardInfo(id));
+  }
+
   if (!hostSelectedHero)                    { alert("キャラを選択してください"); return; }
   if (hostCards.filter(Boolean).length < 4) { alert("4枚すべてのカードを選択してください"); return; }
+
   const cardIds   = hostCards.map(c => c.id);
   const timeLimit = gameRules.time || 20;
   hostCurDeck = { heroId:hostSelectedHero, cards:cardIds };
   bcast({ type:"question", cards:cardIds, heroId:hostSelectedHero, timeLimit, sentAt:Date.now() });
 
-  // カード選択エリアを閉じる
-  document.getElementById("host-picker-area").style.display = "none";
+  // ボタンを「出題中」に変更
+  const sendBtn = document.getElementById("host-send");
+  if (sendBtn) {
+    sendBtn.textContent = "出題中";
+    sendBtn.disabled    = true;
+    sendBtn.classList.remove("btn-p");
+    sendBtn.classList.add("btn-sending");
+  }
+
+  // 通常司会者パネルのピッカーを閉じる
+  if (!_hostParticipating) {
+    document.getElementById("host-picker-area").style.display = "none";
+  }
+  // ホスト参加中は正解発表ボタンを表示
+  const revealPl = document.getElementById("host-reveal-pl");
+  if (revealPl) revealPl.style.display = "block";
 
   document.getElementById("host-reveal").style.display = "block";
   document.getElementById("host-log").innerHTML = '<p style="color:var(--text3)">回答待ち...</p>';
@@ -453,6 +487,8 @@ function hostReveal() {
   if (!hostCurDeck) return;
   bcast({ type:"reveal", heroId:hostCurDeck.heroId, scores });
   document.getElementById("host-reveal").style.display = "none";
+  const revealPl = document.getElementById("host-reveal-pl");
+  if (revealPl) revealPl.style.display = "none";
   renderScores("host-scores", scores);
   setTimeout(() => {
     hostCurDeck = null;
@@ -463,6 +499,14 @@ function hostReveal() {
     if (inp) { inp.value = ""; inp.disabled = false; }
     if (clr) clr.classList.remove("show");
     updateHeroList("host-hero-picker", "", () => {}, {});
+    // 出題ボタンを元に戻す
+    const sendBtn = document.getElementById("host-send");
+    if (sendBtn) {
+      sendBtn.textContent = _hostParticipating ? "このデッキを出題" : "このデッキを出題 →";
+      sendBtn.disabled    = false;
+      sendBtn.classList.remove("btn-sending");
+      sendBtn.classList.add("btn-p");
+    }
     bcast({ type:"reset" });
   }, REVEAL_RESET_DELAY);
 }

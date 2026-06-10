@@ -210,6 +210,16 @@
       <div><h2>回答者</h2><p class="sub" id="pl-sub" style="margin:0">司会者の出題を待っています</p></div>
       <span class="badge b-warn" id="pl-badge">待機中</span>
     </div>
+    <!-- ホスト参加時のみ表示：デッキ選択 + 出題ボタン -->
+    <div id="pl-host-deck" style="display:none">
+      <div class="div"></div>
+      <div class="lbl">出題するデッキを選択</div>
+      <select id="pl-host-deck-select" style="width:100%;padding:9px 12px;background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:14px;font-family:'Noto Sans JP',sans-serif;margin-bottom:8px">
+        <option value="">-- デッキを選んでください --</option>
+      </select>
+      <button class="btn btn-p" id="host-send" onclick="hostSend()">このデッキを出題</button>
+      <button class="btn btn-s" id="host-reveal-pl" onclick="hostReveal()" style="display:none;margin-top:6px">正解を発表</button>
+    </div>
     <div class="div"></div>
     <div id="pl-quiz" style="display:none">
       <div class="lbl">出題デッキ</div>
