@@ -766,10 +766,11 @@ function deleteDeck(id){ decks=decks.filter(d=>d.id!==id); saveDecks(); renderMg
 let peer=null,hostConn=null,playerConns={};
 let scores={},hostCurDeck=null,selectedHostId=null;
 let userName="";
+let gameRules={ time:20, pts:1, first:2, penalty:0, goal:0 }; // ゲームルール
+let gameStarted=false;
 
 // 合言葉をPeerJS IDに使える文字列に変換（日本語対応）
 function ppToId(pp){
-  // スペース除去・小文字化してからエンコード。%を-に置換してPeerJS IDに使える文字のみにする
   const normalized=pp.trim().toLowerCase().replace(/\s+/g,"");
   return encodeURIComponent(normalized).replace(/%/g,"-").replace(/[^a-z0-9\-_]/gi,"").replace(/^-+/,"");
 }
@@ -780,22 +781,69 @@ function createRoom(){
   if(!rawPP){ alert("合言葉を入力してください"); return; }
   const peerId=ppToId(rawPP);
   if(!peerId){ alert("使用できない文字が含まれています"); return; }
-  scores={}; closePeer();
+  scores={}; gameStarted=false; closePeer();
   peer=new Peer("cq-room-"+peerId,{debug:0});
   peer.on("open",()=>{
-    document.getElementById("room-passphrase-display").textContent=rawPP;
-    document.getElementById("peer-count").textContent="0";
-    document.getElementById("peer-list").innerHTML="";
-    document.getElementById("host-log").innerHTML='<p style="color:var(--text3)">まだ回答がありません</p>';
-    initHostDeckBuilder(); go("s-host");
+    document.getElementById("lobby-passphrase-display").textContent=rawPP;
+    document.getElementById("lobby-peer-count").textContent="0";
+    document.getElementById("lobby-peer-list").innerHTML="";
+    go("s-host-lobby");
   });
   peer.on("connection",conn=>{
     playerConns[conn.peer]={conn, name:""};
-    conn.on("open",()=>{ conn.send({type:"welcome",hostName:myName}); updatePeers(); });
+    conn.on("open",()=>{
+      // ロビー情報とルールを送信
+      const rules=readRules();
+      conn.send({type:"welcome",hostName:myName,rules,started:gameStarted});
+      updateLobbyPeers();
+    });
     conn.on("data",d=>handleHost(d,conn));
-    conn.on("close",()=>{ delete playerConns[conn.peer]; updatePeers(); });
+    conn.on("close",()=>{ delete playerConns[conn.peer]; updateLobbyPeers(); updatePeers(); });
   });
   peer.on("error",e=>alert("接続エラー: "+e.message));
+}
+
+function readRules(){
+  return {
+    time:    Math.max(5, parseInt(document.getElementById("rule-time")?.value)||20),
+    pts:     Math.max(1, parseInt(document.getElementById("rule-pts")?.value)||1),
+    first:   Math.max(0, parseInt(document.getElementById("rule-first")?.value)||2),
+    penalty: Math.max(0, parseInt(document.getElementById("rule-penalty")?.value)||0),
+    goal:    Math.max(0, parseInt(document.getElementById("rule-goal")?.value)||0),
+  };
+}
+
+function hostStartGame(){
+  gameRules=readRules();
+  gameStarted=true;
+  // 全参加者にゲーム開始を通知
+  Object.values(playerConns).forEach(p=>p.conn.send({type:"game-start",rules:gameRules}));
+  // 司会者は出題パネルへ
+  document.getElementById("peer-count").textContent=Object.values(playerConns).length;
+  document.getElementById("peer-list").innerHTML=
+    Object.values(playerConns).map(p=>`<span class="peer-tag">${p.name||"?"}</span>`).join("");
+  document.getElementById("host-log").innerHTML='<p style="color:var(--text3)">まだ回答がありません</p>';
+  initHostDeckBuilder();
+  go("s-host");
+}
+
+function updateLobbyPeers(){
+  const entries=Object.values(playerConns);
+  const cnt=entries.length;
+  document.getElementById("lobby-peer-count").textContent=cnt;
+  document.getElementById("lobby-peer-list").innerHTML=cnt===0
+    ?'<span style="font-size:12px;color:var(--text3)">まだ誰もいません</span>'
+    :entries.map(p=>`<span class="peer-tag">${p.name||"接続中…"}</span>`).join("");
+}
+
+function copyLobbyPassphrase(){
+  const pp=document.getElementById("lobby-passphrase-display").textContent;
+  if(!pp) return;
+  navigator.clipboard.writeText(pp).then(()=>{
+    const btn=event.target; const orig=btn.textContent;
+    btn.textContent="コピー済み";
+    setTimeout(()=>btn.textContent=orig,2000);
+  });
 }
 
 function joinRoom(){
@@ -810,39 +858,168 @@ function joinRoom(){
     hostConn=peer.connect("cq-room-"+peerId);
     hostConn.on("open",()=>{
       hostConn.send({type:"join",name:myName});
-      document.getElementById("pl-badge").textContent="接続済み";
-      document.getElementById("pl-badge").className="badge b-ok";
-      document.getElementById("pl-quiz").style.display="none";
-      go("s-player");
     });
     hostConn.on("data",d=>handlePlayer(d,myName));
-    hostConn.on("close",()=>{ document.getElementById("pl-badge").textContent="切断"; document.getElementById("pl-badge").className="badge b-ng"; });
-    hostConn.on("error",()=>alert("接続できませんでした。IDを確認してください"));
+    hostConn.on("close",()=>{
+      const badge=document.getElementById("pl-badge")||document.getElementById("ploby-badge");
+      if(badge){ badge.textContent="切断"; badge.className="badge b-ng"; }
+    });
+    hostConn.on("error",()=>alert("接続できませんでした。合言葉を確認してください"));
   });
   peer.on("error",e=>alert("接続エラー: "+e.message));
 }
 
 function handleHost(data,conn){
   if(data.type==="join"){
-    // connにnameを紐付け
     if(playerConns[conn.peer]) playerConns[conn.peer].name=data.name;
-    if(!scores[data.name])scores[data.name]=0;
-    addLog(`${data.name} が参加`); updatePeers(); bcastScores();
+    if(!scores[data.name]) scores[data.name]=0;
+    updateLobbyPeers(); updatePeers(); bcastScores();
+    // ルールを送信（ゲーム開始前なら全員に再送）
+    if(!gameStarted){
+      const rules=readRules();
+      Object.values(playerConns).forEach(p=>p.conn.send({type:"lobby-update",rules,peers:Object.values(playerConns).map(q=>q.name)}));
+    }
   }
   if(data.type==="answer"){
     const correct=hostCurDeck&&data.heroId===hostCurDeck.heroId;
-    const pts=correct&&data.first?3:correct?1:0;
-    if(!scores[data.name])scores[data.name]=0;
-    scores[data.name]+=pts;
-    addLog(`${correct?"○":"×"} ${data.name}：${heroName(data.heroId)}${data.first&&correct?" 早押し+3":correct?" +1":""}`);
+    const r=gameRules;
+    const pts=correct&&data.first ? r.pts+r.first : correct ? r.pts : -r.penalty;
+    if(!scores[data.name]) scores[data.name]=0;
+    scores[data.name]=Math.max(0, scores[data.name]+pts);
+    const ptLabel=correct&&data.first?`早押し+${r.pts+r.first}`:correct?`+${r.pts}`:r.penalty>0?`-${r.penalty}`:"";
+    addLog(`${correct?"○":"×"} ${data.name}：${heroName(data.heroId)}${ptLabel?" "+ptLabel:""}`);
     bcastScores();
-    conn.send({type:"answer-result",correct,first:data.first,heroId:data.heroId,scores});
+    conn.send({type:"answer-result",correct,first:data.first&&correct,heroId:data.heroId,scores,pts});
+    // 優勝チェック
+    if(r.goal>0 && scores[data.name]>=r.goal){
+      const winner=data.name;
+      const payload={type:"game-end",winner,scores};
+      Object.values(playerConns).forEach(p=>p.conn.send(payload));
+      setTimeout(()=>{ alert(`ゲーム終了！ 優勝：${winner} (${scores[winner]}pt)`); renderScores("host-scores",scores); },200);
+    }
   }
 }
 
+function handlePlayer(data,myName){
+  _plMyName=myName;
+
+  // ロビー：接続直後のwelcome
+  if(data.type==="welcome"){
+    document.getElementById("ploby-sub").textContent=`司会者: ${data.hostName}`;
+    document.getElementById("ploby-badge").textContent="接続済み";
+    document.getElementById("ploby-badge").className="badge b-ok";
+    renderLobbyRules(data.rules||{});
+    if(data.started){
+      // 途中参加：すでにゲーム開始済み
+      gameRules=data.rules||gameRules;
+      go("s-player");
+    } else {
+      go("s-player-lobby");
+    }
+  }
+
+  // ロビー：ルール or 参加者更新
+  if(data.type==="lobby-update"){
+    renderLobbyRules(data.rules||{});
+    if(data.peers){
+      document.getElementById("ploby-peer-list").innerHTML=
+        data.peers.map(n=>`<span class="peer-tag">${n}</span>`).join("");
+    }
+  }
+
+  // ゲーム開始通知
+  if(data.type==="game-start"){
+    gameRules=data.rules||gameRules;
+    document.getElementById("pl-sub").textContent="司会者の出題を待っています";
+    document.getElementById("pl-badge").textContent="待機中";
+    document.getElementById("pl-badge").className="badge b-warn";
+    document.getElementById("pl-quiz").style.display="none";
+    document.getElementById("pl-flash").innerHTML="";
+    go("s-player");
+  }
+
+  if(data.type==="question"){
+    _plAnswered=false; _plSelectedHid=null; _plCurrentData=data;
+    clearInterval(window._pTI);
+    document.getElementById("pl-badge").textContent="出題中";
+    document.getElementById("pl-badge").className="badge b-warn";
+    document.getElementById("pl-flash").innerHTML="";
+    document.getElementById("pl-answer-btn").style.display="none";
+    document.getElementById("pl-quiz").style.display="block";
+    renderCards("pl-cards",data.cards);
+
+    renderHeroPicker("pl-hero-picker",(hid)=>{
+      if(_plAnswered) return;
+      _plSelectedHid=hid;
+      document.querySelectorAll("#pl-hero-picker-list .hero-list-item").forEach(el=>{
+        el.classList.toggle("selected",el.dataset.hid===hid);
+      });
+      const inp=document.getElementById("pl-hero-picker-input");
+      inp.value=heroName(hid);
+      document.getElementById("pl-hero-picker-clear").classList.add("show");
+      document.getElementById("pl-answer-btn").style.display="block";
+    },{});
+
+    const timeLimit=gameRules.time||20;
+    let t=timeLimit; document.getElementById("p-timer").style.width="100%";
+    window._pTI=setInterval(()=>{
+      t-=0.1; document.getElementById("p-timer").style.width=Math.max(0,t/timeLimit*100)+"%";
+      if(t<=0){
+        clearInterval(window._pTI);
+        if(!_plAnswered){
+          if(_plSelectedHid){ plSubmitAnswer(); }
+          else {
+            _plAnswered=true;
+            document.getElementById("pl-answer-btn").style.display="none";
+            document.getElementById("pl-flash").innerHTML=`<div class="flash ng">時間切れ</div>`;
+          }
+        }
+      }
+    },100);
+  }
+
+  if(data.type==="answer-result"){
+    const f=document.getElementById("pl-flash");
+    const r=gameRules;
+    if(data.correct&&data.first) f.innerHTML=`<div class="flash first">早押し正解　+${r.pts+r.first}pt</div>`;
+    else if(data.correct)        f.innerHTML=`<div class="flash ok">正解　+${r.pts}pt</div>`;
+    else if(r.penalty>0)         f.innerHTML=`<div class="flash ng">不正解　-${r.penalty}pt</div>`;
+    else                         f.innerHTML=`<div class="flash ng">不正解</div>`;
+    if(data.scores) renderScores("pl-scores",data.scores);
+  }
+
+  if(data.type==="reveal"){
+    clearInterval(window._pTI);
+    document.getElementById("pl-flash").innerHTML=`<div class="flash ok">正解：${heroName(data.heroId)}</div>`;
+    updateHeroList("pl-hero-picker","",()=>{},{disabled:true,revealId:data.heroId});
+    document.getElementById("pl-answer-btn").style.display="none";
+    document.getElementById("pl-badge").textContent="待機中"; document.getElementById("pl-badge").className="badge b-warn";
+    if(data.scores) renderScores("pl-scores",data.scores);
+  }
+
+  if(data.type==="reset"){
+    _plAnswered=false; _plSelectedHid=null; _plCurrentData=null;
+    document.getElementById("pl-quiz").style.display="none";
+    document.getElementById("pl-flash").innerHTML="";
+    document.getElementById("pl-answer-btn").style.display="none";
+    document.getElementById("pl-badge").textContent="待機中"; document.getElementById("pl-badge").className="badge b-warn";
+    document.getElementById("p-timer").style.width="100%";
+  }
+
+  if(data.type==="game-end"){
+    clearInterval(window._pTI);
+    document.getElementById("pl-quiz").style.display="none";
+    document.getElementById("pl-flash").innerHTML=`<div class="flash first">ゲーム終了　優勝：${data.winner}</div>`;
+    if(data.scores) renderScores("pl-scores",data.scores);
+    document.getElementById("pl-badge").textContent="終了"; document.getElementById("pl-badge").className="badge b-ok";
+  }
+
+  if(data.type==="scores") renderScores("pl-scores",data.scores);
+}
+
 let _plAnswered=false;
-let _plSelectedHid=null; // 選択中のキャラ（未確定）
-let _plCurrentData=null; // 出題データ保持
+let _plSelectedHid=null;
+let _plCurrentData=null;
 let _plMyName="";
 
 function plSubmitAnswer(){
@@ -863,77 +1040,15 @@ function plSubmitAnswer(){
     updateHeroList("pl-hero-picker","",()=>{},{disabled:true,correctId:correct,wrongId:hid});
   }
 }
-
-function handlePlayer(data,myName){
-  _plMyName=myName;
-  if(data.type==="welcome") document.getElementById("pl-sub").textContent=`司会者: ${data.hostName}`;
-  if(data.type==="question"){
-    _plAnswered=false; _plSelectedHid=null; _plCurrentData=data;
-    clearInterval(window._pTI);
-    document.getElementById("pl-badge").textContent="出題中";
-    document.getElementById("pl-badge").className="badge b-warn";
-    document.getElementById("pl-flash").innerHTML="";
-    document.getElementById("pl-answer-btn").style.display="none";
-    document.getElementById("pl-quiz").style.display="block";
-    renderCards("pl-cards",data.cards);
-
-    renderHeroPicker("pl-hero-picker",(hid)=>{
-      if(_plAnswered) return;
-      _plSelectedHid=hid;
-      // 選択状態を視覚的に反映
-      document.querySelectorAll("#pl-hero-picker-list .hero-list-item").forEach(el=>{
-        el.classList.toggle("selected",el.dataset.hid===hid);
-      });
-      const inp=document.getElementById("pl-hero-picker-input");
-      inp.value=heroName(hid);
-      document.getElementById("pl-hero-picker-clear").classList.add("show");
-      // 確定ボタンを表示
-      document.getElementById("pl-answer-btn").style.display="block";
-    },{});
-
-    let t=20; document.getElementById("p-timer").style.width="100%";
-    window._pTI=setInterval(()=>{
-      t-=0.1; document.getElementById("p-timer").style.width=Math.max(0,t/20*100)+"%";
-      if(t<=0){
-        clearInterval(window._pTI);
-        // 時間切れ：未回答なら選択中のキャラで送信、未選択なら空送信
-        if(!_plAnswered){
-          if(_plSelectedHid){
-            plSubmitAnswer();
-          } else {
-            _plAnswered=true;
-            document.getElementById("pl-answer-btn").style.display="none";
-            document.getElementById("pl-flash").innerHTML=`<div class="flash ng">時間切れ</div>`;
-          }
-        }
-      }
-    },100);
-  }
-  if(data.type==="answer-result"){
-    const f=document.getElementById("pl-flash");
-    if(data.correct&&data.first) f.innerHTML=`<div class="flash first">早押し正解　+3pt</div>`;
-    else if(data.correct)        f.innerHTML=`<div class="flash ok">正解　+1pt</div>`;
-    else                         f.innerHTML=`<div class="flash ng">不正解</div>`;
-    if(data.scores) renderScores("pl-scores",data.scores);
-  }
-  if(data.type==="reveal"){
-    clearInterval(window._pTI);
-    document.getElementById("pl-flash").innerHTML=`<div class="flash ok">正解：${heroName(data.heroId)}</div>`;
-    updateHeroList("pl-hero-picker","",()=>{},{disabled:true,revealId:data.heroId});
-    document.getElementById("pl-answer-btn").style.display="none";
-    document.getElementById("pl-badge").textContent="待機中"; document.getElementById("pl-badge").className="badge b-warn";
-    if(data.scores) renderScores("pl-scores",data.scores);
-  }
-  if(data.type==="reset"){
-    // 次の問題に備えてUIをリセット
-    _plAnswered=false; _plSelectedHid=null; _plCurrentData=null;
-    document.getElementById("pl-quiz").style.display="none";
-    document.getElementById("pl-flash").innerHTML="";
-    document.getElementById("pl-answer-btn").style.display="none";
-    document.getElementById("pl-badge").textContent="待機中"; document.getElementById("pl-badge").className="badge b-warn";
-    document.getElementById("p-timer").style.width="100%";
-  }
-  if(data.type==="scores") renderScores("pl-scores",data.scores);
+  const el=document.getElementById("ploby-rules");
+  if(!el) return;
+  el.innerHTML=`
+    <div>制限時間：${rules.time||20}秒</div>
+    <div>正解ポイント：${rules.pts||1}pt</div>
+    <div>早押しボーナス：+${rules.first||0}pt</div>
+    <div>誤答ペナルティ：-${rules.penalty||0}pt</div>
+    <div>優勝ポイント：${rules.goal>0?rules.goal+"pt":"なし（無制限）"}</div>
+  `;
 }
 
 function renderScores(cid,sc){
@@ -1094,9 +1209,9 @@ function hostSend(){
   document.getElementById("host-log").innerHTML='<p style="color:var(--text3)">回答待ち...</p>';
   addLog(`出題：${heroName(hostSelectedHero)}`);
 
-  // サーバー側タイマー：20秒後に自動で正解発表
+  // サーバー側タイマー：制限時間後に自動で正解発表
   clearTimeout(window._hostTimer);
-  window._hostTimer=setTimeout(()=>{ hostReveal(); },20000);
+  window._hostTimer=setTimeout(()=>{ hostReveal(); },(gameRules.time||20)*1000);
 }
 
 const REVEAL_RESET_DELAY=5000; // 正解発表から何ms後にリセットするか

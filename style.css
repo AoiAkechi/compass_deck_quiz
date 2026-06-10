@@ -165,8 +165,13 @@ input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(245,200,66,.12)
 .slot-ct .ct{width:100%;height:100%;border:none;border-radius:calc(var(--radius) - 2px);background:transparent;aspect-ratio:unset}
 .slot-ct .ct-img{border-radius:calc(var(--radius) - 2px)}
 
-/* 問題リスト */
-.ql-deck-row{display:flex;align-items:center;gap:8px;padding:7px 4px;border-bottom:1px solid var(--border);cursor:pointer;font-size:13px}
+/* ルール設定 */
+.rule-grid{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.rule-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.rule-label{font-size:13px;color:var(--text2);flex:1}
+.rule-input{width:80px;padding:7px 10px;text-align:right;margin-top:0;flex-shrink:0}
+
+/* 問題リスト */.ql-deck-row{display:flex;align-items:center;gap:8px;padding:7px 4px;border-bottom:1px solid var(--border);cursor:pointer;font-size:13px}
 .ql-deck-row:last-child{border-bottom:none}
 .ql-deck-row:hover{background:rgba(232,150,10,.05);border-radius:6px}
 .ql-deck-row input[type=checkbox]{accent-color:var(--accent);width:15px;height:15px;flex-shrink:0;cursor:pointer}

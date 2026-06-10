@@ -95,20 +95,75 @@
   </div>
 </div>
 
+<!-- 司会者ロビー -->
+<div id="s-host-lobby" class="screen">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+      <div><h2>ロビー</h2><p class="sub" style="margin:0">参加者を待っています</p></div>
+      <span class="badge b-ok">司会者</span>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:10px;margin-bottom:12px">
+      <div class="lbl">合言葉（参加者に共有）</div>
+      <div class="passphrase-box">
+        <div class="passphrase-word" id="lobby-passphrase-display"></div>
+        <div class="passphrase-hint">この合言葉をDiscordなどで共有してください</div>
+      </div>
+      <button class="btn-sm" onclick="copyLobbyPassphrase()" style="width:100%">合言葉をコピー</button>
+    </div>
+    <div class="lbl">参加者 (<span id="lobby-peer-count">0</span>人)</div>
+    <div id="lobby-peer-list" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;min-height:22px"></div>
+    <div class="div"></div>
+    <h3>ルール設定</h3>
+    <div class="rule-grid">
+      <div class="rule-row">
+        <label class="rule-label">制限時間（秒）</label>
+        <input class="rule-input" type="number" id="rule-time" value="20" min="5" max="120">
+      </div>
+      <div class="rule-row">
+        <label class="rule-label">正解ポイント</label>
+        <input class="rule-input" type="number" id="rule-pts" value="1" min="1" max="100">
+      </div>
+      <div class="rule-row">
+        <label class="rule-label">早押しボーナス</label>
+        <input class="rule-input" type="number" id="rule-first" value="2" min="0" max="100">
+      </div>
+      <div class="rule-row">
+        <label class="rule-label">誤答ペナルティ</label>
+        <input class="rule-input" type="number" id="rule-penalty" value="0" min="0" max="100">
+      </div>
+      <div class="rule-row">
+        <label class="rule-label">優勝ポイント（0=無制限）</label>
+        <input class="rule-input" type="number" id="rule-goal" value="0" min="0" max="9999">
+      </div>
+    </div>
+    <button class="btn btn-p" onclick="hostStartGame()" style="margin-top:14px">ゲーム開始</button>
+    <button class="btn btn-s" onclick="closeRoom();go('s-top')" style="margin-top:6px">退出</button>
+  </div>
+</div>
+
+<!-- 参加者ロビー -->
+<div id="s-player-lobby" class="screen">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+      <div><h2>ロビー</h2><p class="sub" id="ploby-sub" style="margin:0">ゲーム開始を待っています</p></div>
+      <span class="badge b-warn" id="ploby-badge">待機中</span>
+    </div>
+    <div class="div"></div>
+    <div class="lbl">参加者</div>
+    <div id="ploby-peer-list" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;min-height:22px"></div>
+    <div class="div"></div>
+    <div class="lbl">ルール</div>
+    <div id="ploby-rules" style="font-size:13px;color:var(--text2);line-height:2"></div>
+    <button class="btn btn-s" onclick="closeRoom();go('s-top')" style="margin-top:16px">退出</button>
+  </div>
+</div>
+
 <!-- 司会者パネル -->
 <div id="s-host" class="screen">
   <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
       <div><h2>司会者パネル</h2><p class="sub" style="margin:0">デッキを選んで出題しよう</p></div>
       <span class="badge b-ok">接続中</span>
-    </div>
-    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:10px;margin-bottom:12px">
-      <div class="lbl">合言葉（参加者に共有）</div>
-      <div class="passphrase-box">
-        <div class="passphrase-word" id="room-passphrase-display"></div>
-        <div class="passphrase-hint">この合言葉をdiscordなどで共有してください</div>
-      </div>
-      <button class="btn-sm" onclick="copyPassphrase()" style="width:100%">合言葉をコピー</button>
     </div>
     <div class="lbl">参加者 (<span id="peer-count">0</span>人)</div>
     <div id="peer-list" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;min-height:22px"></div>
@@ -156,7 +211,7 @@
       <div class="timer-bar"><div class="timer-fill" id="p-timer" style="width:100%"></div></div>
       <div class="lbl" style="margin-top:8px">このキャラは？（早押し！）</div>
       <div id="pl-hero-picker"></div>
-      <button class="btn btn-p" id="pl-answer-btn" onclick="plSubmitAnswer()" style="display:none;margin-top:8px">⚡ この答えで回答する</button>
+      <button class="btn btn-p" id="pl-answer-btn" onclick="plSubmitAnswer()" style="display:none;margin-top:8px">この答えで回答する</button>
       <div id="pl-flash"></div>
     </div>
     <div id="pl-scores"></div>
