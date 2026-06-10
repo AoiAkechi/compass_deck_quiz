@@ -52,13 +52,34 @@ function readRules() {
 function hostStartGame() {
   gameRules   = readRules();
   gameStarted = true;
+  const hostParticipates = document.getElementById("rule-host-join")?.checked || false;
   bcast({ type:"game-start", rules:gameRules });
-  document.getElementById("peer-count").textContent = Object.values(playerConns).length;
-  document.getElementById("peer-list").innerHTML =
-    Object.values(playerConns).map(p => `<span class="peer-tag">${p.name||"?"}</span>`).join("");
-  document.getElementById("host-log").innerHTML = '<p style="color:var(--text3)">まだ回答がありません</p>';
-  initHostDeckBuilder();
-  go("s-host");
+
+  if (hostParticipates) {
+    // ホストもスコアに追加してプレイヤー画面へ
+    const myName = userName || "司会者";
+    if (!scores[myName]) scores[myName] = 0;
+    // ホスト用の擬似hostConnを作成（自分自身にメッセージを送る仕組み）
+    _plMyName = myName;
+    _hostParticipating = true;
+    document.getElementById("pl-sub").textContent    = "司会者の出題を待っています";
+    document.getElementById("pl-flash").innerHTML    = "";
+    setBadge(document.getElementById("pl-badge"), "待機中", "b-warn");
+    document.getElementById("pl-quiz").style.display = "block";
+    renderCards("pl-cards", [null, null, null, null]);
+    document.getElementById("pl-hero-picker").innerHTML    = "";
+    document.getElementById("pl-answer-btn").style.display = "none";
+    document.getElementById("p-timer").style.width         = "0%";
+    go("s-player");
+  } else {
+    _hostParticipating = false;
+    document.getElementById("peer-count").textContent = Object.values(playerConns).length;
+    document.getElementById("peer-list").innerHTML =
+      Object.values(playerConns).map(p => `<span class="peer-tag">${p.name||"?"}</span>`).join("");
+    document.getElementById("host-log").innerHTML = '<p style="color:var(--text3)">まだ回答がありません</p>';
+    initHostDeckBuilder();
+    go("s-host");
+  }
 }
 
 function updateLobbyPeers() {
@@ -92,7 +113,11 @@ function joinRoom() {
     hostConn = peer.connect("cq-room-" + peerId);
     hostConn.on("open",  () => hostConn.send({ type:"join", name:myName }));
     hostConn.on("data",  d  => handlePlayer(d, myName));
-    hostConn.on("close", () => setBadge(document.getElementById("pl-badge")||document.getElementById("ploby-badge"), "切断", "b-ng"));
+    hostConn.on("close", () => {
+      alert("司会者が切断されました。ホームに戻ります。");
+      closePeer();
+      go("s-top");
+    });
     hostConn.on("error", () => alert("接続できませんでした。合言葉を確認してください"));
   });
   peer.on("error", e => alert("接続エラー: " + e.message));
@@ -112,6 +137,8 @@ function handleHost(data, conn) {
   if (data.type === "answer") {
     const correct = hostCurDeck && data.heroId === hostCurDeck.heroId;
     const r = gameRules;
+    // ホスト参加中の自己回答はスコア計算しない（別途plSubmitAnswerから来る）
+    if (data._fromHost) return;
     const pts = correct && data.first ? r.pts + r.first : correct ? r.pts : -r.penalty;
     scores[data.name] = Math.max(0, (scores[data.name] || 0) + pts);
     const ptLabel = correct && data.first ? `早押し+${r.pts+r.first}` : correct ? `+${r.pts}` : r.penalty > 0 ? `-${r.penalty}` : "";
@@ -128,6 +155,7 @@ function handleHost(data, conn) {
 
 // --- プレイヤー状態 ---
 let _plAnswered = false, _plSelectedHid = null, _plCurrentData = null, _plMyName = "";
+let _hostParticipating = false;
 
 // --- 参加者：受信 ---
 function handlePlayer(data, myName) {
@@ -183,14 +211,14 @@ function handlePlayer(data, myName) {
       document.getElementById("pl-answer-btn").style.display = "block";
     }, {});
 
-    const timeLimit = data.timeLimit || gameRules.time || 20;
-    const elapsed   = data.sentAt ? Math.min((Date.now() - data.sentAt) / 1000, timeLimit) : 0;
-    let t = timeLimit - elapsed;
-    document.getElementById("p-timer").style.width = Math.max(0, t / timeLimit * 100) + "%";
+    const timeLimit  = data.timeLimit || gameRules.time || 20;
+    const elapsed    = data.sentAt ? Math.min((Date.now() - data.sentAt) / 1000, timeLimit) : 0;
+    const endAt      = Date.now() + (timeLimit - elapsed) * 1000;
+    document.getElementById("p-timer").style.width = Math.max(0, (timeLimit - elapsed) / timeLimit * 100) + "%";
     window._pTI = setInterval(() => {
-      t -= 0.1;
-      document.getElementById("p-timer").style.width = Math.max(0, t / timeLimit * 100) + "%";
-      if (t <= 0.05) {
+      const remaining = (endAt - Date.now()) / 1000;
+      document.getElementById("p-timer").style.width = Math.max(0, remaining / timeLimit * 100) + "%";
+      if (remaining <= 0.15) {
         clearInterval(window._pTI);
         document.getElementById("p-timer").style.width = "0%";
         if (!_plAnswered) {
@@ -202,7 +230,7 @@ function handlePlayer(data, myName) {
           }
         }
       }
-    }, 100);
+    }, 80);
   }
 
   if (data.type === "answer-result") {
@@ -252,15 +280,35 @@ function plSubmitAnswer() {
   const hid     = _plSelectedHid;
   const correct = _plCurrentData.heroId;
   const isFirst = !_plCurrentData._ans; _plCurrentData._ans = true;
-  hostConn.send({ type:"answer", heroId:hid, name:_plMyName, first:isFirst });
-  document.getElementById("pl-hero-picker-input").disabled       = true;
-  document.getElementById("pl-answer-btn").style.display         = "none";
-  document.getElementById("pl-flash").innerHTML = `<div class="flash ${hid===correct?"first":"ng"}">回答を送信しました</div>`;
+
+  document.getElementById("pl-hero-picker-input").disabled   = true;
+  document.getElementById("pl-answer-btn").style.display     = "none";
   updateHeroList("pl-hero-picker", "", () => {}, {
-    disabled: true,
-    correctId: correct,
+    disabled: true, correctId: correct,
     ...(hid !== correct && { wrongId: hid }),
   });
+
+  if (_hostParticipating) {
+    const r   = gameRules;
+    const pts = hid === correct && isFirst ? r.pts + r.first : hid === correct ? r.pts : -r.penalty;
+    scores[_plMyName] = Math.max(0, (scores[_plMyName] || 0) + pts);
+    const ptLabel = hid === correct && isFirst ? `早押し+${r.pts+r.first}` : hid === correct ? `+${r.pts}` : r.penalty > 0 ? `-${r.penalty}` : "";
+    addLog(`${hid===correct?"○":"×"} ${_plMyName}：${heroName(hid)}${ptLabel ? " "+ptLabel : ""}`);
+    bcastScores();
+    const f = document.getElementById("pl-flash");
+    if      (hid === correct && isFirst) f.innerHTML = `<div class="flash first">早押し正解　+${r.pts+r.first}pt</div>`;
+    else if (hid === correct)            f.innerHTML = `<div class="flash ok">正解　+${r.pts}pt</div>`;
+    else if (r.penalty > 0)             f.innerHTML = `<div class="flash ng">不正解　-${r.penalty}pt</div>`;
+    else                                f.innerHTML = `<div class="flash ng">不正解</div>`;
+    renderScores("pl-scores", scores);
+    if (r.goal > 0 && scores[_plMyName] >= r.goal) {
+      bcast({ type:"game-end", winner:_plMyName, scores });
+      setTimeout(() => { alert(`ゲーム終了　優勝：${_plMyName} (${scores[_plMyName]}pt)`); renderScores("host-scores", scores); }, 200);
+    }
+  } else {
+    document.getElementById("pl-flash").innerHTML = `<div class="flash ${hid===correct?"first":"ng"}">回答を送信しました</div>`;
+    hostConn.send({ type:"answer", heroId:hid, name:_plMyName, first:isFirst });
+  }
 }
 
 function renderLobbyRules(rules) {
@@ -378,17 +426,26 @@ function selectHostCard(cardId) {
 }
 
 function hostSend() {
-  if (!hostSelectedHero)                   { alert("キャラを選択してください"); return; }
+  if (!hostSelectedHero)                    { alert("キャラを選択してください"); return; }
   if (hostCards.filter(Boolean).length < 4) { alert("4枚すべてのカードを選択してください"); return; }
   const cardIds   = hostCards.map(c => c.id);
   const timeLimit = gameRules.time || 20;
   hostCurDeck = { heroId:hostSelectedHero, cards:cardIds };
   bcast({ type:"question", cards:cardIds, heroId:hostSelectedHero, timeLimit, sentAt:Date.now() });
+
+  // カード選択エリアを閉じる
+  document.getElementById("host-picker-area").style.display = "none";
+
   document.getElementById("host-reveal").style.display = "block";
   document.getElementById("host-log").innerHTML = '<p style="color:var(--text3)">回答待ち...</p>';
   addLog(`出題：${heroName(hostSelectedHero)}`);
   clearTimeout(window._hostTimer);
   window._hostTimer = setTimeout(hostReveal, timeLimit * 1000);
+
+  // ホスト参加中なら自分にも出題を適用
+  if (_hostParticipating) {
+    handlePlayer({ type:"question", cards:cardIds, heroId:hostSelectedHero, timeLimit, sentAt:Date.now() }, _plMyName);
+  }
 }
 
 function hostReveal() {

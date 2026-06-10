@@ -135,6 +135,12 @@
         <label class="rule-label">優勝ポイント（0=無制限）</label>
         <input class="rule-input" type="number" id="rule-goal" value="0" min="0" max="9999">
       </div>
+      <div class="rule-row" style="margin-top:4px">
+        <label class="rule-label" for="rule-host-join">司会者も回答者として参加する</label>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+          <input type="checkbox" id="rule-host-join" style="width:18px;height:18px;accent-color:var(--accent);margin-top:0;cursor:pointer">
+        </label>
+      </div>
     </div>
     <button class="btn btn-p" onclick="hostStartGame()" style="margin-top:14px">ゲーム開始</button>
     <button class="btn btn-s" onclick="closeRoom();go('s-top')" style="margin-top:6px">退出</button>
