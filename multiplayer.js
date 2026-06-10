@@ -153,9 +153,14 @@ function handlePlayer(data, myName) {
   if (data.type === "game-start") {
     gameRules = rules;
     document.getElementById("pl-sub").textContent    = "司会者の出題を待っています";
-    document.getElementById("pl-quiz").style.display = "none";
     document.getElementById("pl-flash").innerHTML    = "";
     setBadge(document.getElementById("pl-badge"), "待機中", "b-warn");
+    // 出題前から？カード枠を表示しておく
+    document.getElementById("pl-quiz").style.display = "block";
+    renderCards("pl-cards", [null, null, null, null]);
+    document.getElementById("pl-hero-picker").innerHTML = "";
+    document.getElementById("pl-answer-btn").style.display = "none";
+    document.getElementById("p-timer").style.width = "0%";
     go("s-player");
   }
 
@@ -184,8 +189,9 @@ function handlePlayer(data, myName) {
     window._pTI = setInterval(() => {
       t -= 0.1;
       document.getElementById("p-timer").style.width = Math.max(0, t / timeLimit * 100) + "%";
-      if (t <= 0) {
+      if (t <= 0.05) {
         clearInterval(window._pTI);
+        document.getElementById("p-timer").style.width = "0%";
         if (!_plAnswered) {
           if (_plSelectedHid) plSubmitAnswer();
           else {
@@ -219,10 +225,12 @@ function handlePlayer(data, myName) {
 
   if (data.type === "reset") {
     _plAnswered = false; _plSelectedHid = null; _plCurrentData = null;
-    document.getElementById("pl-quiz").style.display       = "none";
-    document.getElementById("pl-flash").innerHTML          = "";
-    document.getElementById("pl-answer-btn").style.display = "none";
-    document.getElementById("p-timer").style.width         = "100%";
+    renderCards("pl-cards", [null, null, null, null]);
+    document.getElementById("pl-hero-picker").innerHTML       = "";
+    document.getElementById("pl-flash").innerHTML             = "";
+    document.getElementById("pl-answer-btn").style.display    = "none";
+    document.getElementById("p-timer").style.width            = "0%";
+    document.getElementById("pl-quiz").style.display          = "block";
     setBadge(document.getElementById("pl-badge"), "待機中", "b-warn");
   }
 
