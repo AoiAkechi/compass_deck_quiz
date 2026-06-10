@@ -60,23 +60,26 @@ function hostStartGame() {
     if (!scores[myName]) scores[myName] = 0;
     _plMyName = myName;
     _hostParticipating = true;
+    _hostQueue = []; // 出題キューをリセット
 
-    // デッキセレクトを生成
+    // 問題リストセレクトを生成
     const sel = document.getElementById("pl-host-deck-select");
     if (sel) {
-      sel.innerHTML = '<option value="">-- デッキを選んでください --</option>' +
-        decks.map(d => `<option value="${d.id}">${heroName(d.heroId)} — ${d.name}</option>`).join("");
+      sel.innerHTML = '<option value="">-- 問題リストを選んでください --</option>' +
+        questionLists.map(ql =>
+          `<option value="${ql.localId}">${ql.name}（${ql.deckIds.length}問）</option>`
+        ).join("");
     }
     document.getElementById("pl-host-deck").style.display = "block";
 
-    document.getElementById("pl-sub").textContent         = "司会者の出題を待っています";
-    document.getElementById("pl-flash").innerHTML         = "";
+    document.getElementById("pl-sub").textContent          = "司会者の出題を待っています";
+    document.getElementById("pl-flash").innerHTML          = "";
     setBadge(document.getElementById("pl-badge"), "待機中", "b-warn");
-    document.getElementById("pl-quiz").style.display      = "block";
+    document.getElementById("pl-quiz").style.display       = "block";
     renderCards("pl-cards", [null, null, null, null]);
-    document.getElementById("pl-hero-picker").innerHTML   = "";
+    document.getElementById("pl-hero-picker").innerHTML    = "";
     document.getElementById("pl-answer-btn").style.display = "none";
-    document.getElementById("p-timer").style.width        = "0%";
+    document.getElementById("p-timer").style.width         = "0%";
     go("s-player");
   } else {
     _hostParticipating = false;
@@ -432,15 +435,28 @@ function selectHostCard(cardId) {
   }
 }
 
+// ホスト参加時の出題キュー
+let _hostQueue = [];
+
+function hostPickNextFromQueue() {
+  const sel = document.getElementById("pl-host-deck-select");
+  const lid = sel ? parseInt(sel.value) : NaN;
+  if (!lid) { alert("問題リストを選んでください"); return null; }
+  const ql = questionLists.find(q => q.localId === lid);
+  if (!ql) { alert("問題リストが見つかりません"); return null; }
+  const listDecks = decks.filter(d => ql.deckIds.includes(d.id));
+  if (listDecks.length === 0) { alert("リストに有効なデッキがありません"); return null; }
+  // キューが空になったらシャッフルし直す
+  if (_hostQueue.length === 0) {
+    _hostQueue = [...listDecks].sort(() => Math.random() - 0.5);
+  }
+  return _hostQueue.shift();
+}
+
 function hostSend() {
-  // ホスト参加中はデッキセレクトから選択
   if (_hostParticipating) {
-    const sel = document.getElementById("pl-host-deck-select");
-    const did = sel ? parseInt(sel.value) : NaN;
-    if (!did) { alert("デッキを選択してください"); return; }
-    const deck = decks.find(d => d.id === did);
-    if (!deck) { alert("デッキが見つかりません"); return; }
-    // hostCards / hostSelectedHero をデッキから設定
+    const deck = hostPickNextFromQueue();
+    if (!deck) return;
     hostSelectedHero = deck.heroId;
     hostCards = deck.cards.map(id => cardInfo(id));
   }
@@ -462,11 +478,9 @@ function hostSend() {
     sendBtn.classList.add("btn-sending");
   }
 
-  // 通常司会者パネルのピッカーを閉じる
   if (!_hostParticipating) {
     document.getElementById("host-picker-area").style.display = "none";
   }
-  // ホスト参加中は正解発表ボタンを表示
   const revealPl = document.getElementById("host-reveal-pl");
   if (revealPl) revealPl.style.display = "block";
 
@@ -476,7 +490,6 @@ function hostSend() {
   clearTimeout(window._hostTimer);
   window._hostTimer = setTimeout(hostReveal, timeLimit * 1000);
 
-  // ホスト参加中なら自分にも出題を適用
   if (_hostParticipating) {
     handlePlayer({ type:"question", cards:cardIds, heroId:hostSelectedHero, timeLimit, sentAt:Date.now() }, _plMyName);
   }
