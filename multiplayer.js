@@ -183,9 +183,10 @@ function handlePlayer(data, myName) {
       document.getElementById("pl-answer-btn").style.display = "block";
     }, {});
 
-    const timeLimit = gameRules.time || 20;
-    let t = timeLimit;
-    document.getElementById("p-timer").style.width = "100%";
+    const timeLimit = data.timeLimit || gameRules.time || 20;
+    const elapsed   = data.sentAt ? Math.min((Date.now() - data.sentAt) / 1000, timeLimit) : 0;
+    let t = timeLimit - elapsed;
+    document.getElementById("p-timer").style.width = Math.max(0, t / timeLimit * 100) + "%";
     window._pTI = setInterval(() => {
       t -= 0.1;
       document.getElementById("p-timer").style.width = Math.max(0, t / timeLimit * 100) + "%";
@@ -377,16 +378,17 @@ function selectHostCard(cardId) {
 }
 
 function hostSend() {
-  if (!hostSelectedHero)              { alert("キャラを選択してください"); return; }
+  if (!hostSelectedHero)                   { alert("キャラを選択してください"); return; }
   if (hostCards.filter(Boolean).length < 4) { alert("4枚すべてのカードを選択してください"); return; }
-  const cardIds = hostCards.map(c => c.id);
+  const cardIds   = hostCards.map(c => c.id);
+  const timeLimit = gameRules.time || 20;
   hostCurDeck = { heroId:hostSelectedHero, cards:cardIds };
-  bcast({ type:"question", cards:cardIds, heroId:hostSelectedHero });
+  bcast({ type:"question", cards:cardIds, heroId:hostSelectedHero, timeLimit, sentAt:Date.now() });
   document.getElementById("host-reveal").style.display = "block";
   document.getElementById("host-log").innerHTML = '<p style="color:var(--text3)">回答待ち...</p>';
   addLog(`出題：${heroName(hostSelectedHero)}`);
   clearTimeout(window._hostTimer);
-  window._hostTimer = setTimeout(hostReveal, (gameRules.time || 20) * 1000);
+  window._hostTimer = setTimeout(hostReveal, timeLimit * 1000);
 }
 
 function hostReveal() {
